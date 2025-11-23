@@ -1,10 +1,15 @@
 package com.upiicsa.ApiSIP.Model;
 
+import com.upiicsa.ApiSIP.Model.Catalogs.Semestre;
 import jakarta.persistence.*;
+import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
+import lombok.NoArgsConstructor;
 
 @Data
+@AllArgsConstructor
+@NoArgsConstructor
 @EqualsAndHashCode(callSuper = true)
 @Entity
 @Table(name = "SIP_ALUMNOS")
@@ -17,10 +22,14 @@ public class Alumno extends Usuario {
     @Column(name = "TELEFONO", length = 20)
     private String phone;
 
+    @ManyToOne
+    @JoinColumn(name = "ID_SEMESTRE")
+    private Semestre semestre;
+
     @Column(name = "EGRESADO")
     private Boolean isGraduated;
 
-    @ManyToOne(cascade = CascadeType.ALL)
+    @ManyToOne
     @JoinColumn(name = "ID_DIRECCION")
     private Direccion direccion;
 
