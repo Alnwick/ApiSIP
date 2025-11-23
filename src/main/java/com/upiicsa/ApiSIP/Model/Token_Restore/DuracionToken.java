@@ -1,5 +1,6 @@
-package com.upiicsa.ApiSIP.Model;
+package com.upiicsa.ApiSIP.Model.Token_Restore;
 
+import com.upiicsa.ApiSIP.Model.TipoUsuario;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Data;
