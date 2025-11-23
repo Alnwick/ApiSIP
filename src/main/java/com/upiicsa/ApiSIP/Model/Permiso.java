@@ -1,17 +1,21 @@
 package com.upiicsa.ApiSIP.Model;
 
 import jakarta.persistence.*;
+import lombok.AllArgsConstructor;
 import lombok.Data;
+import lombok.NoArgsConstructor;
 
 @Data
+@AllArgsConstructor
+@NoArgsConstructor
 @Entity
 @Table(name = "SIP_PERMISOS")
-public class Permisos {
+public class Permiso {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "ID_PERMISO")
-    private Long id;
+    private Integer id;
 
     @Column(name = "DESCRIPCION", length = 80)
     private String descripcion;
