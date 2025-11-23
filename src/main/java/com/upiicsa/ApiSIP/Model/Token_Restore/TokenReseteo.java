@@ -1,5 +1,6 @@
-package com.upiicsa.ApiSIP.Model;
+package com.upiicsa.ApiSIP.Model.Token_Restore;
 
+import com.upiicsa.ApiSIP.Model.Usuario;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Data;
@@ -21,7 +22,6 @@ public class TokenReseteo {
 
     @Column(name = "TOKEN", length = 200)
     private String token;
-
 
     @Column(name = "FECHA_EXPIRACION")
     private LocalDateTime fechaExpiracion;
