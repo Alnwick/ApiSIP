@@ -5,12 +5,14 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="27209d0c-47d6-463d-a6fc-94d01f2cda34" name="Changes" comment="">
-      <change afterPath="$PROJECT_DIR$/src/main/java/com/upiicsa/ApiSIP/Controller/AuthenticationController.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/java/com/upiicsa/ApiSIP/Controller/EstudianteController.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/java/com/upiicsa/ApiSIP/Dto/AuthLoginDto.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/java/com/upiicsa/ApiSIP/Dto/AuthResponseDto.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/com/upiicsa/ApiSIP/Repository/UsuarioRepository.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/upiicsa/ApiSIP/Repository/UsuarioRepository.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/upiicsa/ApiSIP/Dto/Email/EmailConfirmDto.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/upiicsa/ApiSIP/Dto/Email/EmailConfirmDto.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/upiicsa/ApiSIP/Dto/Student/ResponseStudentDto.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/upiicsa/ApiSIP/Dto/Student/ResponseStudentDto.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/upiicsa/ApiSIP/Dto/Student/StudentRegistrationDto.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/upiicsa/ApiSIP/Dto/Student/StudentRegistrationDto.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/upiicsa/ApiSIP/Exception/ResourceNotFoundException.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/upiicsa/ApiSIP/Exception/ResourceNotFoundException.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/upiicsa/ApiSIP/Exception/ValidationException.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/upiicsa/ApiSIP/Exception/ValidationException.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/upiicsa/ApiSIP/Repository/EstatusRepository.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/upiicsa/ApiSIP/Repository/EstatusRepository.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/upiicsa/ApiSIP/Service/EmailVerificationService.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/upiicsa/ApiSIP/Service/EmailVerificationService.java" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -20,8 +22,9 @@
   <component name="FileTemplateManagerImpl">
     <option name="RECENT_TEMPLATES">
       <list>
-        <option value="Interface" />
         <option value="Class" />
+        <option value="Exception" />
+        <option value="Interface" />
         <option value="Record" />
       </list>
     </option>
@@ -29,6 +32,18 @@
   <component name="Git.Settings">
     <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$" />
   </component>
+  <component name="GitHubPullRequestSearchHistory">{
+  &quot;lastFilter&quot;: {
+    &quot;state&quot;: &quot;OPEN&quot;,
+    &quot;assignee&quot;: &quot;Alnwick&quot;
+  }
+}</component>
+  <component name="GithubPullRequestsUISettings">{
+  &quot;selectedUrlAndAccountId&quot;: {
+    &quot;url&quot;: &quot;https://github.com/Alnwick/ApiSIP.git&quot;,
+    &quot;accountId&quot;: &quot;0e272780-a845-4932-9fed-b516914304ca&quot;
+  }
+}</component>
   <component name="MavenImportPreferences">
     <option name="generalSettings">
       <MavenGeneralSettings>
@@ -40,9 +55,6 @@
   &quot;associatedIndex&quot;: 3
 }</component>
   <component name="ProjectId" id="35AIo2NZMuiQVDptQtcCqJkULxL" />
-  <component name="ProjectLevelVcsManager">
-    <ConfirmationsSetting value="2" id="Add" />
-  </component>
   <component name="ProjectViewState">
     <option name="hideEmptyMiddlePackages" value="true" />
     <option name="showLibraryContents" value="true" />
@@ -52,8 +64,10 @@
     &quot;ModuleVcsDetector.initialDetectionPerformed&quot;: &quot;true&quot;,
     &quot;RunOnceActivity.ShowReadmeOnStart&quot;: &quot;true&quot;,
     &quot;RunOnceActivity.git.unshallow&quot;: &quot;true&quot;,
+    &quot;com.intellij.ml.llm.matterhorn.ej.ui.settings.DefaultModelSelectionForGA.v1&quot;: &quot;true&quot;,
     &quot;git-widget-placeholder&quot;: &quot;master&quot;,
     &quot;ignore.virus.scanning.warn.message&quot;: &quot;true&quot;,
+    &quot;junie.onboarding.icon.badge.shown&quot;: &quot;true&quot;,
     &quot;kotlin-language-version-configured&quot;: &quot;true&quot;,
     &quot;last_opened_file_path&quot;: &quot;C:/Git/ApiSIP&quot;,
     &quot;node.js.detected.package.eslint&quot;: &quot;true&quot;,
@@ -61,6 +75,7 @@
     &quot;node.js.selected.package.eslint&quot;: &quot;(autodetect)&quot;,
     &quot;node.js.selected.package.tslint&quot;: &quot;(autodetect)&quot;,
     &quot;nodejs_package_manager_path&quot;: &quot;npm&quot;,
+    &quot;to.speed.mode.migration.done&quot;: &quot;true&quot;,
     &quot;vue.rearranger.settings.migration&quot;: &quot;true&quot;
   }
 }</component>
@@ -72,12 +87,19 @@
         <option name="Make" enabled="true" />
       </method>
     </configuration>
+    <configuration name="ApiSipApplication" type="SpringBootApplicationConfigurationType" factoryName="Spring Boot" nameIsGenerated="true">
+      <module name="ApiSIP" />
+      <option name="SPRING_BOOT_MAIN_CLASS" value="com.upiicsa.ApiSIP.ApiSipApplication" />
+      <method v="2">
+        <option name="Make" enabled="true" />
+      </method>
+    </configuration>
   </component>
   <component name="SharedIndexes">
     <attachedChunks>
       <set>
-        <option value="bundled-jdk-9823dce3aa75-bf35d07a577b-intellij.indexing.shared.core-IU-252.28238.7" />
-        <option value="bundled-js-predefined-d6986cc7102b-a71380e98a7c-JavaScript-IU-252.28238.7" />
+        <option value="bundled-jdk-9823dce3aa75-bf35d07a577b-intellij.indexing.shared.core-IU-252.27397.103" />
+        <option value="bundled-js-predefined-d6986cc7102b-3aa1da707db6-JavaScript-IU-252.27397.103" />
       </set>
     </attachedChunks>
   </component>
@@ -89,11 +111,7 @@
       <option name="presentableId" value="Default" />
       <updated>1762546620849</updated>
       <workItem from="1762546622458" duration="2422000" />
-      <workItem from="1763604737737" duration="857000" />
-      <workItem from="1763840270145" duration="420000" />
-      <workItem from="1763840742421" duration="449000" />
-      <workItem from="1763841202204" duration="8643000" />
-      <workItem from="1763922813483" duration="3014000" />
+      <workItem from="1764006126311" duration="4636000" />
     </task>
     <servers />
   </component>
