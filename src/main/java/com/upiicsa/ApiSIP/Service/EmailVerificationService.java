@@ -1,6 +1,6 @@
 package com.upiicsa.ApiSIP.Service;
 
-import com.upiicsa.ApiSIP.Dto.Email.EmailConfirmTokenDto;
+import com.upiicsa.ApiSIP.Dto.Email.EmailConfirmDto;
 import com.upiicsa.ApiSIP.Model.Token_Restore.CodigoConfirm;
 import com.upiicsa.ApiSIP.Model.Usuario;
 import com.upiicsa.ApiSIP.Repository.Token_Restore.CodigoConfirmRepository;
@@ -46,7 +46,7 @@ public class EmailVerificationService {
     }
 
     @Transactional
-    public void confirmEmail(EmailConfirmTokenDto emailConfirmation) {
+    public void confirmEmail(EmailConfirmDto emailConfirmation) {
         var token = codigoConfirmRepository.findByCodigo(emailConfirmation.code())
                 .orElseThrow(() -> new IllegalArgumentException("Código de confirmación inválido."));
 
