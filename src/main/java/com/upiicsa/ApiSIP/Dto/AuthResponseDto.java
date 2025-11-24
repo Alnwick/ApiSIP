@@ -1,4 +1,8 @@
 package com.upiicsa.ApiSIP.Dto;
 
-public record AuthResponseDto() {
+public record AuthResponseDto(
+        String message,
+        String TipoUsuario,
+        boolean flag
+) {
 }
