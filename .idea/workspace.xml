@@ -5,7 +5,12 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="27209d0c-47d6-463d-a6fc-94d01f2cda34" name="Changes" comment="">
+      <change afterPath="$PROJECT_DIR$/src/main/java/com/upiicsa/ApiSIP/Controller/AuthenticationController.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/java/com/upiicsa/ApiSIP/Controller/EstudianteController.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/java/com/upiicsa/ApiSIP/Dto/AuthLoginDto.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/java/com/upiicsa/ApiSIP/Dto/AuthResponseDto.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/upiicsa/ApiSIP/Repository/UsuarioRepository.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/upiicsa/ApiSIP/Repository/UsuarioRepository.java" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -15,8 +20,8 @@
   <component name="FileTemplateManagerImpl">
     <option name="RECENT_TEMPLATES">
       <list>
-        <option value="Class" />
         <option value="Interface" />
+        <option value="Class" />
         <option value="Record" />
       </list>
     </option>
@@ -88,8 +93,7 @@
       <workItem from="1763840270145" duration="420000" />
       <workItem from="1763840742421" duration="449000" />
       <workItem from="1763841202204" duration="8643000" />
-      <workItem from="1763922813483" duration="5276000" />
-      <workItem from="1764019782424" duration="61000" />
+      <workItem from="1763922813483" duration="3014000" />
     </task>
     <servers />
   </component>

@@ -6,10 +6,12 @@ import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 import lombok.NoArgsConstructor;
+import lombok.experimental.SuperBuilder;
 
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
+@SuperBuilder
 @EqualsAndHashCode(callSuper = true)
 @Entity
 @Table(name = "SIP_ALUMNOS")
@@ -20,14 +22,14 @@ public class Alumno extends Usuario {
     private String matricula;
 
     @Column(name = "TELEFONO", length = 20)
-    private String phone;
+    private String telefono;
 
     @ManyToOne
     @JoinColumn(name = "ID_SEMESTRE")
     private Semestre semestre;
 
     @Column(name = "EGRESADO")
-    private Boolean isGraduated;
+    private boolean egresado;
 
     @ManyToOne
     @JoinColumn(name = "ID_DIRECCION")
