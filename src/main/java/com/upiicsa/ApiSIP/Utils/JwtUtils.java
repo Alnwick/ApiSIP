@@ -83,7 +83,7 @@ public class JwtUtils {
     //Metodo para genera la fecha de expiracion del token
     private Instant generateDateExpiration(TipoUsuario tipoUsuario) {
 
-        return LocalDateTime.now().plusHours(duracionRepository.getDuracionTokenByTipoUsuario(tipoUsuario))
+        return LocalDateTime.now().plusHours(duracionRepository.getDuracionHorasByTipoUsuario(tipoUsuario))
                 .toInstant(ZoneOffset.of("-05:00"));
     }
 }
