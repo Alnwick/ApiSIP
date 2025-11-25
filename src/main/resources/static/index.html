@@ -5,45 +5,6 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Inicio de Sesión - UPIICSA</title>
     <link rel="stylesheet" href="styles.css">
-    <style>
-        /* ESTILOS PARA LA VERIFICACIÓN */
-        #verificacion-form {
-            display: none;
-            text-align: center;
-            padding: 20px;
-        }
-
-        .verification-message {
-            background: #e8f5e8;
-            border: 1px solid #1A8C14;
-            border-radius: 8px;
-            padding: 15px;
-            margin-bottom: 20px;
-        }
-
-        .boton-secundario {
-            background: transparent;
-            color: #1A8C14;
-            border: 2px solid #1A8C14;
-            padding: 10px 15px;
-            border-radius: 6px;
-            cursor: pointer;
-            margin: 5px;
-            transition: all 0.3s;
-        }
-
-        .boton-secundario:hover {
-            background: #1A8C14;
-            color: white;
-        }
-
-        .timer-section {
-            margin: 15px 0;
-            padding: 10px;
-            background-color: #f8f9fa;
-            border-radius: 6px;
-        }
-    </style>
 </head>
 <body>
 <header>
@@ -59,7 +20,6 @@
             <button id="btn-registro" class="inactive" onclick="mostrarRegistro()">Registrarse</button>
         </div>
 
-        <!-- FORMULARIO LOGIN -->
         <div id="login-form">
             <h3>Iniciar Sesión</h3>
             <div class="form-group">
@@ -72,12 +32,11 @@
                 <input type="password" id="login-password" placeholder="Ingresa tu contraseña">
                 <div class="error-message" id="login-password-error">La contraseña es requerida</div>
             </div>
-            <button class="boton-form" id="login-button" onclick="validarLogin(); return false;">Iniciar Sesión</button>
+            <button class="boton-form" id="login-button">Iniciar Sesión</button>
             <div class="footer"><a href="#">¿Olvidaste tu contraseña?</a></div>
         </div>
 
-        <!-- FORMULARIO REGISTRO -->
-        <div id="registro-form" style="display: none;">
+        <div id="registro-form">
             <h3>Crear Cuenta</h3>
             <div class="form-grid">
                 <div class="form-group">
@@ -104,54 +63,35 @@
                 <div class="form-group">
                     <label for="escuela" class="required">Escuela</label>
                     <select id="escuela">
-                        <option value="upiicsa" selected>UPIICSA</option>
+                        <option value="">Selecciona una escuela</option>
                     </select>
                 </div>
+
                 <div class="form-group">
                     <label for="carrera" class="required">Carrera</label>
-                    <select id="carrera">
-                        <option value="">Selecciona una carrera</option>
-                        <option value="transporte">Ingeniería en Transporte</option>
-                        <option value="informatica">Ingeniería en Informática</option>
-                        <option value="industrial">Ingeniería Industrial</option>
-                        <option value="ferroviaria">Ingeniería Ferroviaria</option>
-                        <option value="ciencias">Ciencias de la Informática</option>
-                        <option value="administracion">Administración Industrial</option>
-                        <option value="sisa">Ingeniería en Sistemas Automotrices</option>
+                    <select id="carrera" disabled>
+                        <option value="">Primero selecciona una escuela</option>
                     </select>
-                    <div class="error-message" id="carrera-error">Debes seleccionar una carrera</div>
                 </div>
+
                 <div class="form-group">
                     <label for="plan-estudios" class="required">Plan de Estudios</label>
-                    <select id="plan-estudios">
+                    <select id="plan-estudios" disabled>
                         <option value="">Primero selecciona una carrera</option>
                     </select>
-                    <div class="error-message" id="plan-estudios-error">Debes seleccionar un plan de estudios</div>
                 </div>
-
-                <!-- Campo deslizante para estudiante/egresado -->
-                <div class="toggle-container">
-                    <span class="toggle-label">Estado:</span>
-                    <label class="toggle-switch">
-                        <input type="checkbox" id="student-toggle">
-                        <span class="slider"></span>
-                    </label>
-                    <span class="toggle-text" id="toggle-status">Estudiante</span>
+                <div class="form-group">
+                    <label style="visibility: hidden;">Estatus</label>
+                    <label class="checkbox-wrapper" for="egresado-check">
+                    <input type="checkbox" id="egresado-check">
+                    <span class="custom-checkmark"></span>
+                    <span class="checkbox-label">Soy Egresado</span>
+                </label>
                 </div>
-
-                <!-- Campo de semestre (solo visible para estudiantes) -->
                 <div class="form-group semester-group" id="semester-group">
                     <label for="semestre" class="required">Semestre</label>
                     <select id="semestre">
                         <option value="">Selecciona un semestre</option>
-                        <option value="1">Semestre 1</option>
-                        <option value="2">Semestre 2</option>
-                        <option value="3">Semestre 3</option>
-                        <option value="4">Semestre 4</option>
-                        <option value="5">Semestre 5</option>
-                        <option value="6">Semestre 6</option>
-                        <option value="7">Semestre 7</option>
-                        <option value="8">Semestre 8</option>
                     </select>
                     <div class="error-message" id="semestre-error">Debes seleccionar un semestre</div>
                 </div>
@@ -160,6 +100,12 @@
                     <label for="email" class="required">Correo electrónico</label>
                     <input type="email" id="email" placeholder="usuario@ejemplo.com">
                     <div class="error-message" id="email-error">Por favor ingresa un correo electrónico válido</div>
+                </div>
+                <div class="form-group small-width">
+                    <label for="phone" class="required">Teléfono</label>
+                    <input type="tel" id="phone" placeholder="Número de teléfono" maxlength="10">
+                    <div class="character-count" id="phone-count">0/10 dígitos</div>
+                    <div class="error-message" id="phone-error">El teléfono debe contener exactamente 10 dígitos</div>
                 </div>
                 <div class="form-group">
                     <label for="password" class="required">Contraseña</label>
@@ -180,20 +126,13 @@
                     <input type="password" id="confirm-password" placeholder="Repite tu contraseña">
                     <div class="error-message" id="confirm-password-error">Las contraseñas no coinciden</div>
                 </div>
-                <div class="form-group small-width">
-                    <label for="phone" class="required">Teléfono</label>
-                    <input type="tel" id="phone" placeholder="Número de teléfono" maxlength="10">
-                    <div class="character-count" id="phone-count">0/10 dígitos</div>
-                    <div class="error-message" id="phone-error">El teléfono debe contener exactamente 10 dígitos</div>
-                </div>
             </div>
-            <button class="boton-form" id="register-button" onclick="iniciarRegistro(); return false;">Registrarse</button>
+            <button class="boton-form" id="register-button">Registrarse</button>
             <div class="footer">
                 Al registrarte, aceptas nuestros <a href="#">Términos de servicio</a> y <a href="#">Política de privacidad</a>
             </div>
         </div>
 
-        <!-- FORMULARIO VERIFICACIÓN -->
         <div id="verificacion-form">
             <h3>Verifica tu correo electrónico</h3>
             <div class="verification-message">
@@ -215,313 +154,6 @@
     </div>
 </div>
 
-<script>
-    // ========== VARIABLES GLOBALES ==========
-    const API_BASE_URL = window.location.origin;
-    let emailRegistro = '';
-    let datosEstudianteTemporal = null;
-    let countdownTimer = null;
-
-    // ========== FUNCIONES DE NAVEGACIÓN (YA FUNCIONAN) ==========
-    function mostrarLogin() {
-        document.getElementById('login-form').style.display = 'block';
-        document.getElementById('registro-form').style.display = 'none';
-        document.getElementById('verificacion-form').style.display = 'none';
-
-        document.getElementById('btn-login').classList.add('active');
-        document.getElementById('btn-login').classList.remove('inactive');
-        document.getElementById('btn-registro').classList.remove('active');
-        document.getElementById('btn-registro').classList.add('inactive');
-
-        if (countdownTimer) clearInterval(countdownTimer);
-    }
-
-    function mostrarRegistro() {
-        document.getElementById('login-form').style.display = 'none';
-        document.getElementById('registro-form').style.display = 'block';
-        document.getElementById('verificacion-form').style.display = 'none';
-
-        document.getElementById('btn-login').classList.remove('active');
-        document.getElementById('btn-login').classList.add('inactive');
-        document.getElementById('btn-registro').classList.add('active');
-        document.getElementById('btn-registro').classList.remove('inactive');
-
-        if (countdownTimer) clearInterval(countdownTimer);
-    }
-
-    function mostrarVerificacion() {
-        document.getElementById('login-form').style.display = 'none';
-        document.getElementById('registro-form').style.display = 'none';
-        document.getElementById('verificacion-form').style.display = 'block';
-
-        document.getElementById('email-destino').textContent = emailRegistro;
-        iniciarCountdown();
-    }
-
-    function volverAlRegistro() {
-        mostrarRegistro();
-    }
-
-    // ========== FUNCIONES DE VERIFICACIÓN (SIMULACIÓN) ==========
-    function iniciarCountdown() {
-        let tiempoRestante = 60;
-        const countdownElement = document.getElementById('countdown');
-        const resendButton = document.getElementById('resend-button');
-        const timerText = document.getElementById('timer-text');
-
-        countdownElement.textContent = tiempoRestante;
-        resendButton.disabled = true;
-        timerText.style.display = 'block';
-
-        countdownTimer = setInterval(() => {
-            tiempoRestante--;
-            countdownElement.textContent = tiempoRestante;
-
-            if (tiempoRestante <= 0) {
-                clearInterval(countdownTimer);
-                resendButton.disabled = false;
-                timerText.style.display = 'none';
-            }
-        }, 1000);
-    }
-
-    async function reenviarCodigo() {
-        try {
-            const boton = document.getElementById('resend-button');
-            boton.textContent = 'Enviando...';
-            boton.disabled = true;
-
-            // Simular envío de código
-            await new Promise(resolve => setTimeout(resolve, 1000));
-
-            alert('¡Código reenviado! Revisa tu correo.');
-            iniciarCountdown();
-
-        } catch (error) {
-            alert('Error al reenviar código: ' + error.message);
-        } finally {
-            const boton = document.getElementById('resend-button');
-            boton.textContent = 'Reenviar código';
-        }
-    }
-
-    // ========== REGISTRO REAL CON TU BACKEND ==========
-    async function iniciarRegistro() {
-        // Primero validar el formulario
-        const esValido = validarFormularioRegistro();
-
-        if (esValido) {
-            const boton = document.getElementById('register-button');
-            const textoOriginal = boton.textContent;
-            boton.textContent = 'Enviando código...';
-            boton.disabled = true;
-
-            try {
-                emailRegistro = document.getElementById('email').value;
-
-                // Guardar datos para el registro final
-                datosEstudianteTemporal = {
-                    email: emailRegistro,
-                    password: document.getElementById('password').value,
-                    confirmPassword: document.getElementById('confirm-password').value,
-                    name: document.getElementById('nombre').value,
-                    fatherLastName: document.getElementById('apellido-paterno').value,
-                    motherLastName: document.getElementById('apellido-materno').value,
-                    enrollment: document.getElementById('boleta').value,
-                    phone: document.getElementById('phone').value,
-                    school: "UPIICSA",
-                    career: mapearCarreraAEnum(document.getElementById('carrera').value)
-                };
-
-                console.log('Preparando registro para:', emailRegistro);
-
-                // SIMULACIÓN: En lugar de enviar código, mostrar directamente la verificación
-                // En producción aquí llamarías a tu API de envío de código
-                await new Promise(resolve => setTimeout(resolve, 1000));
-
-                mostrarVerificacion();
-
-            } catch (error) {
-                console.error('Error:', error);
-                alert('Error: ' + error.message);
-                boton.textContent = textoOriginal;
-                boton.disabled = false;
-            }
-        }
-    }
-
-    async function verificarCodigo() {
-        const codigo = document.getElementById('codigo-verificacion').value;
-
-        if (!codigo || codigo.length !== 6) {
-            document.getElementById('codigo-verificacion').classList.add('input-error');
-            document.getElementById('codigo-error').style.display = 'block';
-            return;
-        }
-
-        const boton = document.getElementById('verify-button');
-        const textoOriginal = boton.textContent;
-        boton.textContent = 'Verificando...';
-        boton.disabled = true;
-
-        try {
-            // SIMULACIÓN: Aquí verificarías el código con tu backend
-            // Por ahora simulamos una verificación exitosa
-            await new Promise(resolve => setTimeout(resolve, 1000));
-
-            // Una vez verificado, hacer el registro REAL
-            await completarRegistro();
-
-        } catch (error) {
-            console.error('Error al verificar código:', error);
-            alert('Error: ' + error.message);
-            boton.textContent = textoOriginal;
-            boton.disabled = false;
-        }
-    }
-
-    async function completarRegistro() {
-        try {
-            console.log('Completando registro REAL con:', datosEstudianteTemporal);
-
-            // ESTA ES LA PARTE QUE SE CONECTA CON TU BACKEND REAL
-            const resultado = await registrarEstudianteAPI(datosEstudianteTemporal);
-
-            alert('¡Registro completado exitosamente! Ahora puedes iniciar sesión.');
-            mostrarLogin();
-
-        } catch (error) {
-            console.error('Error al completar registro:', error);
-            alert('Error en el registro: ' + error.message);
-        }
-    }
-
-    // ========== TU BACKEND REAL (YA EXISTE) ==========
-    async function registrarEstudianteAPI(datosEstudiante) {
-        try {
-            console.log('Enviando datos de registro a tu backend:', datosEstudiante);
-            const response = await fetch(`${API_BASE_URL}/students/register`, {
-                method: 'POST',
-                headers: {
-                    'Content-Type': 'application/json',
-                },
-                body: JSON.stringify(datosEstudiante)
-            });
-
-            if (!response.ok) {
-                const errorText = await response.text();
-                throw new Error(errorText || 'Error en el registro');
-            }
-
-            return await response.json();
-        } catch (error) {
-            console.error('Error API registro:', error);
-            throw error;
-        }
-    }
-
-    // ========== VALIDACIÓN DEL FORMULARIO (TU CÓDIGO) ==========
-    function validarFormularioRegistro() {
-        const nombre = document.getElementById('nombre').value;
-        const apellidoPaterno = document.getElementById('apellido-paterno').value;
-        const apellidoMaterno = document.getElementById('apellido-materno').value;
-        const boleta = document.getElementById('boleta').value;
-        const carrera = document.getElementById('carrera').value;
-        const planEstudios = document.getElementById('plan-estudios').value;
-        const email = document.getElementById('email').value;
-        const password = document.getElementById('password').value;
-        const confirmPassword = document.getElementById('confirm-password').value;
-        const phone = document.getElementById('phone').value;
-
-        let esValido = true;
-
-        // Tu lógica de validación aquí...
-        if (nombre.trim().length === 0) {
-            mostrarError('nombre', 'El nombre es requerido');
-            esValido = false;
-        } else {
-            ocultarError('nombre');
-        }
-
-        if (!validarEmail(email)) {
-            mostrarError('email', 'Por favor ingresa un correo electrónico válido');
-            esValido = false;
-        } else {
-            ocultarError('email');
-        }
-
-        // ... resto de validaciones
-
-        return esValido;
-    }
-
-    function mostrarError(campoId, mensaje) {
-        document.getElementById(campoId).classList.add('input-error');
-        document.getElementById(`${campoId}-error`).textContent = mensaje;
-        document.getElementById(`${campoId}-error`).style.display = 'block';
-    }
-
-    function ocultarError(campoId) {
-        document.getElementById(campoId).classList.remove('input-error');
-        document.getElementById(`${campoId}-error`).style.display = 'none';
-    }
-
-    function validarEmail(email) {
-        const regex = /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/;
-        return regex.test(email);
-    }
-
-    function mapearCarreraAEnum(carreraFrontend) {
-        const mapeo = {
-            'transporte': 'ING_TRANSPORTE',
-            'informatica': 'ING_INFORMATICA',
-            'industrial': 'ING_INDUSTRIAL',
-            'ferroviaria': 'ING_FERROVIARIA',
-            'ciencias': 'CIE_INFORMATICA',
-            'administracion': 'ADM_INDUSTRIAL',
-            'sisa': 'ING_INFORMATICA'
-        };
-        return mapeo[carreraFrontend] || 'ING_INFORMATICA';
-    }
-
-    // ========== INICIALIZACIÓN ==========
-    document.addEventListener('DOMContentLoaded', function() {
-        mostrarLogin();
-        // Aquí tu código de inicialización de event listeners...
-    });
-
-    // ... el resto de tus funciones (validarLogin, etc.)
-
-    // ========== ESTUDIANTE O EGRESADO ==========
-    document.addEventListener('DOMContentLoaded', function() {
-        const studentToggle = document.getElementById('student-toggle');
-        const toggleStatus = document.getElementById('toggle-status');
-        const semesterGroup = document.getElementById('semester-group');
-        const semesterSelect = document.getElementById('semestre');
-        const carreraSelect = document.getElementById('carrera');
-        const planEstudiosSelect = document.getElementById('plan-estudios');
-        const form = document.getElementById('academic-form');
-        const successMessage = document.getElementById('success-message');
-
-
-        // Manejar el cambio del toggle estudiante/egresado
-        studentToggle.addEventListener('change', function() {
-            if (this.checked) {
-                toggleStatus.textContent = 'Egresado';
-                semesterGroup.classList.add('hidden');
-                semesterSelect.value = '';
-            } else {
-                toggleStatus.textContent = 'Estudiante';
-                semesterGroup.classList.remove('hidden');
-            }
-        });
-
-    });
-
-
-
-
-
-</script>
+<script src="script.js"></script>
 </body>
 </html>
