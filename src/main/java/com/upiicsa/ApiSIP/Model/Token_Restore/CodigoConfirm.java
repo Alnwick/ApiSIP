@@ -17,6 +17,7 @@ public class CodigoConfirm {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Column(name = "ID_CODIGO_CONFIRM")
     private Integer id;
 
     @Column(name = "CODIGO", length = 10)
