@@ -128,6 +128,34 @@
                     </select>
                     <div class="error-message" id="plan-estudios-error">Debes seleccionar un plan de estudios</div>
                 </div>
+
+                <!-- Campo deslizante para estudiante/egresado -->
+                <div class="toggle-container">
+                    <span class="toggle-label">Estado:</span>
+                    <label class="toggle-switch">
+                        <input type="checkbox" id="student-toggle">
+                        <span class="slider"></span>
+                    </label>
+                    <span class="toggle-text" id="toggle-status">Estudiante</span>
+                </div>
+
+                <!-- Campo de semestre (solo visible para estudiantes) -->
+                <div class="form-group semester-group" id="semester-group">
+                    <label for="semestre" class="required">Semestre</label>
+                    <select id="semestre">
+                        <option value="">Selecciona un semestre</option>
+                        <option value="1">Semestre 1</option>
+                        <option value="2">Semestre 2</option>
+                        <option value="3">Semestre 3</option>
+                        <option value="4">Semestre 4</option>
+                        <option value="5">Semestre 5</option>
+                        <option value="6">Semestre 6</option>
+                        <option value="7">Semestre 7</option>
+                        <option value="8">Semestre 8</option>
+                    </select>
+                    <div class="error-message" id="semestre-error">Debes seleccionar un semestre</div>
+                </div>
+
                 <div class="form-group half-width">
                     <label for="email" class="required">Correo electrónico</label>
                     <input type="email" id="email" placeholder="usuario@ejemplo.com">
@@ -463,6 +491,37 @@
     });
 
     // ... el resto de tus funciones (validarLogin, etc.)
+
+    // ========== ESTUDIANTE O EGRESADO ==========
+    document.addEventListener('DOMContentLoaded', function() {
+        const studentToggle = document.getElementById('student-toggle');
+        const toggleStatus = document.getElementById('toggle-status');
+        const semesterGroup = document.getElementById('semester-group');
+        const semesterSelect = document.getElementById('semestre');
+        const carreraSelect = document.getElementById('carrera');
+        const planEstudiosSelect = document.getElementById('plan-estudios');
+        const form = document.getElementById('academic-form');
+        const successMessage = document.getElementById('success-message');
+
+
+        // Manejar el cambio del toggle estudiante/egresado
+        studentToggle.addEventListener('change', function() {
+            if (this.checked) {
+                toggleStatus.textContent = 'Egresado';
+                semesterGroup.classList.add('hidden');
+                semesterSelect.value = '';
+            } else {
+                toggleStatus.textContent = 'Estudiante';
+                semesterGroup.classList.remove('hidden');
+            }
+        });
+
+    });
+
+
+
+
+
 </script>
 </body>
 </html>
