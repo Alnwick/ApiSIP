@@ -25,7 +25,7 @@ public class TipoUsuario {
     private String descripcion;
 
     @ManyToMany(fetch = FetchType.EAGER)
-    @JoinTable(name = "SIP_TIPOUSU-PERMISOS",
+    @JoinTable(name = "SIP_TIPOUSU_PERMISOS",
             joinColumns = @JoinColumn(name = "ID_TIPOUSUARIO"),
             inverseJoinColumns = @JoinColumn(name = "ID_PERMISO")
     )
