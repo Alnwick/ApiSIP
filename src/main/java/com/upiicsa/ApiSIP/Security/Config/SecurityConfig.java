@@ -39,10 +39,11 @@ public class SecurityConfig {
                         sess.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
                 .addFilterBefore(new JwtTokenValidator(jwtUtils, usuRepository), UsernamePasswordAuthenticationFilter.class)
                 .authorizeHttpRequests(auth -> auth
-                        .requestMatchers("/", "/index.html", "/css/**", "/js/**")
+                        .requestMatchers("/", "/index.html", "/styles.css", "/script.js",
+                                "/Imagenes/**", "/Recursos/**")
                         .permitAll()
                         .requestMatchers("/auth/login", "/api/forgot-password", "/api/reset-password/**",
-                                "/estudiante/register", "/estudiante/confirm-email")
+                                "/estudiante/register", "/estudiante/confirm-email", "/catalogos/**")
                         .permitAll()
                         .requestMatchers("/v3/api-docs/**", "/swagger-ui/**", "/swagger-ui.html")
                         .permitAll()
