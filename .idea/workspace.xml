@@ -5,16 +5,10 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="27209d0c-47d6-463d-a6fc-94d01f2cda34" name="Changes" comment="">
-      <change afterPath="$PROJECT_DIR$/src/main/java/com/upiicsa/ApiSIP/Controller/CatalogosController.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/resources/static/script.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/inspectionProfiles/Project_Default.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/inspectionProfiles/Project_Default.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/com/upiicsa/ApiSIP/Repository/OfertaAcaRepository.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/upiicsa/ApiSIP/Repository/OfertaAcaRepository.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/com/upiicsa/ApiSIP/Security/Config/SecurityConfig.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/upiicsa/ApiSIP/Security/Config/SecurityConfig.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/com/upiicsa/ApiSIP/Service/EmailVerificationService.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/upiicsa/ApiSIP/Service/EmailVerificationService.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/com/upiicsa/ApiSIP/Service/EstudianteService.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/upiicsa/ApiSIP/Service/EstudianteService.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/resources/static/Student/home.html" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/resources/static/Student/home.html" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/resources/static/index.html" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/resources/static/index.html" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/resources/static/script.js" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/resources/static/script.js" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/resources/static/styles.css" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/resources/static/styles.css" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
@@ -145,7 +139,7 @@
       <updated>1762546620849</updated>
       <workItem from="1762546622458" duration="2422000" />
       <workItem from="1764006126311" duration="4636000" />
-      <workItem from="1764092218322" duration="7676000" />
+      <workItem from="1764092218322" duration="8060000" />
     </task>
     <servers />
   </component>
