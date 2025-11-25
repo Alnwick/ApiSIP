@@ -50,7 +50,7 @@ public class AuthenticationController {
         cookie.setMaxAge(7 * 24 * 60 * 60); // Opcional: Expira en 7 días (en segundos)
 
         response.addCookie(cookie);
-        TipoUsuario tipo = usuRepository.findTipoUsuarioByEmail(authLogin.email()).orElse(null);
+        TipoUsuario tipo = usuRepository.findTipoUsuarioByCorreo(authLogin.email()).orElse(null);
 
         assert tipo != null;
         return ResponseEntity.ok(new AuthResponseDto("Login OK", tipo.getDescripcion(), true));
