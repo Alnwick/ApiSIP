@@ -15,9 +15,6 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.time.LocalDateTime;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Set;
 
 @Service
 public class EstudianteService {
@@ -48,15 +45,19 @@ public class EstudianteService {
         if (!registrationDto.contrasena().equals(registrationDto.confirmarContrasena()))
             throw new ValidationException("Invalid password");
 
+        Semestre semestre = null;
         TipoUsuario tipo = tipoUsuarioRepository.findByDescripcion("ALUMNO")
                 .orElseThrow(() -> new ResourceNotFoundException("TipoUsuario not found"));
         Estatus estatus = estatusRepository.findByDescripcion("ACTIVO")
                 .orElseThrow(() -> new ResourceNotFoundException("Estatus not found"));
-        Semestre semestre = semestreRepository.findByDescripcion(registrationDto.semestreDes())
-                .orElseThrow(() -> new ResourceNotFoundException("Semestre not found"));
         OfertaAca ofertaAca = ofertaAcaRepository.findByCompositeKeys(
                 registrationDto.escuelaNom(), registrationDto.carreraNom(), registrationDto.planEstCodigo())
                 .orElseThrow(() -> new ResourceNotFoundException("OfertaAca not found"));
+
+        if(!registrationDto.egresado()){
+             semestre = semestreRepository.findByDescripcion(registrationDto.semestreDes())
+                    .orElseThrow(() -> new ResourceNotFoundException("Semestre not found"));
+        }
 
         Alumno newAlumno = Alumno.builder()
                 .correo(registrationDto.correo())
@@ -66,7 +67,7 @@ public class EstudianteService {
                 .habilitado(false).fechaAlta(LocalDateTime.now())
                 .tipoUsuario(tipo).estatus(estatus)
                 .matricula(registrationDto.matricula()).telefono(registrationDto.telefono())
-                .semestre(semestre)
+                .semestre(semestre).egresado(registrationDto.egresado())
                 .ofertaAca(ofertaAca)
                 .build();
 
