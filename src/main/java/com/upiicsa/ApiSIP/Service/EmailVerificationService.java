@@ -27,13 +27,11 @@ public class EmailVerificationService {
     @Transactional
     public void createAndSendConfirmationCode(Usuario usuario) {
 
-        //confirmationTokenRepository.findByUserId(user.getId()).ifPresent(confirmationTokenRepository::delete);
-
         // Generate code to 6 random digits
         String code = String.format("%06d", new Random().nextInt(1000000));
 
-        CodigoConfirm codigo = new CodigoConfirm(null, code,  LocalDateTime.now(),
-                LocalDateTime.now().plusMinutes(30), usuario);
+        CodigoConfirm codigo = new CodigoConfirm(null, code,
+                LocalDateTime.now().plusMinutes(30), null, usuario);
         codigoConfirmRepository.save(codigo);
 
 
@@ -58,7 +56,6 @@ public class EmailVerificationService {
                 throw new IllegalArgumentException("El código de confirmación ha expirado. Por favor, solicite uno nuevo.");
             }
             if (usuario.isEnabled()) {
-                //codigoConfirmRepository.delete(token);
                 return;
             }
         }else {
@@ -68,6 +65,7 @@ public class EmailVerificationService {
         usuario.setHabilitado(true);
         usuRepository.save(usuario);
 
-        //codigoConfirmRepository.delete(token);
+        token.setFechaUso(LocalDateTime.now());
+        codigoConfirmRepository.save(token);
     }
 }
