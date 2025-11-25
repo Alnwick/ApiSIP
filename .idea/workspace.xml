@@ -5,12 +5,25 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="27209d0c-47d6-463d-a6fc-94d01f2cda34" name="Changes" comment="">
-      <change afterPath="$PROJECT_DIR$/src/main/java/com/upiicsa/ApiSIP/Controller/AuthenticationController.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/java/com/upiicsa/ApiSIP/Controller/EstudianteController.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/java/com/upiicsa/ApiSIP/Dto/AuthLoginDto.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/java/com/upiicsa/ApiSIP/Dto/AuthResponseDto.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/compiler.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/compiler.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/upiicsa/ApiSIP/Controller/AuthenticationController.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/upiicsa/ApiSIP/Controller/AuthenticationController.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/upiicsa/ApiSIP/Controller/EstudianteController.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/upiicsa/ApiSIP/Controller/EstudianteController.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/upiicsa/ApiSIP/Model/TipoUsuario.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/upiicsa/ApiSIP/Model/TipoUsuario.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/upiicsa/ApiSIP/Model/Token_Restore/CodigoConfirm.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/upiicsa/ApiSIP/Model/Token_Restore/CodigoConfirm.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/upiicsa/ApiSIP/Repository/EstatusRepository.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/upiicsa/ApiSIP/Repository/EstatusRepository.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/upiicsa/ApiSIP/Repository/EstudianteRepository.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/upiicsa/ApiSIP/Repository/EstudianteRepository.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/upiicsa/ApiSIP/Repository/OfertaAcaRepository.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/upiicsa/ApiSIP/Repository/OfertaAcaRepository.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/upiicsa/ApiSIP/Repository/SemestreRepository.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/upiicsa/ApiSIP/Repository/SemestreRepository.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/upiicsa/ApiSIP/Repository/TipoUsuarioRepository.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/upiicsa/ApiSIP/Repository/TipoUsuarioRepository.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/upiicsa/ApiSIP/Repository/Token_Restore/CodigoConfirmRepository.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/upiicsa/ApiSIP/Repository/Token_Restore/CodigoConfirmRepository.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/upiicsa/ApiSIP/Repository/Token_Restore/DuracionTokenRepository.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/upiicsa/ApiSIP/Repository/Token_Restore/DuracionTokenRepository.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/com/upiicsa/ApiSIP/Repository/UsuarioRepository.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/upiicsa/ApiSIP/Repository/UsuarioRepository.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/upiicsa/ApiSIP/Security/Config/SecurityConfig.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/upiicsa/ApiSIP/Security/Config/SecurityConfig.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/upiicsa/ApiSIP/Security/Filter/JwtTokenValidator.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/upiicsa/ApiSIP/Security/Filter/JwtTokenValidator.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/upiicsa/ApiSIP/Service/UserDetailsServiceImp.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/upiicsa/ApiSIP/Service/UserDetailsServiceImp.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/upiicsa/ApiSIP/Utils/JwtUtils.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/upiicsa/ApiSIP/Utils/JwtUtils.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/resources/application.properties" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/resources/application.properties" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -47,25 +60,48 @@
     <option name="hideEmptyMiddlePackages" value="true" />
     <option name="showLibraryContents" value="true" />
   </component>
-  <component name="PropertiesComponent">{
-  &quot;keyToString&quot;: {
-    &quot;ModuleVcsDetector.initialDetectionPerformed&quot;: &quot;true&quot;,
-    &quot;RunOnceActivity.ShowReadmeOnStart&quot;: &quot;true&quot;,
-    &quot;RunOnceActivity.git.unshallow&quot;: &quot;true&quot;,
-    &quot;git-widget-placeholder&quot;: &quot;master&quot;,
-    &quot;ignore.virus.scanning.warn.message&quot;: &quot;true&quot;,
-    &quot;kotlin-language-version-configured&quot;: &quot;true&quot;,
-    &quot;last_opened_file_path&quot;: &quot;C:/Git/ApiSIP&quot;,
-    &quot;node.js.detected.package.eslint&quot;: &quot;true&quot;,
-    &quot;node.js.detected.package.tslint&quot;: &quot;true&quot;,
-    &quot;node.js.selected.package.eslint&quot;: &quot;(autodetect)&quot;,
-    &quot;node.js.selected.package.tslint&quot;: &quot;(autodetect)&quot;,
-    &quot;nodejs_package_manager_path&quot;: &quot;npm&quot;,
-    &quot;vue.rearranger.settings.migration&quot;: &quot;true&quot;
+  <component name="PropertiesComponent"><![CDATA[{
+  "keyToString": {
+    "Maven.ApiSIP [clean].executor": "Run",
+    "Maven.ApiSIP [install].executor": "Run",
+    "ModuleVcsDetector.initialDetectionPerformed": "true",
+    "RequestMappingsPanelOrder0": "0",
+    "RequestMappingsPanelOrder1": "1",
+    "RequestMappingsPanelWidth0": "75",
+    "RequestMappingsPanelWidth1": "75",
+    "RunOnceActivity.ShowReadmeOnStart": "true",
+    "RunOnceActivity.TerminalTabsStorage.copyFrom.TerminalArrangementManager.252": "true",
+    "RunOnceActivity.git.unshallow": "true",
+    "Spring Boot.ApiSipApplication.executor": "Run",
+    "git-widget-placeholder": "master",
+    "ignore.virus.scanning.warn.message": "true",
+    "kotlin-language-version-configured": "true",
+    "last_opened_file_path": "C:/Git/ApiSIP",
+    "node.js.detected.package.eslint": "true",
+    "node.js.detected.package.tslint": "true",
+    "node.js.selected.package.eslint": "(autodetect)",
+    "node.js.selected.package.tslint": "(autodetect)",
+    "nodejs_package_manager_path": "npm",
+    "vue.rearranger.settings.migration": "true"
+  },
+  "keyToStringList": {
+    "DatabaseDriversLRU": [
+      "mysql"
+    ]
   }
-}</component>
+}]]></component>
   <component name="RunManager">
     <configuration name="ApiSipApplication" type="SpringBootApplicationConfigurationType" factoryName="Spring Boot" nameIsGenerated="true">
+      <envs>
+        <env name="DB_URL" value="jdbc:mysql://localhost:3306/SIP?useSSL=false&amp;allowPublicKeyRetrieval=true" />
+        <env name="DB_USER" value="root" />
+        <env name="DB_PASSWORD" value="Yatg0809" />
+        <env name="PRIVATE_KEY" value="3bd62f7f9ccb2821f5330bd3a68629ed8b8a1a19370adf7d74636e76a698d430" />
+        <env name="USER_GENERATOR" value="SIP" />
+        <env name="SPRING_EMAIL_PORT" value="587" />
+        <env name="SPRING_EMAIL_USERNAME" value="Alnwick0809@gmail.com" />
+        <env name="SPRING_EMAIL_PASSWORD" value="lqgv tbho iert hhjm" />
+      </envs>
       <module name="ApiSIP" />
       <option name="SPRING_BOOT_MAIN_CLASS" value="com.upiicsa.ApiSIP.ApiSipApplication" />
       <method v="2">

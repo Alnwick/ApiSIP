@@ -51,7 +51,7 @@ public class JwtTokenValidator extends OncePerRequestFilter {
 
                 if (email != null && SecurityContextHolder.getContext().getAuthentication() == null) {
                     // Cargar el usuario de la base de datos
-                    Usuario usuario = repository.findByEmail(email).orElse(null);
+                    Usuario usuario = repository.findByCorreo(email).orElse(null);
 
                     if (usuario != null) {
                         //Crear autenticacion para el usuario
