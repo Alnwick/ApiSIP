@@ -466,8 +466,6 @@
         if(logoutLink) logoutLink.textContent = 'Cerrando sesión...';
 
         try {
-            // Petición al backend para invalidar la cookie de sesión
-            // Usamos ruta relativa para que funcione tanto en localhost como en prod
             const response = await fetch('/auth/logout', {
                 method: 'POST',
                 headers: {
