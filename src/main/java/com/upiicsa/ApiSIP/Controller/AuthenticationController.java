@@ -59,7 +59,7 @@ public class AuthenticationController {
     @PostMapping("/logout")
     public ResponseEntity<String> logout(HttpServletResponse response) {
 
-        Cookie cookie = new Cookie("jwt-token", null);
+        Cookie cookie = new Cookie("jwtToken", null);
         cookie.setHttpOnly(true);
         cookie.setSecure(true);
         cookie.setPath("/");
@@ -67,6 +67,7 @@ public class AuthenticationController {
 
         response.addCookie(cookie);
 
+        System.out.println("Sesion cerrada correctamente");
         return ResponseEntity.ok("Sesión cerrada correctamente");
     }
 }
