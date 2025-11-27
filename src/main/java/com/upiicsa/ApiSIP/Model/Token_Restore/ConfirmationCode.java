@@ -1,6 +1,6 @@
 package com.upiicsa.ApiSIP.Model.Token_Restore;
 
-import com.upiicsa.ApiSIP.Model.Usuario;
+import com.upiicsa.ApiSIP.Model.UserSIP;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Data;
@@ -21,15 +21,15 @@ public class ConfirmationCode {
     private Integer id;
 
     @Column(name = "CODIGO", length = 10)
-    private String codigo;
+    private String code;
 
     @Column(name = "FECHA_EXPIRACION")
-    private LocalDateTime fechaExpiracion;
+    private LocalDateTime expirationDate;
 
     @Column(name = "FECHA_USO")
-    private LocalDateTime fechaUso;
+    private LocalDateTime useDate;
 
     @ManyToOne
     @JoinColumn(name = "ID_USUARIO")
-    private Usuario usuario;
+    private UserSIP user;
 }

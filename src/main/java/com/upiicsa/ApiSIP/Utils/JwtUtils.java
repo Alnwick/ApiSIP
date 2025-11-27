@@ -6,9 +6,9 @@ import com.auth0.jwt.algorithms.Algorithm;
 import com.auth0.jwt.exceptions.JWTVerificationException;
 import com.auth0.jwt.interfaces.Claim;
 import com.auth0.jwt.interfaces.DecodedJWT;
-import com.upiicsa.ApiSIP.Model.TipoUsuario;
-import com.upiicsa.ApiSIP.Model.Usuario;
-import com.upiicsa.ApiSIP.Repository.Token_Restore.DuracionTokenRepository;
+import com.upiicsa.ApiSIP.Model.UserType;
+import com.upiicsa.ApiSIP.Model.UserSIP;
+import com.upiicsa.ApiSIP.Repository.Token_Restore.DurationTokenRepository;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.GrantedAuthority;
@@ -22,7 +22,7 @@ import java.util.stream.Collectors;
 @Component
 public class JwtUtils {
 
-    private final DuracionTokenRepository duracionRepository;
+    private final DurationTokenRepository durationTokenRepository;
 
     @Value("${api.security.jwt.private.key}")
     private String privateKey;
@@ -30,14 +30,14 @@ public class JwtUtils {
     @Value("${api.security.jwt.user.generator}")
     private String userGenerator;
 
-    public JwtUtils(DuracionTokenRepository duracionRepository) {
-        this.duracionRepository = duracionRepository;
+    public JwtUtils(DurationTokenRepository durationTokenRepository) {
+        this.durationTokenRepository = durationTokenRepository;
     }
 
     //Metodo para crear el token del usuario
     public String createToken(Authentication authentication) {
         try {
-            Usuario userPrincipal = (Usuario) authentication.getPrincipal();
+            UserSIP user = (UserSIP) authentication.getPrincipal();
             Algorithm algorithm = Algorithm.HMAC256(privateKey);
 
             // Obtener los permisos del usuario autenticado
@@ -49,10 +49,10 @@ public class JwtUtils {
             // Crear el token para el usuario
             return JWT.create()
                     .withIssuer(userGenerator)
-                    .withSubject(userPrincipal.getCorreo())
-                    .withClaim("id", userPrincipal.getId())
+                    .withSubject(user.getEmail())
+                    .withClaim("id", user.getId())
                     .withClaim("authorities", authorities)
-                    .withExpiresAt(generateDateExpiration(userPrincipal.getTipoUsuario()))
+                    .withExpiresAt(generateDateExpiration(user.getUserType()))
                     .sign(algorithm);
         } catch (JWTVerificationException exception) {
             throw new JWTVerificationException("Error to create JWT Token", exception);
@@ -81,9 +81,8 @@ public class JwtUtils {
     }
 
     //Metodo para genera la fecha de expiracion del token
-    private Instant generateDateExpiration(TipoUsuario tipoUsuario) {
-
-        return LocalDateTime.now().plusHours(duracionRepository.getDuracionHorasByTipoUsuario(tipoUsuario))
+    private Instant generateDateExpiration(UserType userType) {
+        return LocalDateTime.now().plusHours(durationTokenRepository.getHoursByUserType(userType))
                 .toInstant(ZoneOffset.of("-05:00"));
     }
 }

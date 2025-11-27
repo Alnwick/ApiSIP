@@ -18,5 +18,5 @@ public class Semester {
     private Integer id;
 
     @Column(name = "DESCRIPCION")
-    private String descripcion;
+    private String description;
 }

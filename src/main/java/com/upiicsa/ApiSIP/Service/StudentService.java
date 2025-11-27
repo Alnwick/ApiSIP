@@ -17,7 +17,7 @@ import org.springframework.transaction.annotation.Transactional;
 import java.time.LocalDateTime;
 
 @Service
-public class EstudianteService {
+public class StudentService {
 
     @Autowired
     private StudentRepository studentRepository;
@@ -32,7 +32,7 @@ public class EstudianteService {
     private StatusRepository statusRepository;
 
     @Autowired
-    private SemestreRepository semestreRepository;
+    private SemesterRepository semesterRepository;
 
     @Autowired
     private OfferRepository offerRepository;
@@ -42,38 +42,38 @@ public class EstudianteService {
 
     @Transactional
     public Student registerStudent(StudentRegistrationDto registrationDto) {
-        if (!registrationDto.contrasena().equals(registrationDto.confirmarContrasena()))
+        if (!registrationDto.password().equals(registrationDto.confirmPassword()))
             throw new ValidationException("Invalid password");
 
         Semester semester = null;
-        UserType tipo = typeUserRepository.findByDescripcion("ALUMNO")
+        UserType tipo = typeUserRepository.findByDescription("ALUMNO")
                 .orElseThrow(() -> new ResourceNotFoundException("TipoUsuario not found"));
-        Status status = statusRepository.findByDescripcion("ACTIVO")
+        Status status = statusRepository.findByDescription("ACTIVO")
                 .orElseThrow(() -> new ResourceNotFoundException("Estatus not found"));
         Offer offer = offerRepository.findByCompositeKeys(
-                registrationDto.escuelaNom(), registrationDto.carreraNom(), registrationDto.planEstCodigo())
+                registrationDto.schoolName(), registrationDto.careerName(), registrationDto.syllabusCode())
                 .orElseThrow(() -> new ResourceNotFoundException("OfertaAca not found"));
 
-        if(!registrationDto.egresado()){
-             semester = semestreRepository.findByDescripcion(registrationDto.semestreDes())
-                    .orElseThrow(() -> new ResourceNotFoundException("Semestre not found"));
+        if(!registrationDto.graduated()){
+             semester = semesterRepository.findByDescription(registrationDto.semester())
+                    .orElseThrow(() -> new ResourceNotFoundException("Semester not found"));
         }
 
-        Student newAlumno = Student.builder()
-                .correo(registrationDto.correo())
-                .contrasena(passwordEncoder.encode(registrationDto.contrasena()))
-                .paterno(registrationDto.paterno()).materno(registrationDto.materno())
-                .nombre(registrationDto.nombre())
-                .habilitado(false).fechaAlta(LocalDateTime.now())
-                .tipoUsuario(tipo).status(status)
-                .matricula(registrationDto.matricula()).telefono(registrationDto.telefono())
-                .semester(semester).egresado(registrationDto.egresado())
-                .ofertaAca(offer)
+        Student newStudent = Student.builder()
+                .email(registrationDto.email())
+                .password(passwordEncoder.encode(registrationDto.password()))
+                .fLastName(registrationDto.fLastName()).mLastName(registrationDto.mLastName())
+                .name(registrationDto.name())
+                .enabled(false).registrationDate(LocalDateTime.now())
+                .userType(tipo).status(status)
+                .enrollment(registrationDto.enrollment()).phone(registrationDto.phone())
+                .semester(semester).graduate(registrationDto.graduated())
+                .offer(offer)
                 .build();
 
-        studentRepository.save(newAlumno);
-        verificationService.createAndSendConfirmationCode(newAlumno);
+        studentRepository.save(newStudent);
+        verificationService.createAndSendConfirmationCode(newStudent);
 
-        return newAlumno;
+        return newStudent;
     }
 }

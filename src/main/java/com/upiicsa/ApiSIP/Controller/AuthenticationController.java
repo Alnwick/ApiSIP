@@ -1,9 +1,9 @@
 package com.upiicsa.ApiSIP.Controller;
 
-import com.upiicsa.ApiSIP.Dto.AuthLoginDto;
-import com.upiicsa.ApiSIP.Dto.AuthResponseDto;
-import com.upiicsa.ApiSIP.Model.TipoUsuario;
-import com.upiicsa.ApiSIP.Repository.UsuarioRepository;
+import com.upiicsa.ApiSIP.Dto.Auth.AuthLoginDto;
+import com.upiicsa.ApiSIP.Dto.Auth.AuthResponseDto;
+import com.upiicsa.ApiSIP.Model.UserType;
+import com.upiicsa.ApiSIP.Repository.UserRepository;
 import com.upiicsa.ApiSIP.Utils.JwtUtils;
 import jakarta.servlet.http.Cookie;
 import jakarta.servlet.http.HttpServletResponse;
@@ -29,7 +29,7 @@ public class AuthenticationController {
     private JwtUtils jwtUtils;
 
     @Autowired
-    private UsuarioRepository usuRepository;
+    private UserRepository userRepository;
 
 
     @PostMapping("/login")
@@ -50,10 +50,10 @@ public class AuthenticationController {
         cookie.setMaxAge(7 * 24 * 60 * 60); // Opcional: Expira en 7 días (en segundos)
 
         response.addCookie(cookie);
-        TipoUsuario tipo = usuRepository.findTipoUsuarioByCorreo(authLogin.email()).orElse(null);
+        UserType type = userRepository.findUserTypeByEmail(authLogin.email()).orElse(null);
 
-        assert tipo != null;
-        return ResponseEntity.ok(new AuthResponseDto("Login OK", tipo.getDescripcion(), true));
+        assert type != null;
+        return ResponseEntity.ok(new AuthResponseDto("Login OK", type.getDescription(), true));
     }
 
     @PostMapping("/logout")

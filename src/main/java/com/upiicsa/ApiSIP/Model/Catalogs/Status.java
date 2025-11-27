@@ -18,5 +18,5 @@ public class Status {
     private Integer id;
 
     @Column(name = "DESCRIPCION", length = 100)
-    private String descripcion;
+    private String description;
 }

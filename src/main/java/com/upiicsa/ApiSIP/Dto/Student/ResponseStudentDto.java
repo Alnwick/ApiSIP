@@ -1,13 +1,13 @@
 package com.upiicsa.ApiSIP.Dto.Student;
 
-import com.upiicsa.ApiSIP.Model.Alumno;
+import com.upiicsa.ApiSIP.Model.Student;
 
 public record ResponseStudentDto(
-    String paterno,
-    String correo,
-    String matricula
+    String fLastName,
+    String email,
+    String enrollment
 ) {
-    public ResponseStudentDto(Alumno alumno) {
-        this(alumno.getPaterno(), alumno.getCorreo(), alumno.getMatricula());
+    public ResponseStudentDto(Student alumno) {
+        this(alumno.getFLastName(), alumno.getEmail(), alumno.getEnrollment());
     }
 }

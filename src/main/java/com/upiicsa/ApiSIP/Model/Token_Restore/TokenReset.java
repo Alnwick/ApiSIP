@@ -13,7 +13,7 @@ import java.time.LocalDateTime;
 @NoArgsConstructor
 @Entity
 @Table(name = "SIP_TOKEN_RESETEO")
-public class TokenReseteo {
+public class TokenReset {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -24,12 +24,12 @@ public class TokenReseteo {
     private String token;
 
     @Column(name = "FECHA_EXPIRACION")
-    private LocalDateTime fechaExpiracion;
+    private LocalDateTime ExpirationDate;
 
     @Column(name = "FECHA_USO")
-    private LocalDateTime fechaUso;
+    private LocalDateTime UseDate;
 
     @ManyToOne
     @JoinColumn(name = "ID_USUARIO")
-    private UserSIP usuario;
+    private UserSIP user;
 }

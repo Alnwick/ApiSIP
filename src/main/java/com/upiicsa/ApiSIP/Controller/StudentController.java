@@ -3,9 +3,9 @@ package com.upiicsa.ApiSIP.Controller;
 import com.upiicsa.ApiSIP.Dto.Email.EmailConfirmDto;
 import com.upiicsa.ApiSIP.Dto.Student.ResponseStudentDto;
 import com.upiicsa.ApiSIP.Dto.Student.StudentRegistrationDto;
-import com.upiicsa.ApiSIP.Model.Alumno;
+import com.upiicsa.ApiSIP.Model.Student;
 import com.upiicsa.ApiSIP.Service.EmailVerificationService;
-import com.upiicsa.ApiSIP.Service.EstudianteService;
+import com.upiicsa.ApiSIP.Service.StudentService;
 import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
@@ -18,11 +18,11 @@ import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 import java.net.URI;
 
 @RestController
-@RequestMapping("/estudiante")
+@RequestMapping("/student")
 public class StudentController {
 
     @Autowired
-    private EstudianteService estudianteService;
+    private StudentService studentService;
 
     @Autowired
     private EmailVerificationService verificationService;
@@ -30,13 +30,13 @@ public class StudentController {
     @PostMapping("/register")
     public ResponseEntity<ResponseStudentDto> registerUser(@RequestBody @Valid StudentRegistrationDto registrationDto) {
 
-        Alumno alumno = estudianteService.registerStudent(registrationDto);
+        Student student = studentService.registerStudent(registrationDto);
 
         URI location = ServletUriComponentsBuilder.fromCurrentRequest()
                 .path("/{id}")
-                .buildAndExpand(alumno.getId()).toUri();
+                .buildAndExpand(student.getId()).toUri();
 
-        return ResponseEntity.created(location).body(new ResponseStudentDto(alumno));
+        return ResponseEntity.created(location).body(new ResponseStudentDto(student));
     }
 
     @PostMapping("/confirm-email")

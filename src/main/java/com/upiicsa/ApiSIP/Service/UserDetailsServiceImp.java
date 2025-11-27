@@ -1,7 +1,7 @@
 package com.upiicsa.ApiSIP.Service;
 
-import com.upiicsa.ApiSIP.Model.Usuario;
-import com.upiicsa.ApiSIP.Repository.UsuarioRepository;
+import com.upiicsa.ApiSIP.Model.UserSIP;
+import com.upiicsa.ApiSIP.Repository.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
@@ -12,12 +12,12 @@ import org.springframework.stereotype.Service;
 public class UserDetailsServiceImp implements UserDetailsService {
 
     @Autowired
-    private UsuarioRepository repository;
+    private UserRepository userRepository;
 
     @Override
     public UserDetails loadUserByUsername(String email) throws UsernameNotFoundException {
-        Usuario usuario = repository.findByCorreo(email)
+        UserSIP user = userRepository.findByEmail(email)
                 .orElseThrow(() -> new UsernameNotFoundException("User with email: " + email + " not found."));
-        return usuario;
+        return user;
     }
 }

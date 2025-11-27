@@ -1,8 +1,8 @@
-package com.upiicsa.ApiSIP.Dto;
+package com.upiicsa.ApiSIP.Dto.Auth;
 
 public record AuthResponseDto(
         String message,
-        String TipoUsuario,
+        String UserType,
         boolean flag
 ) {
 }

@@ -16,26 +16,26 @@ import lombok.experimental.SuperBuilder;
 @Entity
 @Table(name = "SIP_ALUMNOS")
 @PrimaryKeyJoinColumn(name = "ID_USUARIO")
-public class Alumno extends UserSIP {
+public class Student extends UserSIP {
 
     @Column(name = "MATRICULA", length = 20, unique = true)
-    private String matricula;
+    private String enrollment;
 
     @Column(name = "TELEFONO", length = 20)
-    private String telefono;
+    private String phone;
 
     @ManyToOne
     @JoinColumn(name = "ID_SEMESTRE")
     private Semester semester;
 
     @Column(name = "EGRESADO")
-    private boolean egresado;
+    private boolean graduate;
 
     @ManyToOne
     @JoinColumn(name = "ID_DIRECCION")
-    private Direccion direccion;
+    private Address address;
 
     @ManyToOne
     @JoinColumn(name = "ID_OFERTA")
-    private OfertaAca ofertaAca;
+    private Offer offer;
 }

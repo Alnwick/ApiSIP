@@ -28,7 +28,7 @@ function mostrarRegistro() {
     document.getElementById('btn-registro').classList.add('active');
     document.getElementById('btn-registro').classList.remove('inactive');
 
-    // Cargar catálogos iniciales si están vacíos
+    // Cargar catálogos si están vacíos
     if (document.getElementById('escuela').options.length <= 1) {
         cargarEscuelas();
         cargarSemestres();
@@ -51,21 +51,22 @@ function volverAlRegistro() {
 }
 
 // ========== CARGA DE CATÁLOGOS (CASCADING DROPDOWNS) ==========
+
 async function cargarEscuelas() {
     try {
-        const response = await fetch(`${API_BASE_URL}/catalogos/escuelas`);
+        const response = await fetch(`${API_BASE_URL}/catalogs/schools`);
         if (response.ok) {
             const escuelas = await response.json();
             const select = document.getElementById('escuela');
 
-            // Limpiar dejando el placeholder
             select.innerHTML = '<option value="">Selecciona una escuela</option>';
 
             escuelas.forEach(escuela => {
                 const option = document.createElement('option');
-                option.value = escuela.nombre; // Se envía el NOMBRE al backend (escuelaNom)
-                option.dataset.id = escuela.id; // Se guarda el ID para filtrar carreras
-                option.textContent = escuela.nombre;
+                // API en inglés: escuela.name
+                option.value = escuela.name;
+                option.dataset.id = escuela.id;
+                option.textContent = escuela.name;
                 select.appendChild(option);
             });
         }
@@ -78,7 +79,6 @@ async function cargarCarreras(escuelaId) {
     const select = document.getElementById('carrera');
     const planSelect = document.getElementById('plan-estudios');
 
-    // Reiniciar selects dependientes
     select.innerHTML = '<option value="">Selecciona una carrera</option>';
     select.disabled = true;
     planSelect.innerHTML = '<option value="">Primero selecciona carrera</option>';
@@ -87,14 +87,15 @@ async function cargarCarreras(escuelaId) {
     if (!escuelaId) return;
 
     try {
-        const response = await fetch(`${API_BASE_URL}/catalogos/carreras?escuelaId=${escuelaId}`);
+        const response = await fetch(`${API_BASE_URL}/catalogs/careers?schoolId=${escuelaId}`);
         if (response.ok) {
             const carreras = await response.json();
             carreras.forEach(carrera => {
                 const option = document.createElement('option');
-                option.value = carrera.siglas; // IMPORTANTE: Se envían las SIGLAS (carreraNom)
+                // API en inglés: carrera.acronym y carrera.name
+                option.value = carrera.acronym;
                 option.dataset.id = carrera.id;
-                option.textContent = carrera.nombre;
+                option.textContent = carrera.name;
                 select.appendChild(option);
             });
             select.disabled = false;
@@ -115,13 +116,15 @@ async function cargarPlanes(carreraId) {
     if (!carreraId || !escuelaId) return;
 
     try {
-        const response = await fetch(`${API_BASE_URL}/catalogos/planes?escuelaId=${escuelaId}&carreraId=${carreraId}`);
+        // Endpoint actualizado: /catalogs/syllabus
+        const response = await fetch(`${API_BASE_URL}/catalogs/syllabus?schoolId=${escuelaId}&careerId=${carreraId}`);
         if (response.ok) {
             const planes = await response.json();
             planes.forEach(plan => {
                 const option = document.createElement('option');
-                option.value = plan.codigo; // Se envía el CÓDIGO (planEstCodigo)
-                option.textContent = plan.codigo;
+                // API en inglés: plan.code
+                option.value = plan.code;
+                option.textContent = plan.code;
                 select.appendChild(option);
             });
             select.disabled = false;
@@ -133,18 +136,20 @@ async function cargarPlanes(carreraId) {
 
 async function cargarSemestres() {
     try {
-        const response = await fetch(`${API_BASE_URL}/catalogos/semestres`);
+        const response = await fetch(`${API_BASE_URL}/catalogs/semesters`);
         if (response.ok) {
             const semestres = await response.json();
             const select = document.getElementById('semestre');
             select.innerHTML = '<option value="">Selecciona un semestre</option>';
 
-            semestres.sort((a, b) => parseInt(a.descripcion) - parseInt(b.descripcion));
+            // Ordenar numéricamente usando 'description'
+            semestres.sort((a, b) => parseInt(a.description) - parseInt(b.description));
 
             semestres.forEach(sem => {
                 const option = document.createElement('option');
-                option.value = sem.descripcion;
-                option.textContent = "Semestre " + sem.descripcion;
+                // API en inglés: sem.description
+                option.value = sem.description;
+                option.textContent = "Semestre " + sem.description;
                 select.appendChild(option);
             });
         }
@@ -171,9 +176,7 @@ async function iniciarSesion() {
     try {
         const response = await fetch(`${API_BASE_URL}/auth/login`, {
             method: 'POST',
-            headers: {
-                'Content-Type': 'application/json'
-            },
+            headers: { 'Content-Type': 'application/json' },
             body: JSON.stringify({
                 email: emailInput.value,
                 password: passwordInput.value
@@ -186,8 +189,11 @@ async function iniciarSesion() {
 
         const data = await response.json();
 
+        // Verificamos la propiedad 'flag' del AuthResponseDto
         if (data.flag) {
-            switch (data.TipoUsuario) {
+            // Usamos data.userType (Asumiendo que en el DTO inglés le pusiste userType)
+            // Los valores siguen siendo los de la BD (ALUMNO, etc.)
+            switch (data.userType) {
                 case 'ALUMNO':
                     window.location.href = 'Student/home.html';
                     break;
@@ -198,7 +204,7 @@ async function iniciarSesion() {
                     window.location.href = 'Collaborator/home.html';
                     break;
                 default:
-                    alert("Rol de usuario desconocido: " + data.TipoUsuario);
+                    alert("Rol desconocido: " + data.userType);
             }
         } else {
             alert(data.message || "Error al iniciar sesión");
@@ -212,6 +218,7 @@ async function iniciarSesion() {
         loginBtn.textContent = originalText;
     }
 }
+
 // ========== REGISTRO DE ESTUDIANTE ==========
 async function iniciarRegistro() {
     const esValido = validarFormularioRegistro();
@@ -225,36 +232,38 @@ async function iniciarRegistro() {
         try {
             emailRegistro = document.getElementById('email').value;
 
-            // Obtener estado de egresado
+            // Estado de egresado
             const isEgresado = document.getElementById('egresado-check').checked;
 
-            // Lógica de Semestre: Si es egresado, mandamos "1" por defecto
-            const semestreVal = isEgresado ? "1" : null
+            // Si es egresado, mandamos "1" (valor dummy válido) para que Backend no falle al buscar
+            const semestreVal = isEgresado ? "1" : document.getElementById('semestre').value;
 
-            // Construir DTO para el Backend
+            // CONSTRUCCIÓN DEL JSON (Nombres actualizados al inglés)
             datosEstudianteTemporal = {
-                correo: emailRegistro,
-                contrasena: document.getElementById('password').value,
-                confirmarContrasena: document.getElementById('confirm-password').value,
-                nombre: document.getElementById('nombre').value,
-                paterno: document.getElementById('apellido-paterno').value,
-                materno: document.getElementById('apellido-materno').value,
-                matricula: document.getElementById('boleta').value,
-                telefono: document.getElementById('phone').value,
-                egresado: isEgresado,
-                escuelaNom: document.getElementById('escuela').value,
-                carreraNom: document.getElementById('carrera').value,
-                planEstCodigo: document.getElementById('plan-estudios').value,
-                semestreDes: semestreVal
+                email: emailRegistro,
+                password: document.getElementById('password').value,
+                confirmPassword: document.getElementById('confirm-password').value,
+
+                name: document.getElementById('nombre').value,
+                fLastName: document.getElementById('apellido-paterno').value, // Actualizado
+                mLastName: document.getElementById('apellido-materno').value, // Actualizado
+
+                enrollment: document.getElementById('boleta').value, // Actualizado
+                phone: document.getElementById('phone').value, // Actualizado
+                graduated: isEgresado, // Actualizado
+
+                school: document.getElementById('escuela').value, // Actualizado
+                career: document.getElementById('carrera').value, // Actualizado
+                syllabusCode: document.getElementById('plan-estudios').value, // Actualizado
+
+                semester: semestreVal // Actualizado
             };
 
-            console.log('Enviando DTO al backend:', datosEstudianteTemporal);
+            console.log('Enviando DTO (Inglés):', datosEstudianteTemporal);
 
-            const response = await fetch(`${API_BASE_URL}/estudiante/register`, {
+            const response = await fetch(`${API_BASE_URL}/student/register`, {
                 method: 'POST',
-                headers: {
-                    'Content-Type': 'application/json',
-                },
+                headers: { 'Content-Type': 'application/json' },
                 body: JSON.stringify(datosEstudianteTemporal)
             });
 
@@ -264,14 +273,14 @@ async function iniciarRegistro() {
                     const errorJson = JSON.parse(errorText);
                     throw new Error(errorJson.message || errorText);
                 } catch (e) {
-                    throw new Error(errorText || 'Error desconocido en el servidor');
+                    throw new Error(errorText || 'Error desconocido');
                 }
             }
 
             mostrarVerificacion();
 
         } catch (error) {
-            console.error('Error en registro:', error);
+            console.error('Error registro:', error);
             alert('Error: ' + error.message);
         } finally {
             boton.textContent = textoOriginal;
@@ -286,7 +295,7 @@ async function verificarCodigo() {
     const boton = document.getElementById('verify-button');
 
     if (!codigo || codigo.length !== 6) {
-        alert("Por favor ingresa un código válido de 6 dígitos");
+        alert("Ingresa un código de 6 dígitos");
         return;
     }
 
@@ -299,17 +308,17 @@ async function verificarCodigo() {
             code: codigo
         };
 
-        const response = await fetch(`${API_BASE_URL}/estudiante/confirm-email`, {
+        const response = await fetch(`${API_BASE_URL}/student/confirm-email`, {
             method: 'POST',
             headers: { 'Content-Type': 'application/json' },
             body: JSON.stringify(payload)
         });
 
         if (!response.ok) {
-            throw new Error('Código incorrecto o expirado. Inténtalo de nuevo.');
+            throw new Error('Código incorrecto o expirado.');
         }
 
-        alert('¡Cuenta verificada exitosamente! Ahora puedes iniciar sesión.');
+        alert('¡Cuenta verificada! Inicia sesión.');
         mostrarLogin();
 
     } catch (error) {
@@ -319,6 +328,8 @@ async function verificarCodigo() {
         boton.textContent = "Verificar y Completar Registro";
     }
 }
+
+// ========== UTILIDADES (Timer, Validaciones, Listeners) ==========
 
 function iniciarCountdown() {
     let tiempoRestante = 60;
@@ -333,7 +344,6 @@ function iniciarCountdown() {
     countdownTimer = setInterval(() => {
         tiempoRestante--;
         countdownElement.textContent = tiempoRestante;
-
         if (tiempoRestante <= 0) {
             clearInterval(countdownTimer);
             resendButton.disabled = false;
@@ -346,15 +356,12 @@ async function reenviarCodigo() {
     const boton = document.getElementById('resend-button');
     boton.textContent = 'Enviando...';
     boton.disabled = true;
-
     await new Promise(resolve => setTimeout(resolve, 1000));
-
     alert('¡Código reenviado! Revisa tu correo.');
     boton.textContent = 'Reenviar código';
     iniciarCountdown();
 }
 
-// ========== VALIDACIONES ==========
 function validarFormularioRegistro() {
     const nombre = document.getElementById('nombre');
     const paterno = document.getElementById('apellido-paterno');
@@ -384,43 +391,40 @@ function validarFormularioRegistro() {
         if(err) err.style.display = 'none';
     };
 
-    if(!nombre.value.trim()) setError('nombre', 'El nombre es requerido'); else clearError('nombre');
+    if(!nombre.value.trim()) setError('nombre', 'Requerido'); else clearError('nombre');
     if(!paterno.value.trim()) setError('apellido-paterno', 'Requerido'); else clearError('apellido-paterno');
     if(!materno.value.trim()) setError('apellido-materno', 'Requerido'); else clearError('apellido-materno');
-
     if(!/^\d{10}$/.test(boleta.value)) setError('boleta', 'Debe tener 10 dígitos'); else clearError('boleta');
 
     if(!escuela.value) { escuela.classList.add('input-error'); esValido=false; } else escuela.classList.remove('input-error');
-    if(!carrera.value) setError('carrera', 'Selecciona una carrera'); else clearError('carrera');
-    if(!plan.value) setError('plan-estudios', 'Selecciona un plan'); else clearError('plan-estudios');
+    if(!carrera.value) setError('carrera', 'Selecciona carrera'); else clearError('carrera');
+    if(!plan.value) setError('plan-estudios', 'Selecciona plan'); else clearError('plan-estudios');
 
     const isEgresado = document.getElementById('egresado-check').checked;
     if(!isEgresado) {
         const sem = document.getElementById('semestre');
-        if(!sem.value) setError('semestre', 'Selecciona un semestre'); else clearError('semestre');
+        if(!sem.value) setError('semestre', 'Selecciona semestre'); else clearError('semestre');
     }
 
     const emailRegex = /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/;
     if(!emailRegex.test(email.value)) setError('email', 'Correo inválido'); else clearError('email');
 
     if(pass.value.length < 6) setError('password', 'Mínimo 6 caracteres'); else clearError('password');
-
-    if(pass.value !== confirmPass.value) setError('confirm-password', 'Las contraseñas no coinciden'); else clearError('confirm-password');
-
+    if(pass.value !== confirmPass.value) setError('confirm-password', 'No coinciden'); else clearError('confirm-password');
     if(!/^\d{10}$/.test(telefono.value)) setError('phone', 'Debe tener 10 dígitos'); else clearError('phone');
 
     return esValido;
 }
 
-// ========== INICIALIZACIÓN Y EVENT LISTENERS ==========
+// ========== LISTENERS AL CARGAR ==========
 document.addEventListener('DOMContentLoaded', function() {
     mostrarLogin();
 
-    // 1. Navegación
+    // Botones Navegación
     document.getElementById('btn-login').addEventListener('click', mostrarLogin);
     document.getElementById('btn-registro').addEventListener('click', mostrarRegistro);
 
-    // 2. Listener Checkbox "Soy Egresado"
+    // Checkbox Egresado
     const egresadoCheck = document.getElementById('egresado-check');
     const semesterGroup = document.getElementById('semester-group');
     const semesterSelect = document.getElementById('semestre');
@@ -436,7 +440,7 @@ document.addEventListener('DOMContentLoaded', function() {
         });
     }
 
-    // 3. Listeners de Combos
+    // Combos en Cascada
     const escuelaSelect = document.getElementById('escuela');
     if(escuelaSelect) {
         escuelaSelect.addEventListener('change', function() {
@@ -459,7 +463,7 @@ document.addEventListener('DOMContentLoaded', function() {
         });
     }
 
-    // 4. Botones de Acción
+    // Botones Acción
     document.getElementById('login-button').addEventListener('click', (e) => {
         e.preventDefault();
         iniciarSesion();

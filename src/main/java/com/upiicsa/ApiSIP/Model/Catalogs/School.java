@@ -18,8 +18,8 @@ public class School {
     private Integer id;
 
     @Column(name = "NOMBRE", length = 100)
-    private String nombre;
+    private String name;
 
     @Column(name = "SIGLAS", length = 30)
-    private String siglas;
+    private String acronym;
 }

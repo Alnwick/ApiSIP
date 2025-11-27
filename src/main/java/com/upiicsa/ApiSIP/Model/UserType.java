@@ -22,7 +22,7 @@ public class UserType {
     private Integer id;
 
     @Column(name = "DESCRIPCION", length = 80)
-    private String descripcion;
+    private String description;
 
     @ManyToMany(fetch = FetchType.EAGER)
     @JoinTable(name = "SIP_TIPOUSU_PERMISOS",
@@ -30,5 +30,5 @@ public class UserType {
             inverseJoinColumns = @JoinColumn(name = "ID_PERMISO")
     )
     @ToString.Exclude
-    private Set<Permiso> permisos = new HashSet<>();
+    private Set<Permission> permissions = new HashSet<>();
 }

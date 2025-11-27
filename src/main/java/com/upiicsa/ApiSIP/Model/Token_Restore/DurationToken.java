@@ -11,7 +11,7 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 @Entity
 @Table(name = "SIP_DURACION_TOKEN")
-public class DuracionToken {
+public class DurationToken {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -19,9 +19,9 @@ public class DuracionToken {
     private Integer id;
 
     @Column
-    private Integer duracionHoras;
+    private Integer hours;
 
     @ManyToOne
     @JoinColumn(name = "ID_TIPOUSUARIO")
-    private UserType userType;
+    private UserType user;
 }

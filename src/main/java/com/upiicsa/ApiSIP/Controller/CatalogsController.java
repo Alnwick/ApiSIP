@@ -1,11 +1,11 @@
 package com.upiicsa.ApiSIP.Controller;
 
-import com.upiicsa.ApiSIP.Model.Catalogs.Carrera;
-import com.upiicsa.ApiSIP.Model.Catalogs.Escuela;
-import com.upiicsa.ApiSIP.Model.Catalogs.PlanEst;
-import com.upiicsa.ApiSIP.Model.Catalogs.Semestre;
-import com.upiicsa.ApiSIP.Repository.OfertaAcaRepository;
-import com.upiicsa.ApiSIP.Repository.SemestreRepository;
+import com.upiicsa.ApiSIP.Model.Catalogs.Career;
+import com.upiicsa.ApiSIP.Model.Catalogs.School;
+import com.upiicsa.ApiSIP.Model.Catalogs.Syllabus;
+import com.upiicsa.ApiSIP.Model.Catalogs.Semester;
+import com.upiicsa.ApiSIP.Repository.OfferRepository;
+import com.upiicsa.ApiSIP.Repository.SemesterRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -16,32 +16,32 @@ import org.springframework.web.bind.annotation.RestController;
 import java.util.List;
 
 @RestController
-@RequestMapping("/catalogos")
+@RequestMapping("/catalogs")
 public class CatalogsController {
 
     @Autowired
-    private OfertaAcaRepository ofertaAcaRepository;
+    private OfferRepository offerRepository;
 
     @Autowired
-    private SemestreRepository semestreRepository;
+    private SemesterRepository semesterRepository;
 
-    @GetMapping("/escuelas")
-    public ResponseEntity<List<Escuela>> getEscuelas() {
-        return ResponseEntity.ok(ofertaAcaRepository.findAllEscuelasDisponibles());
+    @GetMapping("/schools")
+    public ResponseEntity<List<School>> getSchools() {
+        return ResponseEntity.ok(offerRepository.findAllSchools());
     }
 
-    @GetMapping("/carreras")
-    public ResponseEntity<List<Carrera>> getCarreras(@RequestParam Integer escuelaId) {
-        return ResponseEntity.ok(ofertaAcaRepository.findCarrerasByEscuela(escuelaId));
+    @GetMapping("/careers")
+    public ResponseEntity<List<Career>> getCareers(@RequestParam Integer careerId) {
+        return ResponseEntity.ok(offerRepository.findCareersBySchool(careerId));
     }
 
-    @GetMapping("/planes")
-    public ResponseEntity<List<PlanEst>> getPlanes(@RequestParam Integer escuelaId, @RequestParam Integer carreraId) {
-        return ResponseEntity.ok(ofertaAcaRepository.findPlanesByEscuelaAndCarrera(escuelaId, carreraId));
+    @GetMapping("/syllabus")
+    public ResponseEntity<List<Syllabus>> getSyllabus(@RequestParam Integer schoolId, @RequestParam Integer careerId) {
+        return ResponseEntity.ok(offerRepository.findSyllabusBySchoolAndCareer(schoolId, careerId));
     }
 
-    @GetMapping("/semestres")
-    public ResponseEntity<List<Semestre>> getSemestres() {
-        return ResponseEntity.ok(semestreRepository.findAll());
+    @GetMapping("/semesters")
+    public ResponseEntity<List<Semester>> getSemesters() {
+        return ResponseEntity.ok(semesterRepository.findAll());
     }
 }

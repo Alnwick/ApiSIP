@@ -18,5 +18,5 @@ public class Permission {
     private Integer id;
 
     @Column(name = "DESCRIPCION", length = 80)
-    private String descripcion;
+    private String description;
 }

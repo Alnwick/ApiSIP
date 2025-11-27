@@ -1,6 +1,6 @@
 package com.upiicsa.ApiSIP.Security.Config;
 
-import com.upiicsa.ApiSIP.Repository.UsuarioRepository;
+import com.upiicsa.ApiSIP.Repository.UserRepository;
 import com.upiicsa.ApiSIP.Security.Filter.JwtTokenValidator;
 import com.upiicsa.ApiSIP.Utils.JwtUtils;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -28,7 +28,7 @@ public class SecurityConfig {
     private JwtUtils jwtUtils;
 
     @Autowired
-    private UsuarioRepository usuRepository;
+    private UserRepository userRepository;
 
     @Bean
     public SecurityFilterChain securityFilterChain(HttpSecurity httpSecurity) throws Exception {
@@ -37,7 +37,7 @@ public class SecurityConfig {
                 .csrf(csrf -> csrf.disable())
                 .sessionManagement(sess ->
                         sess.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
-                .addFilterBefore(new JwtTokenValidator(jwtUtils, usuRepository), UsernamePasswordAuthenticationFilter.class)
+                .addFilterBefore(new JwtTokenValidator(jwtUtils, userRepository), UsernamePasswordAuthenticationFilter.class)
                 .authorizeHttpRequests(auth -> auth
                         .requestMatchers("/", "/index.html", "/styles.css", "/script.js",
                                 "/Imagenes/**", "/Recursos/**")
@@ -50,8 +50,8 @@ public class SecurityConfig {
                         .requestMatchers(HttpMethod.OPTIONS, "/**").permitAll()
                         .anyRequest().authenticated())
                 .exceptionHandling(exception -> exception
-                        .authenticationEntryPoint((request, response, authException) -> {
-                            response.sendRedirect("/index.html");}))
+                        .authenticationEntryPoint((request, response, authException)
+                                -> response.sendRedirect("/index.html")))
                 .build();
     }
 

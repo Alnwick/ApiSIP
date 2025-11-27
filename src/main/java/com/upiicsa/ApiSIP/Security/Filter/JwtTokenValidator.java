@@ -1,8 +1,8 @@
 package com.upiicsa.ApiSIP.Security.Filter;
 
 import com.auth0.jwt.interfaces.DecodedJWT;
-import com.upiicsa.ApiSIP.Model.Usuario;
-import com.upiicsa.ApiSIP.Repository.UsuarioRepository;
+import com.upiicsa.ApiSIP.Model.UserSIP;
+import com.upiicsa.ApiSIP.Repository.UserRepository;
 import com.upiicsa.ApiSIP.Utils.JwtUtils;
 import jakarta.servlet.FilterChain;
 import jakarta.servlet.ServletException;
@@ -20,12 +20,12 @@ import java.io.IOException;
 
 public class JwtTokenValidator extends OncePerRequestFilter {
 
-    private UsuarioRepository repository;
+    private UserRepository userRepository;
     private JwtUtils jwtUtils;
 
-    public JwtTokenValidator(JwtUtils jwtUtils, UsuarioRepository repository) {
+    public JwtTokenValidator(JwtUtils jwtUtils, UserRepository userRepository) {
         this.jwtUtils = jwtUtils;
-        this.repository = repository;
+        this.userRepository = userRepository;
     }
 
     @Override
@@ -51,12 +51,12 @@ public class JwtTokenValidator extends OncePerRequestFilter {
 
                 if (email != null && SecurityContextHolder.getContext().getAuthentication() == null) {
                     // Cargar el usuario de la base de datos
-                    Usuario usuario = repository.findByCorreo(email).orElse(null);
+                    UserSIP user = userRepository.findByEmail(email).orElse(null);
 
-                    if (usuario != null) {
+                    if (user != null) {
                         //Crear autenticacion para el usuario
-                        Authentication authentication = new UsernamePasswordAuthenticationToken(usuario, null,
-                                usuario.getAuthorities());
+                        Authentication authentication = new UsernamePasswordAuthenticationToken(user, null,
+                                user.getAuthorities());
                         //Colocar la autenticacion en el contexto de seguridad
                         SecurityContext context = SecurityContextHolder.getContext();
                         context.setAuthentication(authentication);

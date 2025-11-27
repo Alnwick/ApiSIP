@@ -22,7 +22,7 @@ import java.util.Set;
 @Entity
 @Table(name = "SIP_USUARIOS")
 @Inheritance(strategy = InheritanceType.JOINED)
-public class Usuario implements UserDetails {
+public class UserSIP implements UserDetails {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -30,32 +30,32 @@ public class Usuario implements UserDetails {
     private Integer id;
 
     @Column(name = "NOMBRE", length = 60)
-    private String nombre;
+    private String name;
 
     @Column(name = "PATERNO", length = 60)
-    private String paterno;
+    private String fLastName;
 
     @Column(name = "MATERNO", length = 60)
-    private String materno;
+    private String mLastName;
 
     @Column(name = "CORREO", length = 100, unique = true)
-    private String correo;
+    private String email;
 
     @Column(name = "CONTRASENA", length = 100)
-    private String contrasena;
+    private String password;
 
     @Column(name = "HABILITADO")
-    private Boolean habilitado;
+    private Boolean enabled;
 
     @Column(name = "FECHA_ALTA")
-    private LocalDateTime fechaAlta;
+    private LocalDateTime registrationDate;
 
     @Column(name = "FECHA_BAJA")
-    private LocalDateTime fechaBaja;
+    private LocalDateTime cancellationDate;
 
     @ManyToOne
     @JoinColumn(name = "ID_TIPOUSUARIO")
-    private TipoUsuario tipoUsuario;
+    private UserType userType;
 
     @ManyToOne
     @JoinColumn(name = "ID_ESTATUS")
@@ -65,24 +65,24 @@ public class Usuario implements UserDetails {
     public Collection<? extends GrantedAuthority> getAuthorities() {
         Set<GrantedAuthority> authorities = new HashSet<>();
         //Agregar permisos
-        this.tipoUsuario.getPermisos()
+        this.userType.getPermissions()
                 .stream()
-                .map(permiso ->  new SimpleGrantedAuthority(permiso.getDescripcion()))
+                .map(permiso ->  new SimpleGrantedAuthority(permiso.getDescription()))
                 .forEach(authorities::add);
         //Agregar tipo de Usuario
-        authorities.add(new SimpleGrantedAuthority("ROLE_" + this.tipoUsuario.getDescripcion()));
+        authorities.add(new SimpleGrantedAuthority("ROLE_" + this.userType.getDescription()));
 
         return authorities;
     }
 
     @Override
     public String getPassword() {
-        return this.contrasena;
+        return this.password;
     }
 
     @Override
     public String getUsername() {
-        return this.correo;
+        return this.email;
     }
 
     @Override
@@ -102,6 +102,6 @@ public class Usuario implements UserDetails {
 
     @Override
     public boolean isEnabled() {
-        return this.habilitado;
+        return this.enabled;
     }
 }

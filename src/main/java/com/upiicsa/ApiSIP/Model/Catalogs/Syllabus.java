@@ -18,5 +18,5 @@ public class Syllabus {
     public Integer id;
 
     @Column(name = "CODIGO")
-    public String codigo;
+    public String code;
 }
