@@ -10,10 +10,10 @@ import org.springframework.stereotype.Repository;
 import java.util.Optional;
 
 @Repository
-public interface UsuarioRepository extends JpaRepository<UserSIP, Integer> {
+public interface UserRepository extends JpaRepository<UserSIP, Integer> {
 
-    Optional<UserSIP> findByCorreo(String correo);
+    Optional<UserSIP> findByEmail(String email);
 
-    @Query("SELECT u.tipoUsuario FROM UserSIP u WHERE u.correo = :correo")
-    Optional<UserType> findTipoUsuarioByCorreo(@Param("correo") String correo);
+    @Query("SELECT u.userType FROM UserSIP u WHERE u.email = :email")
+    Optional<UserType> findUserTypeByEmail(@Param("email") String email);
 }
