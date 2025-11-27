@@ -1,6 +1,6 @@
 package com.upiicsa.ApiSIP.Model.Token_Restore;
 
-import com.upiicsa.ApiSIP.Model.Usuario;
+import com.upiicsa.ApiSIP.Model.UserSIP;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Data;
@@ -31,5 +31,5 @@ public class TokenReseteo {
 
     @ManyToOne
     @JoinColumn(name = "ID_USUARIO")
-    private Usuario usuario;
+    private UserSIP usuario;
 }

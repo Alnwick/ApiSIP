@@ -17,7 +17,7 @@ import java.util.List;
 
 @RestController
 @RequestMapping("/catalogos")
-public class CatalogosController {
+public class CatalogsController {
 
     @Autowired
     private OfertaAcaRepository ofertaAcaRepository;

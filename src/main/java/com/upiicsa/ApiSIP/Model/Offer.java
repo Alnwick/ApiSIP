@@ -1,8 +1,8 @@
 package com.upiicsa.ApiSIP.Model;
 
-import com.upiicsa.ApiSIP.Model.Catalogs.Carrera;
-import com.upiicsa.ApiSIP.Model.Catalogs.Escuela;
-import com.upiicsa.ApiSIP.Model.Catalogs.PlanEst;
+import com.upiicsa.ApiSIP.Model.Catalogs.Career;
+import com.upiicsa.ApiSIP.Model.Catalogs.School;
+import com.upiicsa.ApiSIP.Model.Catalogs.Syllabus;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Data;
@@ -22,13 +22,13 @@ public class OfertaAca {
 
     @ManyToOne
     @JoinColumn(name = "ID_ESCUELA")
-    private Escuela escuela;
+    private School school;
 
     @ManyToOne
     @JoinColumn(name = "ID_CARRERA")
-    private Carrera carrera;
+    private Career career;
 
     @ManyToOne
     @JoinColumn(name = "ID_PLAN")
-    private PlanEst planEst;
+    private Syllabus syllabus;
 }

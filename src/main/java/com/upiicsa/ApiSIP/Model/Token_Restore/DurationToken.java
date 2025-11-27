@@ -1,6 +1,6 @@
 package com.upiicsa.ApiSIP.Model.Token_Restore;
 
-import com.upiicsa.ApiSIP.Model.TipoUsuario;
+import com.upiicsa.ApiSIP.Model.UserType;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Data;
@@ -23,5 +23,5 @@ public class DuracionToken {
 
     @ManyToOne
     @JoinColumn(name = "ID_TIPOUSUARIO")
-    private TipoUsuario tipoUsuario;
+    private UserType userType;
 }

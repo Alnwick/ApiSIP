@@ -6,17 +6,20 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 
 @Data
-@NoArgsConstructor
 @AllArgsConstructor
+@NoArgsConstructor
 @Entity
-@Table(name = "SIP_CSEMESTRE")
-public class Semestre {
+@Table(name = "SIP_ESCUELAS")
+public class School {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "ID_SEMESTRE")
+    @Column(name = "ID_ESCUELA")
     private Integer id;
 
-    @Column(name = "DESCRIPCION")
-    private String descripcion;
+    @Column(name = "NOMBRE", length = 100)
+    private String nombre;
+
+    @Column(name = "SIGLAS", length = 30)
+    private String siglas;
 }

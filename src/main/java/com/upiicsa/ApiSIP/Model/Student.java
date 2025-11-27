@@ -1,6 +1,6 @@
 package com.upiicsa.ApiSIP.Model;
 
-import com.upiicsa.ApiSIP.Model.Catalogs.Semestre;
+import com.upiicsa.ApiSIP.Model.Catalogs.Semester;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Data;
@@ -16,7 +16,7 @@ import lombok.experimental.SuperBuilder;
 @Entity
 @Table(name = "SIP_ALUMNOS")
 @PrimaryKeyJoinColumn(name = "ID_USUARIO")
-public class Alumno extends Usuario {
+public class Alumno extends UserSIP {
 
     @Column(name = "MATRICULA", length = 20, unique = true)
     private String matricula;
@@ -26,7 +26,7 @@ public class Alumno extends Usuario {
 
     @ManyToOne
     @JoinColumn(name = "ID_SEMESTRE")
-    private Semestre semestre;
+    private Semester semester;
 
     @Column(name = "EGRESADO")
     private boolean egresado;

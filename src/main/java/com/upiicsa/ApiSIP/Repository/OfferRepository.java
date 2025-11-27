@@ -1,8 +1,8 @@
 package com.upiicsa.ApiSIP.Repository;
 
-import com.upiicsa.ApiSIP.Model.Catalogs.Carrera;
-import com.upiicsa.ApiSIP.Model.Catalogs.Escuela;
-import com.upiicsa.ApiSIP.Model.Catalogs.PlanEst;
+import com.upiicsa.ApiSIP.Model.Catalogs.Career;
+import com.upiicsa.ApiSIP.Model.Catalogs.School;
+import com.upiicsa.ApiSIP.Model.Catalogs.Syllabus;
 import com.upiicsa.ApiSIP.Model.OfertaAca;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
@@ -26,11 +26,11 @@ public interface OfertaAcaRepository extends JpaRepository<OfertaAca, Integer> {
     );
 
     @Query("SELECT DISTINCT o.escuela FROM OfertaAca o")
-    List<Escuela> findAllEscuelasDisponibles();
+    List<School> findAllEscuelasDisponibles();
 
     @Query("SELECT DISTINCT o.carrera FROM OfertaAca o WHERE o.escuela.id = :idEscuela")
-    List<Carrera> findCarrerasByEscuela(@Param("idEscuela") Integer idEscuela);
+    List<Career> findCarrerasByEscuela(@Param("idEscuela") Integer idEscuela);
 
     @Query("SELECT DISTINCT o.planEst FROM OfertaAca o WHERE o.escuela.id = :idEscuela AND o.carrera.id = :idCarrera")
-    List<PlanEst> findPlanesByEscuelaAndCarrera(@Param("idEscuela") Integer idEscuela, @Param("idCarrera") Integer idCarrera);
+    List<Syllabus> findPlanesByEscuelaAndCarrera(@Param("idEscuela") Integer idEscuela, @Param("idCarrera") Integer idCarrera);
 }

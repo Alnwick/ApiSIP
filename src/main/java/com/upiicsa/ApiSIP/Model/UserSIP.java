@@ -1,6 +1,6 @@
 package com.upiicsa.ApiSIP.Model;
 
-import com.upiicsa.ApiSIP.Model.Catalogs.Estatus;
+import com.upiicsa.ApiSIP.Model.Catalogs.Status;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Data;
@@ -59,7 +59,7 @@ public class Usuario implements UserDetails {
 
     @ManyToOne
     @JoinColumn(name = "ID_ESTATUS")
-    private Estatus estatus;
+    private Status status;
 
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {

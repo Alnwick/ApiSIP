@@ -19,7 +19,7 @@ import java.net.URI;
 
 @RestController
 @RequestMapping("/estudiante")
-public class EstudianteController {
+public class StudentController {
 
     @Autowired
     private EstudianteService estudianteService;

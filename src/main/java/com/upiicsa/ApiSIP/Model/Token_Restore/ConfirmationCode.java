@@ -13,7 +13,7 @@ import java.time.LocalDateTime;
 @AllArgsConstructor
 @Entity
 @Table(name = "SIP_CODIGO_CONFIRM")
-public class CodigoConfirm {
+public class ConfirmationCode {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)

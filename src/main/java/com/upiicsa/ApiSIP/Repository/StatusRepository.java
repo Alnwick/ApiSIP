@@ -1,13 +1,13 @@
 package com.upiicsa.ApiSIP.Repository;
 
-import com.upiicsa.ApiSIP.Model.TipoUsuario;
+import com.upiicsa.ApiSIP.Model.Catalogs.Status;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 
 import java.util.Optional;
 
 @Repository
-public interface TipoUsuarioRepository extends JpaRepository<TipoUsuario, Integer> {
+public interface EstatusRepository extends JpaRepository<Status, Integer> {
 
-    Optional<TipoUsuario> findByDescripcion(String descripcion);
+    Optional<Status> findByDescripcion(String descripcion);
 }

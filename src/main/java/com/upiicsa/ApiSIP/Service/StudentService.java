@@ -3,11 +3,11 @@ package com.upiicsa.ApiSIP.Service;
 import com.upiicsa.ApiSIP.Dto.Student.StudentRegistrationDto;
 import com.upiicsa.ApiSIP.Exception.ResourceNotFoundException;
 import com.upiicsa.ApiSIP.Exception.ValidationException;
-import com.upiicsa.ApiSIP.Model.Alumno;
-import com.upiicsa.ApiSIP.Model.Catalogs.Estatus;
-import com.upiicsa.ApiSIP.Model.Catalogs.Semestre;
-import com.upiicsa.ApiSIP.Model.OfertaAca;
-import com.upiicsa.ApiSIP.Model.TipoUsuario;
+import com.upiicsa.ApiSIP.Model.Student;
+import com.upiicsa.ApiSIP.Model.Catalogs.Status;
+import com.upiicsa.ApiSIP.Model.Catalogs.Semester;
+import com.upiicsa.ApiSIP.Model.Offer;
+import com.upiicsa.ApiSIP.Model.UserType;
 import com.upiicsa.ApiSIP.Repository.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.password.PasswordEncoder;
@@ -20,58 +20,58 @@ import java.time.LocalDateTime;
 public class EstudianteService {
 
     @Autowired
-    private EstudianteRepository estudianteRepository;
+    private StudentRepository studentRepository;
 
     @Autowired
     private PasswordEncoder passwordEncoder;
 
     @Autowired
-    private TipoUsuarioRepository tipoUsuarioRepository;
+    private TypeUserRepository typeUserRepository;
 
     @Autowired
-    private EstatusRepository estatusRepository;
+    private StatusRepository statusRepository;
 
     @Autowired
     private SemestreRepository semestreRepository;
 
     @Autowired
-    private OfertaAcaRepository ofertaAcaRepository;
+    private OfferRepository offerRepository;
 
     @Autowired
     private EmailVerificationService verificationService;
 
     @Transactional
-    public Alumno registerStudent(StudentRegistrationDto registrationDto) {
+    public Student registerStudent(StudentRegistrationDto registrationDto) {
         if (!registrationDto.contrasena().equals(registrationDto.confirmarContrasena()))
             throw new ValidationException("Invalid password");
 
-        Semestre semestre = null;
-        TipoUsuario tipo = tipoUsuarioRepository.findByDescripcion("ALUMNO")
+        Semester semester = null;
+        UserType tipo = typeUserRepository.findByDescripcion("ALUMNO")
                 .orElseThrow(() -> new ResourceNotFoundException("TipoUsuario not found"));
-        Estatus estatus = estatusRepository.findByDescripcion("ACTIVO")
+        Status status = statusRepository.findByDescripcion("ACTIVO")
                 .orElseThrow(() -> new ResourceNotFoundException("Estatus not found"));
-        OfertaAca ofertaAca = ofertaAcaRepository.findByCompositeKeys(
+        Offer offer = offerRepository.findByCompositeKeys(
                 registrationDto.escuelaNom(), registrationDto.carreraNom(), registrationDto.planEstCodigo())
                 .orElseThrow(() -> new ResourceNotFoundException("OfertaAca not found"));
 
         if(!registrationDto.egresado()){
-             semestre = semestreRepository.findByDescripcion(registrationDto.semestreDes())
+             semester = semestreRepository.findByDescripcion(registrationDto.semestreDes())
                     .orElseThrow(() -> new ResourceNotFoundException("Semestre not found"));
         }
 
-        Alumno newAlumno = Alumno.builder()
+        Student newAlumno = Student.builder()
                 .correo(registrationDto.correo())
                 .contrasena(passwordEncoder.encode(registrationDto.contrasena()))
                 .paterno(registrationDto.paterno()).materno(registrationDto.materno())
                 .nombre(registrationDto.nombre())
                 .habilitado(false).fechaAlta(LocalDateTime.now())
-                .tipoUsuario(tipo).estatus(estatus)
+                .tipoUsuario(tipo).status(status)
                 .matricula(registrationDto.matricula()).telefono(registrationDto.telefono())
-                .semestre(semestre).egresado(registrationDto.egresado())
-                .ofertaAca(ofertaAca)
+                .semester(semester).egresado(registrationDto.egresado())
+                .ofertaAca(offer)
                 .build();
 
-        estudianteRepository.save(newAlumno);
+        studentRepository.save(newAlumno);
         verificationService.createAndSendConfirmationCode(newAlumno);
 
         return newAlumno;

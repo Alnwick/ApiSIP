@@ -1,4 +1,4 @@
-package com.upiicsa.ApiSIP.Model;
+package com.upiicsa.ApiSIP.Model.Catalogs;
 
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
@@ -9,14 +9,14 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 @NoArgsConstructor
 @Entity
-@Table(name = "SIP_PERMISOS")
-public class Permiso {
+@Table(name = "SIP_PLAN_EST")
+public class Syllabus {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "ID_PERMISO")
-    private Integer id;
+    @Column(name = "ID_PLAN")
+    public Integer id;
 
-    @Column(name = "DESCRIPCION", length = 80)
-    private String descripcion;
+    @Column(name = "CODIGO")
+    public String codigo;
 }
