@@ -11,7 +11,7 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 @AllArgsConstructor
 @Table(name = "SIP_DIRECCION")
-public class Adrees {
+public class Address {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
