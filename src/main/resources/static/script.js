@@ -50,23 +50,20 @@ function volverAlRegistro() {
     mostrarRegistro();
 }
 
-// ========== CARGA DE CATÁLOGOS (CASCADING DROPDOWNS) ==========
-
 async function cargarEscuelas() {
     try {
         const response = await fetch(`${API_BASE_URL}/catalogs/schools`);
         if (response.ok) {
-            const escuelas = await response.json();
+            const schools = await response.json();
             const select = document.getElementById('escuela');
 
             select.innerHTML = '<option value="">Selecciona una escuela</option>';
 
-            escuelas.forEach(escuela => {
+            schools.forEach(school => {
                 const option = document.createElement('option');
-                // API en inglés: escuela.name
-                option.value = escuela.name;
-                option.dataset.id = escuela.id;
-                option.textContent = escuela.name;
+                option.value = school.acronym;
+                option.dataset.id = school.id;
+                option.textContent = school.acronym;
                 select.appendChild(option);
             });
         }
@@ -81,7 +78,7 @@ async function cargarCarreras(escuelaId) {
 
     select.innerHTML = '<option value="">Selecciona una carrera</option>';
     select.disabled = true;
-    planSelect.innerHTML = '<option value="">Primero selecciona carrera</option>';
+    planSelect.innerHTML = '<option value="">Primero selecciona escuela</option>';
     planSelect.disabled = true;
 
     if (!escuelaId) return;
@@ -95,7 +92,7 @@ async function cargarCarreras(escuelaId) {
                 // API en inglés: carrera.acronym y carrera.name
                 option.value = carrera.acronym;
                 option.dataset.id = carrera.id;
-                option.textContent = carrera.name;
+                option.textContent = carrera.acronym;
                 select.appendChild(option);
             });
             select.disabled = false;
@@ -189,10 +186,8 @@ async function iniciarSesion() {
 
         const data = await response.json();
 
-        // Verificamos la propiedad 'flag' del AuthResponseDto
         if (data.flag) {
-            // Usamos data.userType (Asumiendo que en el DTO inglés le pusiste userType)
-            // Los valores siguen siendo los de la BD (ALUMNO, etc.)
+            console.log("usuario: " + data.userType);
             switch (data.userType) {
                 case 'ALUMNO':
                     window.location.href = 'Student/home.html';
@@ -232,31 +227,24 @@ async function iniciarRegistro() {
         try {
             emailRegistro = document.getElementById('email').value;
 
-            // Estado de egresado
             const isEgresado = document.getElementById('egresado-check').checked;
 
-            // Si es egresado, mandamos "1" (valor dummy válido) para que Backend no falle al buscar
             const semestreVal = isEgresado ? "1" : document.getElementById('semestre').value;
 
-            // CONSTRUCCIÓN DEL JSON (Nombres actualizados al inglés)
             datosEstudianteTemporal = {
                 email: emailRegistro,
+                fLastName: document.getElementById('apellido-paterno').value,
+                mLastName: document.getElementById('apellido-materno').value,
+                name: document.getElementById('nombre').value,
                 password: document.getElementById('password').value,
                 confirmPassword: document.getElementById('confirm-password').value,
-
-                name: document.getElementById('nombre').value,
-                fLastName: document.getElementById('apellido-paterno').value, // Actualizado
-                mLastName: document.getElementById('apellido-materno').value, // Actualizado
-
-                enrollment: document.getElementById('boleta').value, // Actualizado
-                phone: document.getElementById('phone').value, // Actualizado
-                graduated: isEgresado, // Actualizado
-
-                school: document.getElementById('escuela').value, // Actualizado
-                career: document.getElementById('carrera').value, // Actualizado
-                syllabusCode: document.getElementById('plan-estudios').value, // Actualizado
-
-                semester: semestreVal // Actualizado
+                enrollment: document.getElementById('boleta').value,
+                phone: document.getElementById('phone').value,
+                semester: semestreVal,
+                graduated: isEgresado,
+                schoolName: document.getElementById('escuela').value,
+                acronymCareer: document.getElementById('carrera').value,
+                syllabusCode: document.getElementById('plan-estudios').value
             };
 
             console.log('Enviando DTO (Inglés):', datosEstudianteTemporal);
@@ -330,7 +318,6 @@ async function verificarCodigo() {
 }
 
 // ========== UTILIDADES (Timer, Validaciones, Listeners) ==========
-
 function iniciarCountdown() {
     let tiempoRestante = 60;
     const countdownElement = document.getElementById('countdown');
