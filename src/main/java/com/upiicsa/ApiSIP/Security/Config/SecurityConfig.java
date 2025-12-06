@@ -43,7 +43,7 @@ public class SecurityConfig {
                                 "/Imagenes/**", "/Recursos/**")
                         .permitAll()
                         .requestMatchers("/auth/login", "/api/forgot-password", "/api/reset-password/**",
-                                "/estudiante/register", "/estudiante/confirm-email", "/catalogos/**")
+                                "/student/register", "/student/confirm-email", "/catalogs/**")
                         .permitAll()
                         .requestMatchers("/v3/api-docs/**", "/swagger-ui/**", "/swagger-ui.html")
                         .permitAll()
