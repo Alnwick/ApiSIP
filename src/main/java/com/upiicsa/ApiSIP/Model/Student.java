@@ -2,13 +2,10 @@ package com.upiicsa.ApiSIP.Model;
 
 import com.upiicsa.ApiSIP.Model.Catalogs.Semester;
 import jakarta.persistence.*;
-import lombok.AllArgsConstructor;
-import lombok.Data;
-import lombok.EqualsAndHashCode;
-import lombok.NoArgsConstructor;
+import lombok.*;
 import lombok.experimental.SuperBuilder;
 
-@Data
+@Getter @Setter
 @AllArgsConstructor
 @NoArgsConstructor
 @SuperBuilder

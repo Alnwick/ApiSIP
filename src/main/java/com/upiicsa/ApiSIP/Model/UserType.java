@@ -1,19 +1,16 @@
 package com.upiicsa.ApiSIP.Model;
 
 import jakarta.persistence.*;
-import lombok.AllArgsConstructor;
-import lombok.Data;
-import lombok.NoArgsConstructor;
-import lombok.ToString;
+import lombok.*;
 
 import java.util.HashSet;
 import java.util.Set;
 
-@Data
+@Getter @Setter
 @AllArgsConstructor
 @NoArgsConstructor
 @Entity
-@Table(name = "SIP_TIPOUSUARIO")
+@Table(name = "SIP_CTIPOUSUARIO")
 public class UserType {
 
     @Id

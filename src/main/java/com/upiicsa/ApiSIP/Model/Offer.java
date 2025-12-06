@@ -4,11 +4,9 @@ import com.upiicsa.ApiSIP.Model.Catalogs.Career;
 import com.upiicsa.ApiSIP.Model.Catalogs.School;
 import com.upiicsa.ApiSIP.Model.Catalogs.Syllabus;
 import jakarta.persistence.*;
-import lombok.AllArgsConstructor;
-import lombok.Data;
-import lombok.NoArgsConstructor;
+import lombok.*;
 
-@Data
+@Getter @Setter
 @AllArgsConstructor
 @NoArgsConstructor
 @Entity
