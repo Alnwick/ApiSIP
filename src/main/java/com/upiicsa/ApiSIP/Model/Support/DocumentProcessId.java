@@ -1,4 +1,20 @@
 package com.upiicsa.ApiSIP.Model.Support;
 
-public class DocumentProcessId {
+import jakarta.persistence.Column;
+import lombok.AllArgsConstructor;
+import lombok.Data;
+import lombok.NoArgsConstructor;
+
+import java.io.Serializable;
+
+@Data
+@NoArgsConstructor
+@AllArgsConstructor
+public class DocumentProcessId implements Serializable {
+
+    @Column(name = "ID_TIPDOC")
+    private Integer idTypeDocument;
+
+    @Column(name = "ID_ESTPROCESO")
+    private Integer idTSteteProcess;
 }
