@@ -31,8 +31,8 @@ public class CatalogsController {
     }
 
     @GetMapping("/careers")
-    public ResponseEntity<List<Career>> getCareers(@RequestParam Integer careerId) {
-        return ResponseEntity.ok(offerRepository.findCareersBySchool(careerId));
+    public ResponseEntity<List<Career>> getCareers(@RequestParam Integer schoolId) {
+        return ResponseEntity.ok(offerRepository.findCareersBySchool(schoolId));
     }
 
     @GetMapping("/syllabus")
