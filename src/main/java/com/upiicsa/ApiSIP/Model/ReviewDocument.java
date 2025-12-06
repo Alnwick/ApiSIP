@@ -16,12 +16,12 @@ public class ReviewDocument {
     private ReviewDocumentId id = new ReviewDocumentId();
 
     @ManyToOne(fetch = FetchType.LAZY)
-    @MapsId("operativeId")
+    @MapsId("idOperative")
     @JoinColumn(name = "ID_OPERATIVO")
     private UserSIP operative;
 
     @ManyToOne(fetch = FetchType.LAZY)
-    @MapsId("documentId")
+    @MapsId("idDocument")
     @JoinColumn(name = "ID_DOCUMENTO")
     private Document document;
 
