@@ -17,17 +17,17 @@ public class DocumentProcess {
 
     @ManyToOne(fetch = FetchType.LAZY)
     @MapsId("idTypeDocument")
-    @JoinColumn("ID_TIPDOC")
+    @JoinColumn(name = "ID_TIPDOC")
     private DocumentType documentType;
 
     @ManyToOne(fetch = FetchType.LAZY)
     @MapsId("idTypeDocument")
-    @JoinColumn("ID_ESTPROCESO")
+    @JoinColumn(name = "ID_ESTPROCESO")
     private ProcessState processState;
 
     @Column(name = "REQUERIDO")
     private Boolean requery;
-    
+
     public DocumentProcess(DocumentType documentType,  ProcessState processState, Boolean requery) {
         this.documentType = documentType;
         this.processState = processState;
@@ -36,4 +36,5 @@ public class DocumentProcess {
     public DocumentProcess(){
 
     }
+
 }
