@@ -16,5 +16,5 @@ public class DocumentProcessId implements Serializable {
     private Integer idTypeDocument;
 
     @Column(name = "ID_ESTPROCESO")
-    private Integer idTSteteProcess;
+    private Integer idStateProcess;
 }
