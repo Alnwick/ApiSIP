@@ -51,7 +51,7 @@ public class StudentService {
         Status status = statusRepository.findByDescription("ACTIVO")
                 .orElseThrow(() -> new ResourceNotFoundException("Estatus not found"));
         Offer offer = offerRepository.findByCompositeKeys(
-                registrationDto.schoolName(), registrationDto.careerName(), registrationDto.syllabusCode())
+                registrationDto.schoolName(), registrationDto.acronymCareer(), registrationDto.syllabusCode())
                 .orElseThrow(() -> new ResourceNotFoundException("OfertaAca not found"));
 
         if(!registrationDto.graduated()){
