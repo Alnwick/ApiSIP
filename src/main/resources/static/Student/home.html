@@ -465,7 +465,7 @@
         const logoutLink = document.querySelector('.dropdown-content a[onclick="cerrarSesion()"]');
         if(logoutLink) logoutLink.textContent = 'Cerrando sesión...';
 
-        try {   
+        try {
             const response = await fetch('/auth/logout', {
                 method: 'POST',
                 headers: {
