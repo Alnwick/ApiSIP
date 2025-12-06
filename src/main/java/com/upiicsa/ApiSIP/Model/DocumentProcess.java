@@ -13,7 +13,7 @@ import lombok.Setter;
 public class DocumentProcess {
 
     @EmbeddedId
-    private DocumentProcess id = new DocumentProcessId();
+    private DocumentProcessId id = new DocumentProcessId();
 
     @ManyToOne(fetch = FetchType.LAZY)
     @MapsId("idTypeDocument")
