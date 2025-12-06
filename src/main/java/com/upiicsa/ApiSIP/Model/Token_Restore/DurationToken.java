@@ -2,15 +2,13 @@ package com.upiicsa.ApiSIP.Model.Token_Restore;
 
 import com.upiicsa.ApiSIP.Model.UserType;
 import jakarta.persistence.*;
-import lombok.AllArgsConstructor;
-import lombok.Data;
-import lombok.NoArgsConstructor;
+import lombok.*;
 
-@Data
+@Getter @Setter
 @AllArgsConstructor
 @NoArgsConstructor
 @Entity
-@Table(name = "SIP_DURACION_TOKEN")
+@Table(name = "SIP_CDURACION_TOKEN")
 public class DurationToken {
 
     @Id
@@ -18,7 +16,7 @@ public class DurationToken {
     @Column(name = "ID_DURACION")
     private Integer id;
 
-    @Column
+    @Column(name = "DURACION_HORAS")
     private Integer hours;
 
     @ManyToOne
