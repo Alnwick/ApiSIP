@@ -1,8 +1,6 @@
-package com.upiicsa.ApiSIP.Model.Token_Restore;
+package com.upiicsa.ApiSIP.Model;
 
 import com.upiicsa.ApiSIP.Model.Catalogs.ProcessState;
-import com.upiicsa.ApiSIP.Model.StudentProcess;
-import com.upiicsa.ApiSIP.Model.UserSIP;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
