@@ -2,21 +2,19 @@ package com.upiicsa.ApiSIP.Model.Catalogs;
 
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
-import lombok.Data;
+import lombok.Getter;
 import lombok.NoArgsConstructor;
+import lombok.Setter;
 
-@Data
-@AllArgsConstructor
 @NoArgsConstructor
+@AllArgsConstructor
+@Getter @Setter
 @Entity
-@Table(name = "SIP_CESTDODOC")
-public class DocumentStatus {
+@Table(name = "SIP_CESTADODOC")
+public class DocumentStatus extends BaseCatalog{
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "ID_ESTDODOC")
+    @Column(name = "ID_ESTADODOC")
     private Integer id;
-
-    @Column(name = "DESCRIPCION", length = 100)
-    private String description;
 }
