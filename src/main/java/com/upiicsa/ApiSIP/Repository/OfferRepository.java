@@ -21,7 +21,7 @@ public interface OfferRepository extends JpaRepository<Offer, Integer> {
             "AND o.syllabus.code = :codeSyllabus")
     Optional<Offer> findByCompositeKeys(
             @Param("nameSchool") String school,
-            @Param("nameCareer") String career,
+            @Param("acronymCareer") String career,
             @Param("codeSyllabus") String syllabus
     );
 
