@@ -12,7 +12,7 @@ public record StudentRegistrationDto(
         String semester,
         boolean graduated,
         String schoolName,
-        String careerName,
+        String acronymCareer,
         String syllabusCode
 ) {
 }
