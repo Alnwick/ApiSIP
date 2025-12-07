@@ -6,15 +6,11 @@
   <component name="ChangeListManager">
     <list default="true" id="27209d0c-47d6-463d-a6fc-94d01f2cda34" name="Changes" comment="">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/com/upiicsa/ApiSIP/Dto/Auth/AuthResponseDto.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/upiicsa/ApiSIP/Dto/Auth/AuthResponseDto.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/com/upiicsa/ApiSIP/Dto/Student/StudentRegistrationDto.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/upiicsa/ApiSIP/Dto/Student/StudentRegistrationDto.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/com/upiicsa/ApiSIP/Model/DocumentProcess.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/upiicsa/ApiSIP/Model/DocumentProcess.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/com/upiicsa/ApiSIP/Model/ReviewDocument.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/upiicsa/ApiSIP/Model/ReviewDocument.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/com/upiicsa/ApiSIP/Model/Support/DocumentProcessId.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/upiicsa/ApiSIP/Model/Support/DocumentProcessId.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/com/upiicsa/ApiSIP/Repository/OfferRepository.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/upiicsa/ApiSIP/Repository/OfferRepository.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/upiicsa/ApiSIP/Repository/Token_Restore/TokenResetRepository.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/upiicsa/ApiSIP/Repository/Token_Restore/TokenResetRepository.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/com/upiicsa/ApiSIP/Security/Config/SecurityConfig.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/upiicsa/ApiSIP/Security/Config/SecurityConfig.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/upiicsa/ApiSIP/Service/EmailVerificationService.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/upiicsa/ApiSIP/Service/EmailVerificationService.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/upiicsa/ApiSIP/Service/PasswordResetService.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/upiicsa/ApiSIP/Service/PasswordResetService.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/com/upiicsa/ApiSIP/Service/StudentService.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/upiicsa/ApiSIP/Service/StudentService.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/resources/static/script.js" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/resources/static/script.js" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -149,6 +145,7 @@
       <workItem from="1764006126311" duration="4636000" />
       <workItem from="1764092218322" duration="8060000" />
       <workItem from="1764255779843" duration="2139000" />
+      <workItem from="1765137625976" duration="3969000" />
     </task>
     <servers />
   </component>
