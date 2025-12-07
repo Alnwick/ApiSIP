@@ -9,10 +9,7 @@ import com.upiicsa.ApiSIP.Service.StudentService;
 import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
 import java.net.URI;
@@ -44,5 +41,12 @@ public class StudentController {
         verificationService.confirmEmail(emailConfirmation);
 
         return ResponseEntity.ok().build();
+    }
+
+    @PostMapping("/resend-code")
+    public ResponseEntity<String> resendCode(@RequestParam("email") String email) {
+
+        verificationService.resendConfirmationCode(email);
+        return ResponseEntity.ok("Código reenviado correctamente.");
     }
 }
