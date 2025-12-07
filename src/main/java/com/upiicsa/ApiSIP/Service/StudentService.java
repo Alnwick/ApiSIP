@@ -10,11 +10,14 @@ import com.upiicsa.ApiSIP.Model.Offer;
 import com.upiicsa.ApiSIP.Model.UserType;
 import com.upiicsa.ApiSIP.Repository.*;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.time.LocalDateTime;
+import java.util.Optional;
 
 @Service
 public class StudentService {
@@ -39,6 +42,10 @@ public class StudentService {
 
     @Autowired
     private EmailVerificationService verificationService;
+
+    public Page<Student> getStudents(Pageable pageable) {
+        return studentRepository.findAll(pageable);
+    }
 
     @Transactional
     public Student registerStudent(StudentRegistrationDto registrationDto) {
