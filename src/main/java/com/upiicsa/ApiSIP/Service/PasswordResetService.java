@@ -37,7 +37,7 @@ public class PasswordResetService {
                 .orElseThrow(() -> new UsernameNotFoundException("No se encontró usuario con el email: " + request.email()));
 
         String token = UUID.randomUUID().toString();
-            TokenReset tokenReset = new TokenReset(null, token, LocalDateTime.now(), null, user);
+            TokenReset tokenReset = new TokenReset(null, token, LocalDateTime.now().plusMinutes(15), null, user);
         tokenResetRepository.save(tokenReset);
 
         String resetUrl = "http://localhost:8080/api/reset-password/validate?token=" + token;
