@@ -1,0 +1,266 @@
+* {
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+}
+
+body {
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    background-color: #f8f9fa;
+    color: #333;
+    line-height: 1.6;
+    display: flex;
+    flex-direction: column;
+    min-height: 100vh;
+}
+
+.container {
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 0 20px;
+}
+
+/* HEADER FIJO */
+header {
+    background: linear-gradient(135deg, #1A8C14 0%, #136b10 100%);
+    padding: 15px 30px;
+    color: white;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    z-index: 1000;
+}
+
+.logo {
+    height: 50px;
+    filter: brightness(0) invert(1);
+}
+
+.title {
+    font-size: 24px;
+    font-weight: bold;
+    text-align: center;
+}
+
+/* BARRA DE ICONOS FIJA */
+.top-icons {
+    display: flex;
+    gap: 15px;
+    align-items: center;
+    padding: 10px 20px;
+    background-color: #f8f8f8;
+    border-bottom: 1px solid #ddd;
+    position: fixed;
+    top: 80px;
+    left: 0;
+    right: 0;
+    z-index: 999;
+}
+
+.icon {
+    width: 28px;
+    height: 28px;
+    cursor: pointer;
+    transition: transform 0.3s;
+}
+
+.icon:hover {
+    transform: scale(1.1);
+}
+
+/* Ajustamos el margen superior del contenido para que no quede oculto */
+.contenido {
+    flex: 1;
+    padding: 30px 0;
+    margin-top: 130px;
+}
+
+.titulo-seccion {
+    font-size: 24px;
+    color: #1A8C14;
+    font-weight: 600;
+    margin: 30px 0 20px;
+    padding-bottom: 10px;
+    border-bottom: 2px solid #e0e0e0;
+}
+
+.texto {
+    font-size: 16px;
+    text-align: justify;
+    color: #444;
+    line-height: 1.7;
+    margin-bottom: 20px;
+}
+
+.texto p {
+    margin-bottom: 15px;
+}
+
+/* Listas mejoradas */
+.lista-mejorada {
+    background-color: white;
+    border-radius: 10px;
+    padding: 25px;
+    margin: 25px 0;
+    box-shadow: 0 4px 12px rgba(0,0,0,0.08);
+    transition: all 0.3s ease;
+    position: relative;
+}
+
+/* Efecto de resplandor verde externo para el recuadro 5 */
+.recuadro-5 {
+    position: relative;
+    z-index: 1;
+}
+
+.recuadro-5::before {
+    content: '';
+    position: absolute;
+    top: -5px;
+    left: -5px;
+    right: -5px;
+    bottom: -5px;
+    border-radius: 12px;
+    background: linear-gradient(135deg, rgba(26, 140, 20, 0.3), rgba(19, 107, 16, 0.3));
+    z-index: -1;
+    box-shadow: 0 0 20px 5px rgba(26, 140, 20, 0.4);
+    animation: resplandor 2s ease-in-out infinite alternate;
+}
+
+@keyframes resplandor {
+    from {
+        box-shadow: 0 0 15px 3px rgba(26, 140, 20, 0.4);
+    }
+    to {
+        box-shadow: 0 0 25px 8px rgba(26, 140, 20, 0.6);
+    }
+}
+
+.lista-mejorada ol {
+    padding-left: 20px;
+}
+
+.lista-mejorada li {
+    margin-bottom: 15px;
+    padding-left: 10px;
+}
+
+/* Listas mejoradas */
+.lista-mejorada ul {
+    padding-left: 20px;
+}
+
+.lista-mejorada li {
+    margin-bottom: 15px;
+    padding-left: 5px;
+}
+
+.lista-simple {
+    list-style-type: none;
+    padding-left: 0;
+}
+
+.lista-simple li {
+    margin-bottom: 12px;
+    padding-left: 22px;
+    position: relative;
+}
+
+.lista-simple li:before {
+    content: "•";
+    color: #1A8C14;
+    font-weight: bold;
+    font-size: 20px;
+    position: absolute;
+    left: 5px;
+    top: -2px;
+}
+
+.sublista {
+    list-style-type: lower-alpha;
+    padding-left: 30px;
+    margin-top: 10px;
+}
+
+.sublista li {
+    margin-bottom: 10px;
+}
+
+.destacado {
+    background-color: #e8f5e9;
+    padding: 15px;
+    border-left: 4px solid #1A8C14;
+    border-radius: 4px;
+    margin: 15px 0;
+}
+
+.nota {
+    background-color: #fff3cd;
+    padding: 12px 15px;
+    border-left: 4px solid #ffc107;
+    border-radius: 4px;
+    margin: 10px 0;
+    font-style: italic;
+}
+
+/* Enlaces */
+.enlace-descarga {
+    color: #1A8C14;
+    text-decoration: none;
+    font-weight: 600;
+    display: inline-block;
+    margin-top: 5px;
+}
+
+.enlace-descarga:hover {
+    text-decoration: underline;
+}
+
+/* Footer */
+footer {
+    background: linear-gradient(135deg, #1A8C14 0%, #136b10 100%);
+    text-align: center;
+    padding: 20px;
+    color: white;
+    font-size: 14px;
+    margin-top: 40px;
+}
+
+/* Responsive */
+@media (max-width: 768px) {
+    header {
+        flex-direction: column;
+        gap: 15px;
+        text-align: center;
+        padding: 10px 20px;
+    }
+
+    .top-icons {
+        top: 120px;
+        padding: 8px 15px;
+    }
+
+    .contenido {
+        margin-top: 160px;
+    }
+
+    .titulo-seccion {
+        font-size: 20px;
+    }
+
+    .texto {
+        font-size: 15px;
+    }
+
+    .recuadro-5::before {
+        top: -3px;
+        left: -3px;
+        right: -3px;
+        bottom: -3px;
+    }
+}
