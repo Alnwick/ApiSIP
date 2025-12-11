@@ -1,0 +1,88 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Prácticas Profesionales - Perfil</title>
+    <link rel="stylesheet" href="css/perfil.css">
+</head>
+<body>
+<header>
+    <img src="../Imagenes/ipn.png" alt="IPN Logo" class="logo">
+    <div class="title">Sistema de Prácticas Profesionales</div>
+    <img src="../Imagenes/logo blanco.png" alt="UPIICSA Logo" class="logo">
+</header>
+
+<div class="top-icons">
+    <a href="home.html">
+        <img src="../Imagenes/icono_home.png" alt="Menú" class="icon">
+    </a>
+    <img src="../Imagenes/icono_mensaje.png" alt="Mensaje" class="icon">
+    <img src="../Imagenes/icono_notificacion.png" alt="Notificaciones" class="icon">
+    <div class="user-section">
+        <img src="../Imagenes/icono_usuario.png" alt="Usuario" class="user-avatar">
+        <span>Santiago Martínez</span>
+    </div>
+</div>
+
+<div class="overlay" id="overlay"></div>
+
+<div class="main-container">
+    <div class="sidebar" id="sidebar">
+        <h3>Menú</h3>
+        <div class="menu-item">Inicio</div>
+        <div class="menu-item">Registro Documentación inicial de Prácticas Profesionales</div>
+        <div class="menu-item">Carta de Aceptación</div>
+        <div class="menu-item">Reportes Mensuales</div>
+    </div>
+
+    <div class="content" id="mainContent">
+        <div class="student-info">
+            <div class="profile-section">
+                <div class="profile-picture-container">
+                    <img id="profileImage" src="../Imagenes/icono_usuario.png" alt="Foto de perfil" class="profile-picture">
+                    <input type="file" id="fileInput" class="file-input" accept="image/*">
+                </div>
+                <button class="profile-upload-btn" id="saveProfileBtn">Guardar foto</button>
+            </div>
+
+            <div class="student-details">
+                <h2>Santiago Martínez Hernandez</h2>
+                <div class="info-grid">
+                    <div class="info-item">
+                        <span class="info-label">Plan de estudio</span>
+                        <span class="info-value">2021</span>
+                    </div>
+                    <div class="info-item">
+                        <span class="info-label">Sexo</span>
+                        <span class="info-value">Hombre</span>
+                    </div>
+                    <div class="info-item">
+                        <span class="info-label">Correo</span>
+                        <span class="info-value">alumno.prueba@gmail.com</span>
+                    </div>
+                    <div class="info-item">
+                        <span class="info-label">Boleta</span>
+                        <span class="info-value">20210360</span>
+                    </div>
+                    <div class="info-item">
+                        <span class="info-label">Carrera</span>
+                        <span class="info-value">Transporte</span>
+                    </div>
+                    <div class="info-item">
+                        <span class="info-label">Teléfono</span>
+                        <span class="info-value">558201308</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<footer>
+    <p>Instituto Politécnico Nacional - UPIICSA © 2025 | Sistema de Prácticas Profesionales</p>
+</footer>
+
+<script src="js/perfil.js"></script>
+</body>
+</html>

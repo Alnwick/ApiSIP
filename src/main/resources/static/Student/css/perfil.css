@@ -1,0 +1,253 @@
+body {
+    margin: 0;
+    font-family: Arial, sans-serif;
+    background-color: #f4f4f4;
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+}
+
+header {
+    background: linear-gradient(135deg, #1A8C14 0%, #136b10 100%);
+    padding: 15px 30px;
+    color: white;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    z-index: 1000;
+}
+
+/* Footer */
+footer {
+    text-align: center;
+    padding: 20px;
+    margin-top: 30px;
+    color: #ffffff;
+    font-size: 14px;
+    border-top: 1px solid #eaeaea;
+    background-color: #1A8C14; /* Asegurando color de fondo igual al inline original si faltaba */
+    height: 40px;
+    width: 100%;
+}
+
+.logo {
+    height: 50px;
+    filter: brightness(0) invert(1);
+}
+
+.title {
+    font-size: 22px;
+    font-weight: bold;
+}
+
+.top-icons {
+    display: flex;
+    gap: 15px;
+    align-items: center;
+    padding: 10px 20px;
+    background-color: #f8f8f8;
+    border-bottom: 1px solid #ddd;
+    flex-shrink: 0;
+    border-radius: 8px;
+    margin-bottom: 20px;
+    position: fixed;
+    top: 80px;
+    left: 0;
+    right: 0;
+    z-index: 999;
+}
+
+.icon {
+    width: 24px;
+    height: 24px;
+    cursor: pointer;
+}
+
+.user-section {
+    margin-left: auto;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+}
+
+.user-avatar {
+    width: 32px;
+    height: 32px;
+    border-radius: 50%;
+}
+
+.main-container {
+    display: flex;
+    flex: 1;
+    margin-top: 130px;
+}
+
+.sidebar {
+    width: 250px;
+    background-color: #fff;
+    padding: 20px;
+    box-shadow: 2px 0 5px rgba(0,0,0,0.1);
+    transform: translateX(-100%);
+    transition: transform 0.3s ease;
+    position: fixed;
+    height: 100%;
+    z-index: 100;
+}
+
+.sidebar.active {
+    transform: translateX(0);
+}
+
+.content {
+    flex: 1;
+    padding: 20px;
+    transition: margin-left 0.3s ease;
+}
+
+.content.active {
+    margin-left: 250px;
+}
+
+.overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background-color: rgba(0,0,0,0.5);
+    z-index: 99;
+    display: none;
+}
+
+.overlay.active {
+    display: block;
+}
+
+.student-info {
+    background-color: white;
+    border-radius: 10px;
+    padding: 20px;
+    margin-bottom: 20px;
+    box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+    display: flex;
+    gap: 30px;
+    align-items: flex-start;
+}
+
+.profile-section {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 10px;
+}
+
+.profile-picture-container {
+    position: relative;
+    width: 120px;
+    height: 120px;
+}
+
+.profile-picture {
+    width: 100%;
+    height: 100%;
+    border-radius: 50%;
+    object-fit: cover;
+    border: 3px solid #1A8C14;
+    cursor: pointer;
+}
+
+.profile-upload-btn {
+    background-color: #1A8C14;
+    color: white;
+    border: none;
+    padding: 8px 15px;
+    border-radius: 5px;
+    cursor: pointer;
+    font-size: 14px;
+    width: 100%;
+}
+
+.profile-upload-btn:hover {
+    background-color: #157a10;
+}
+
+.file-input {
+    display: none;
+}
+
+.student-details {
+    flex: 1;
+}
+
+.info-grid {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 15px;
+}
+
+.info-item {
+    margin-bottom: 10px;
+}
+
+.info-label {
+    font-weight: bold;
+    color: #555;
+    display: block;
+    margin-bottom: 5px;
+}
+
+.info-value {
+    color: #333;
+}
+
+hr {
+    border: none;
+    border-top: 1px solid #ddd;
+    margin: 20px 0;
+}
+
+.menu-item {
+    padding: 10px;
+    cursor: pointer;
+    border-radius: 5px;
+    margin-bottom: 5px;
+    transition: background-color 0.2s ease;
+}
+
+.menu-item:hover {
+    background-color: #1A8C14;
+    color: white;
+}
+
+/* Responsive */
+@media (max-width: 768px) {
+    header {
+        flex-direction: column;
+        gap: 15px;
+        text-align: center;
+    }
+
+    .top-icons {
+        top: 120px;
+        padding: 8px 15px;
+    }
+
+    .main-container {
+        margin-top: 160px;
+    }
+
+    /* Ajuste para perfil en móviles */
+    .student-info {
+        flex-direction: column;
+        align-items: center;
+    }
+
+    .info-grid {
+        grid-template-columns: 1fr;
+    }
+}
