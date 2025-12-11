@@ -14,6 +14,7 @@ target/
 .sts4-cache
 
 ### IntelliJ IDEA ###
+.idea/inspectionProfiles/Project_Default.xml
 .idea/workspace.xml
 .idea/**
 *.iws
