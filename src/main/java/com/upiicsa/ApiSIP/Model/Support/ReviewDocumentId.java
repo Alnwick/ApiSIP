@@ -9,7 +9,7 @@ import java.io.Serializable;
 @AllArgsConstructor
 public class ReviewDocumentId implements Serializable {
 
-    @Column(name = "ID_USUARIO")
+    @Column(name = "ID_OPERATIVO")
     private Integer idOperative;
 
     @Column(name = "ID_DOCUMENTO")
