@@ -12,12 +12,12 @@ import java.time.LocalDateTime;
 @AllArgsConstructor
 @NoArgsConstructor
 @Entity
-@Table(name = "SIP_ALUMNOPROC")
+@Table(name = "SIP_PROCESO")
 public class StudentProcess {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "ID_ALUMNOPROC")
+    @Column(name = "ID_PROCESO")
     private Integer id;
 
     @Column(name = "FECHA_INICIO")
@@ -30,13 +30,17 @@ public class StudentProcess {
     private Boolean Active;
 
     @ManyToOne
-    @JoinColumn(name = "ID_USUARIO")
+    @JoinColumn(name = "ID_ALUMNO")
     private Student student;
 
     @ManyToOne
-    @JoinColumn(name = "ID_CESTPROCESO")
+    @JoinColumn(name = "ESTADO_ACTUAL", referencedColumnName = "ID_ESTPROCESO")
     private ProcessState processState;
 
     @Column(name = "OBSERVACIONES", length = 150)
     private String observations;
+
+    @ManyToOne
+    @JoinColumn(name = "ID_EMPRESA")
+    private Company company;
 }

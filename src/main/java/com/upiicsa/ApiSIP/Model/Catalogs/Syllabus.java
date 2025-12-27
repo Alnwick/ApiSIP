@@ -12,7 +12,7 @@ public class Syllabus {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "ID_PLAN")
+    @Column(name = "ID_PLAN_EST")
     public Integer id;
 
     @Column(name = "CODIGO")

@@ -12,7 +12,7 @@ import java.io.Serializable;
 @AllArgsConstructor
 public class DocumentProcessId implements Serializable {
 
-    @Column(name = "ID_TIPDOC")
+    @Column(name = "ID_TIPODOC")
     private Integer idTypeDocument;
 
     @Column(name = "ID_ESTPROCESO")

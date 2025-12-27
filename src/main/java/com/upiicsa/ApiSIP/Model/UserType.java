@@ -22,7 +22,7 @@ public class UserType {
     private String description;
 
     @ManyToMany(fetch = FetchType.EAGER)
-    @JoinTable(name = "SIP_TIPOUSU_PERMISOS",
+    @JoinTable(name = "SIP_TIPO_PERMISOS",
             joinColumns = @JoinColumn(name = "ID_TIPOUSUARIO"),
             inverseJoinColumns = @JoinColumn(name = "ID_PERMISO")
     )
