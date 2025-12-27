@@ -10,7 +10,7 @@ import java.time.LocalDateTime;
 @NoArgsConstructor
 @AllArgsConstructor
 @Entity
-@Table(name = "SIP_CARGADOC")
+@Table(name = "SIP_DOCUMENTO")
 public class Document {
 
     @Id
@@ -18,7 +18,7 @@ public class Document {
     private Integer ID;
 
     @ManyToOne
-    @JoinColumn(name = "ID_ALUMNOPROC")
+    @JoinColumn(name = "ID_PROCESO")
     private StudentProcess studentProcess;
 
     @Column(name = "FECHA_CARGA")
