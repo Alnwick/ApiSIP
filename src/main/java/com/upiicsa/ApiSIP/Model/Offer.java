@@ -15,7 +15,7 @@ public class Offer {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "ID_OFERTA")
+    @Column(name = "ID_OFERTA_ACA")
     private Integer id;
 
     @ManyToOne

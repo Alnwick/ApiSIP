@@ -22,11 +22,11 @@ public class History {
     private Integer id;
 
     @ManyToOne
-    @JoinColumn(name = "ID_ALUMNOPROC")
+    @JoinColumn(name = "ID_PROCESO")
     private StudentProcess process;
 
     @ManyToOne
-    @JoinColumn(name = "ID_USUARIORESP")
+    @JoinColumn(name = "ID_USUARIO")
     private UserSIP user;
 
     @Column(name = "FECHA_ACT")
