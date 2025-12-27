@@ -10,11 +10,39 @@ import lombok.Setter;
 @NoArgsConstructor
 @AllArgsConstructor
 @Entity
-@Table(name = "SIP_DATOSEMPRESA")
-public class DataCompany {
+@Table(name = "SIP_EMPRESA")
+public class Company {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "ID_DATOSEMPRESA")
+    @Column(name = "ID_EMPRESA")
     public Integer id;
+
+    @Column(name = "CORREO", length = 100)
+    private String email;
+
+    @Column(name = "SECTOR", length = 20)
+    private String sector;
+
+    @Column(name = "TELEFONO", length = 45)
+    private String phone;
+
+    @Column(name = "EXTENSION", length = 10)
+    private String extension;
+
+    @Column(name = "FAX", length = 45)
+    private String fax;
+
+    @Column(name = "RESPONSABLE", length = 45)
+    private String supervisor;
+
+    @Column(name = "PUESTO_RESPO", length = 100)
+    private String positionSupervisor;
+
+    @Column(name = "PUESTO_ALUMNO", length = 100)
+    private String positionStudent;
+
+    @ManyToOne
+    @JoinColumn(name = "ID_DIRECCION")
+    private Address address;
 }
