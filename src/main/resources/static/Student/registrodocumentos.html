@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Prácticas Profesionales - Reportes</title>
+    <title>Prácticas Profesionales - Registro Documental</title>
     <link rel="stylesheet" href="css/registrodocumentos.css">
 </head>
 <body>
@@ -31,182 +31,128 @@
     <div class="contenido">
         <div class="titulo-seccion">Registro de documentación inicial de Prácticas Profesionales</div>
 
-        <div class="file-section accepted">
+        <div id="section-cedula" class="file-section pending" data-type="CEDULA">
             <h3>
-                <span class="status-indicator status-accepted"></span>
-                <svg class="status-icon" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="#1A8C14">
-                    <path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm-2 15l-5-5 1.41-1.41L10 14.17l7.59-7.59L19 8l-9 9z"/>
-                </svg>
+                <span class="status-indicator"></span>
+                <svg class="status-icon" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor"><path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm1 15h-2v-6h2v6zm0-8h-2V7h2v2z"/></svg>
                 Cedula de registro
             </h3>
-
             <div class="file-content">
                 <div class="file-input-container">
-                    <input type="file" id="reporteInput" class="file-input" accept=".pdf,.doc,.docx" />
-                    <label for="reporteInput" class="file-label">Seleccionar Archivo</label>
-                    <div class="file-info" id="reporteInfo">
-                        <div class="icon-container">
-                            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="#1A8C14" viewBox="0 0 16 16">
-                                <path d="M14 4.5V14a2 2 0 0 1-2 2H4a2 2 0 0 1-2-2V2a2 2 0 0 1 2-2h5.5L14 4.5zm-3 0A1.5 1.5 0 0 1 9.5 3V1H4a1 1 0 0 0-1 1v12a1 1 0 0 0 1 1h8a1 1 0 0 0 1-1V4.5h-2z"/>
-                            </svg>
-                            <span id="reporteName" class="file-name">Cedula-registro.pdf</span>
-                        </div>
-                        <img src="../Imagenes/reg_borra.png" class="delete-icon" id="reporteDelete" title="Eliminar archivo"  alt=""/>
+                    <input type="file" id="input-cedula" class="file-input" accept=".pdf" />
+                    <label for="input-cedula" class="file-label">Seleccionar Archivo</label>
+                    <div class="file-info">
+                        <span id="name-cedula" class="file-name">No se ha seleccionado ningún archivo</span>
+                        <img src="../Imagenes/reg_borra.png" class="delete-icon" id="delete-cedula" title="Eliminar archivo" style="display: none;" />
                     </div>
                 </div>
             </div>
-
             <div class="comment-content">
                 <div class="comments-title">Comentarios</div>
-                <div class="comment-section accepted">
-                    <div class="comment-doc-title">Cedula de registro</div>
-                    <div class="comment-text">Documento aceptado correctamente. No se requieren cambios.</div>
-                    <div class="comment-date">Revisado el: 15/03/2025</div>
+                <div class="comment-section">
+                    <div class="comment-text" id="comment-cedula">Sin revisiones aún.</div>
+                    <div class="comment-date" id="date-cedula"></div>
                 </div>
             </div>
         </div>
 
-        <div class="file-section rejected">
+        <div id="section-imss" class="file-section pending" data-type="IMSS">
             <h3>
-                <span class="status-indicator status-rejected"></span>
-                <svg class="status-icon" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="#d9534f">
-                    <path d="M12 2C6.47 2 2 6.47 2 12s4.47 10 10 10 10-4.47 10-10S17.53 2 12 2zm5 13.59L15.59 17 12 13.41 8.41 17 7 15.59 10.59 12 7 8.41 8.41 7 12 10.59 15.59 7 17 8.41 13.41 12 17 15.59z"/>
-                </svg>
-                Constancia de vigencias de derechos (IMSS)
+                <span class="status-indicator"></span>
+                <svg class="status-icon" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor"><path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm1 15h-2v-6h2v6zm0-8h-2V7h2v2z"/></svg>
+                Constancia de vigencia de derechos (IMSS)
             </h3>
-
             <div class="file-content">
                 <div class="file-input-container">
-                    <input type="file" id="cartaInput" class="file-input" accept=".pdf,.doc,.docx" />
-                    <label for="cartaInput" class="file-label">Seleccionar Archivo</label>
-                    <div class="file-info" id="cartaInfo">
-                        <div class="icon-container">
-                            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="#d9534f" viewBox="0 0 16 16">
-                                <path d="M14 4.5V14a2 2 0 0 1-2 2H4a2 2 0 0 1-2-2V2a2 2 0 0 1 2-2h5.5L14 4.5zm-3 0A1.5 1.5 0 0 1 9.5 3V1H4a1 1 0 0 0-1 1v12a1 1 0 0 0 1 1h8a1 1 0 0 0 1-1V4.5h-2z"/>
-                            </svg>
-                            <span id="cartaName" class="file-name">Constancia-IMSS.pdf</span>
-                        </div>
-                        <img src="../Imagenes/reg_borra.png" class="delete-icon" id="cartaDelete" title="Eliminar archivo"  alt=""/>
+                    <input type="file" id="input-imss" class="file-input" accept=".pdf" />
+                    <label for="input-imss" class="file-label">Seleccionar Archivo</label>
+                    <div class="file-info">
+                        <span id="name-imss" class="file-name">No se ha seleccionado ningún archivo</span>
+                        <img src="../Imagenes/reg_borra.png" class="delete-icon" id="delete-imss" style="display: none;" />
                     </div>
                 </div>
             </div>
-
             <div class="comment-content">
                 <div class="comments-title">Comentarios</div>
-                <div class="comment-section rejected">
-                    <div class="comment-doc-title">Constancia de vigencias de derechos (IMSS)</div>
-                    <div class="comment-text">La constancia está vencida. Por favor, suba una versión actualizada con vigencia al menos hasta la fecha de finalización de las prácticas.</div>
-                    <div class="comment-date">Revisado el: 15/03/2025</div>
+                <div class="comment-section">
+                    <div class="comment-text" id="comment-imss">Sin revisiones aún.</div>
                 </div>
             </div>
         </div>
 
-        <div class="file-section pending">
+        <div id="section-sisae-empresa" class="file-section pending" data-type="SISAE_EMPRESA">
             <h3>
-                <span class="status-indicator status-pending"></span>
-                <svg class="status-icon" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="#f0ad4e">
-                    <path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm1 15h-2v-6h2v6zm0-8h-2V7h2v2z"/>
-                </svg>
-                Captura de pantalla del registro de la empresa en la plataforma SISAE-SIBOLTRA
+                <span class="status-indicator"></span>
+                <svg class="status-icon" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor"><path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm1 15h-2v-6h2v6zm0-8h-2V7h2v2z"/></svg>
+                Captura del registro de la empresa (SISAE-SIBOLTRA)
             </h3>
-
             <div class="file-content">
                 <div class="file-input-container">
-                    <input type="file" id="informeInput" class="file-input" accept=".pdf,.doc,.docx" />
-                    <label for="informeInput" class="file-label">Seleccionar Archivo</label>
-                    <div class="file-info" id="informeInfo">
-                        <div class="icon-container">
-                            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="#f0ad4e" viewBox="0 0 16 16">
-                                <path d="M14 4.5V14a2 2 0 0 1-2 2H4a2 2 0 0 1-2-2V2a2 2 0 0 1 2-2h5.5L14 4.5zm-3 0A1.5 1.5 0 0 1 9.5 3V1H4a1 1 0 0 0-1 1v12a1 1 0 0 0 1 1h8a1 1 0 0 0 1-1V4.5h-2z"/>
-                            </svg>
-                            <span id="informeName" class="file-name">No se ha seleccionado ningún archivo</span>
-                        </div>
-                        <img src="../Imagenes/reg_borra.png" class="delete-icon" id="informeDelete" title="Eliminar archivo" style="display: none;"  alt=""/>
+                    <input type="file" id="input-sisae-empresa" class="file-input" accept=".pdf,.png,.jpg" />
+                    <label for="input-sisae-empresa" class="file-label">Seleccionar Archivo</label>
+                    <div class="file-info">
+                        <span id="name-sisae-empresa" class="file-name">No se ha seleccionado ningún archivo</span>
+                        <img src="../Imagenes/reg_borra.png" class="delete-icon" id="delete-sisae-empresa" style="display: none;" />
                     </div>
                 </div>
             </div>
-
             <div class="comment-content">
                 <div class="comments-title">Comentarios</div>
-                <div class="comment-section pending">
-                    <div class="comment-doc-title">Captura de pantalla SISAE-SIBOLTRA (empresa)</div>
-                    <div class="comment-text">Aún no se ha recibido este documento. Es requisito obligatorio para continuar con el proceso.</div>
-                    <div class="comment-date">Revisado el: 15/03/2025</div>
+                <div class="comment-section">
+                    <div class="comment-text" id="comment-sisae-empresa">Documento pendiente.</div>
                 </div>
             </div>
         </div>
 
-        <div class="file-section pending">
+        <div id="section-sisae-alumno" class="file-section pending" data-type="SISAE_ALUMNO">
             <h3>
-                <span class="status-indicator status-pending"></span>
-                <svg class="status-icon" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="#f0ad4e">
-                    <path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm1 15h-2v-6h2v6zm0-8h-2V7h2v2z"/>
-                </svg>
-                Impresión de captura de pantalla del registro en la plataforma SISAE-SIBOLTRA del alumno
+                <span class="status-indicator"></span>
+                <svg class="status-icon" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor"><path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm1 15h-2v-6h2v6zm0-8h-2V7h2v2z"/></svg>
+                Captura del registro del alumno (SISAE-SIBOLTRA)
             </h3>
-
             <div class="file-content">
                 <div class="file-input-container">
-                    <input type="file" id="adicional1Input" class="file-input" accept=".pdf,.doc,.docx" />
-                    <label for="adicional1Input" class="file-label">Seleccionar Archivo</label>
-                    <div class="file-info" id="adicional1Info">
-                        <div class="icon-container">
-                            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="#f0ad4e" viewBox="0 0 16 16">
-                                <path d="M14 4.5V14a2 2 0 0 1-2 2H4a2 2 0 0 1-2-2V2a2 2 0 0 1 2-2h5.5L14 4.5zm-3 0A1.5 1.5 0 0 1 9.5 3V1H4a1 1 0 0 0-1 1v12a1 1 0 0 0 1 1h8a1 1 0 0 0 1-1V4.5h-2z"/>
-                            </svg>
-                            <span id="adicional1Name" class="file-name">No se ha seleccionado ningún archivo</span>
-                        </div>
-                        <img src="../Imagenes/reg_borra.png" class="delete-icon" id="adicional1Delete" title="Eliminar archivo" style="display: none;"  alt=""/>
+                    <input type="file" id="input-sisae-alumno" class="file-input" accept=".pdf,.png,.jpg" />
+                    <label for="input-sisae-alumno" class="file-label">Seleccionar Archivo</label>
+                    <div class="file-info">
+                        <span id="name-sisae-alumno" class="file-name">No se ha seleccionado ningún archivo</span>
+                        <img src="../Imagenes/reg_borra.png" class="delete-icon" id="delete-sisae-alumno" style="display: none;" />
                     </div>
                 </div>
             </div>
-
             <div class="comment-content">
                 <div class="comments-title">Comentarios</div>
-                <div class="comment-section pending">
-                    <div class="comment-doc-title">Impresión de captura de pantalla del registro en la plataforma SISAE-SIBOLTRA del alumno</div>
-                    <div class="comment-text">Documento pendiente de revisión. Una vez subido, será evaluado por el operativo.</div>
-                    <div class="comment-date">Revisado el: 15/03/2025</div>
+                <div class="comment-section">
+                    <div class="comment-text" id="comment-sisae-alumno">Documento pendiente.</div>
                 </div>
             </div>
         </div>
 
-        <div class="file-section pending">
+        <div id="section-horario" class="file-section pending" data-type="HORARIO">
             <h3>
-                <span class="status-indicator status-pending"></span>
-                <svg class="status-icon" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="#f0ad4e">
-                    <path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm1 15h-2v-6h2v6zm0-8h-2V7h2v2z"/>
-                </svg>
+                <span class="status-indicator"></span>
+                <svg class="status-icon" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor"><path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm1 15h-2v-6h2v6zm0-8h-2V7h2v2z"/></svg>
                 Copia de horario (SAES)
             </h3>
-
             <div class="file-content">
                 <div class="file-input-container">
-                    <input type="file" id="adicional2Input" class="file-input" accept=".pdf,.doc,.docx" />
-                    <label for="adicional2Input" class="file-label">Seleccionar Archivo</label>
-                    <div class="file-info" id="adicional2Info">
-                        <div class="icon-container">
-                            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="#f0ad4e" viewBox="0 0 16 16">
-                                <path d="M14 4.5V14a2 2 0 0 1-2 2H4a2 2 0 0 1-2-2V2a2 2 0 0 1 2-2h5.5L14 4.5zm-3 0A1.5 1.5 0 0 1 9.5 3V1H4a1 1 0 0 0-1 1v12a1 1 0 0 0 1 1h8a1 1 0 0 0 1-1V4.5h-2z"/>
-                            </svg>
-                            <span id="adicional2Name" class="file-name">No se ha seleccionado ningún archivo</span>
-                        </div>
-                        <img src="../Imagenes/reg_borra.png" class="delete-icon" id="adicional2Delete" title="Eliminar archivo" style="display: none;"  alt=""/>
+                    <input type="file" id="input-horario" class="file-input" accept=".pdf" />
+                    <label for="input-horario" class="file-label">Seleccionar Archivo</label>
+                    <div class="file-info">
+                        <span id="name-horario" class="file-name">No se ha seleccionado ningún archivo</span>
+                        <img src="../Imagenes/reg_borra.png" class="delete-icon" id="delete-horario" style="display: none;" />
                     </div>
                 </div>
             </div>
-
             <div class="comment-content">
                 <div class="comments-title">Comentarios</div>
-                <div class="comment-section pending">
-                    <div class="comment-doc-title">Copia de horario (SAES)</div>
-                    <div class="comment-text">Documento pendiente de revisión. Asegúrese de que el horario sea legible y corresponda al periodo actual.</div>
-                    <div class="comment-date">Revisado el: 15/03/2025</div>
+                <div class="comment-section">
+                    <div class="comment-text" id="comment-horario">Pendiente de revisión.</div>
                 </div>
             </div>
         </div>
 
-        <button type="button" class="btn-guardar">Guardar Documentos</button>
+        <button type="button" class="btn-guardar" id="btn-save-all">Guardar Cambios</button>
     </div>
 </div>
 
