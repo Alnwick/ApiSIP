@@ -27,6 +27,6 @@ public class Offer {
     private Career career;
 
     @ManyToOne
-    @JoinColumn(name = "ID_PLAN")
+    @JoinColumn(name = "ID_PLAN_EST")
     private Syllabus syllabus;
 }
