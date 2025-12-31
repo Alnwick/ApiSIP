@@ -3,6 +3,7 @@ package com.upiicsa.ApiSIP.Model;
 import com.upiicsa.ApiSIP.Model.Catalogs.ProcessState;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
+import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
@@ -12,6 +13,7 @@ import java.time.LocalDateTime;
 @AllArgsConstructor
 @NoArgsConstructor
 @Entity
+@Builder
 @Table(name = "SIP_PROCESO")
 public class StudentProcess {
 
@@ -30,7 +32,7 @@ public class StudentProcess {
     private Boolean Active;
 
     @ManyToOne
-    @JoinColumn(name = "ID_ALUMNO")
+    @JoinColumn(name = "ID_USUARIO")
     private Student student;
 
     @ManyToOne
