@@ -56,7 +56,7 @@ public class StudentService {
 
         studentRepository.save(newStudent);
         verificationService.createAndSendConfirmationCode(newStudent);
-        //processService.setFirstState(newStudent);
+        processService.setFirstState(newStudent);
 
         return newStudent;
     }
