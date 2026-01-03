@@ -10,8 +10,6 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.multipart.MultipartFile;
 
-import java.io.IOException;
-
 @RestController
 @RequestMapping("/documents")
 public class DocumentController {
@@ -23,9 +21,9 @@ public class DocumentController {
     @PreAuthorize("hasAnyRole('ALUMNO')")
     public ResponseEntity<String> uploadDocument(
             @RequestParam("file") MultipartFile file,
-            @RequestParam("type") String type) throws IOException {
-        documentService.saveDoc(file, type);
+            @RequestParam("type") String type){
 
+        documentService.saveDoc(file, type);
         return ResponseEntity.ok().body("Uploaded successfully");
     }
 }
