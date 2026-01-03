@@ -16,7 +16,8 @@ public class Document {
 
     @Id
     @Column(name = "ID_DOCUMENTO")
-    private Integer ID;
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private Integer id;
 
     @ManyToOne
     @JoinColumn(name = "ID_PROCESO")
