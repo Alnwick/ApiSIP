@@ -16,7 +16,6 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.multipart.MultipartFile;
 
-import java.io.IOException;
 import java.time.LocalDateTime;
 import java.util.Optional;
 
@@ -42,7 +41,7 @@ public class DocumentService {
     private FileStorageService fileStorage;
 
     @Transactional
-    public void saveDoc(MultipartFile file, String typeName) throws IOException {
+    public void saveDoc(MultipartFile file, String typeName) {
         Integer userId = AuthHelper.getAuthenticatedUserId();
         StudentProcess process =  processRepository.findByStudentId(userId)
                 .orElseThrow(()->new IllegalArgumentException("Student not found"));
@@ -86,7 +85,7 @@ public class DocumentService {
         fileStorage.store(file, finalName);
     }
 
-    public void updateDoc(Document currentDoc, String typeName, MultipartFile file) throws IOException {
+    public void updateDoc(Document currentDoc, String typeName, MultipartFile file) {
         if(!currentDoc.getDocumentType().getDescription().equals(typeName)){
             throw new ValidationException("Type for document not coincided.");
         }
