@@ -73,15 +73,17 @@ public class DocumentService {
     }
 
     public void createNewDocument(StudentProcess process, DocumentType type, MultipartFile file){
+        String finalName = documentNaming.generateVersionedName(process, type);
+
         Document newDocument = Document.builder()
                 .studentProcess(process)
                 .UploadDate(LocalDateTime.now())
-                .URL(documentNaming.generateVersionedName(process, type))
+                .URL(finalName)
                 .documentType(type)
                 .build();
 
         documentRepository.save(newDocument);
-        fileStorage.store(file, documentNaming.generateVersionedName(process, type));
+        fileStorage.store(file, finalName);
     }
 
     public void updateDoc(Document currentDoc, String typeName, MultipartFile file) throws IOException {
