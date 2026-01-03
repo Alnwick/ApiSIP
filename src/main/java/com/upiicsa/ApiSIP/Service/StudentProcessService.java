@@ -23,7 +23,7 @@ public class StudentProcessService {
 
     @Transactional
     public void setFirstState(Student student) {
-        var state = processStateRepository.findByDescription(StateProcessEnum.ACCEPTANCE.getName())
+        var state = processStateRepository.findByDescription(StateProcessEnum.REGISTERED.getName())
                         .orElseThrow(()-> new ResourceNotFoundException("State not found"));
 
         StudentProcess firstProcess = StudentProcess.builder()
