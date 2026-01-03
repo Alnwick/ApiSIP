@@ -1,24 +1,19 @@
-// ========== CONFIGURACIÓN ==========
 const UPLOAD_URL = '/documents/upload';
 const STATUS_URL = '/api/documents/my-status';
 
-// Mapeo exacto entre IDs del HTML y descripciones en la BD (SIP_CTIPODOC)
 const DOC_MAP = {
     'cedula': 'Cedula de Registro',
     'imss': 'Constancia de Vigencia',
-    'sisae-empresa': 'Captura del registro de la empresa (SISAE-SIBOLTRA)',
-    'sisae-alumno': 'Captura del registro del alumno (SISAE-SIBOLTRA)',
-    'horario': 'Copia de horario (SAES)'
+    'sisae-empresa': 'Captura de Empresa',
+    'sisae-alumno': 'Captura de Alumno',
+    'horario': 'Copia de horario'
 };
 
 document.addEventListener('DOMContentLoaded', () => {
-    // 1. Intentar cargar estados previos si el endpoint existe
     fetchDocumentStatus();
-    // 2. Configurar los eventos de la interfaz
     setupUIListeners();
 });
 
-// ========== 1. INTERACTIVIDAD (ACTUALIZACIÓN DE LEYENDA) ==========
 function setupUIListeners() {
     Object.keys(DOC_MAP).forEach(id => {
         const input = document.getElementById(`input-${id}`);
@@ -26,11 +21,11 @@ function setupUIListeners() {
         const deleteIcon = document.getElementById(`delete-${id}`);
 
         if (input && nameSpan) {
-            // Este evento es el que actualiza la leyenda al seleccionar un archivo
+            // Actualiza la leyenda al seleccionar un archivo
             input.addEventListener('change', (e) => {
                 if (e.target.files.length > 0) {
                     const fileName = e.target.files[0].name;
-                    nameSpan.textContent = fileName; // Se muestra el nombre del PDF
+                    nameSpan.textContent = fileName;
                     if (deleteIcon) deleteIcon.style.display = 'block';
                 } else {
                     nameSpan.textContent = 'No se ha seleccionado ningún archivo';
@@ -39,7 +34,7 @@ function setupUIListeners() {
             });
         }
 
-        // Configuración del icono de borrar (limpieza local)
+        // Icono de borrar archivo en local
         if (deleteIcon) {
             deleteIcon.addEventListener('click', () => {
                 input.value = '';
@@ -49,14 +44,13 @@ function setupUIListeners() {
         }
     });
 
-    // Listener del botón de guardado masivo (peticiones individuales)
+    // Listener del botón de guardado por peticiones individuales
     const btnSave = document.getElementById('btn-save-all');
     if (btnSave) {
         btnSave.addEventListener('click', handleUploadProcess);
     }
 }
 
-// ========== 2. PROCESO DE CARGA INDIVIDUAL ==========
 async function handleUploadProcess() {
     const btn = document.getElementById('btn-save-all');
     let filesToUpload = [];
@@ -80,18 +74,17 @@ async function handleUploadProcess() {
     btn.disabled = true;
     btn.textContent = 'Subiendo...';
 
-    // Ejecutar peticiones individuales una tras otra (secuencial)
     for (const item of filesToUpload) {
         await uploadFile(item.file, item.typeName);
     }
 
     alert('Carga de documentos finalizada.');
-    location.reload(); // Recargar para ver los cambios aplicados por el backend
+    location.reload();
 }
 
 async function uploadFile(file, typeName) {
     const formData = new FormData();
-    // Coinciden con @RequestParam("file") y @RequestParam("type") de tu Controller
+
     formData.append('file', file);
     formData.append('type', typeName);
 
@@ -99,7 +92,6 @@ async function uploadFile(file, typeName) {
         const response = await fetch(UPLOAD_URL, {
             method: 'POST',
             body: formData
-            // IMPORTANTE: No añadir headers manuales de Content-Type
         });
 
         if (!response.ok) {
@@ -113,7 +105,6 @@ async function uploadFile(file, typeName) {
     }
 }
 
-// ========== 3. CARGAR ESTADO DESDE LA API ==========
 async function fetchDocumentStatus() {
     try {
         const response = await fetch(STATUS_URL);
@@ -141,7 +132,6 @@ function updateUIWithData(id, data) {
     if (nameSpan && data.fileName) nameSpan.textContent = data.fileName;
     if (commentText && data.comment) commentText.textContent = data.comment;
 
-    // Bloquear el input si el estado ya es "CORRECTO" (ACCEPTED)
     if (data.status === 'ACCEPTED' && input) {
         input.disabled = true;
     }
