@@ -1,5 +1,6 @@
 package com.upiicsa.ApiSIP.Service;
 
+import com.upiicsa.ApiSIP.Dto.Document.DocumentStatusDto;
 import com.upiicsa.ApiSIP.Exception.ValidationException;
 import com.upiicsa.ApiSIP.Model.Catalogs.DocumentType;
 import com.upiicsa.ApiSIP.Model.Document;
@@ -9,7 +10,6 @@ import com.upiicsa.ApiSIP.Repository.DocumentRepository;
 import com.upiicsa.ApiSIP.Repository.DocumentTypeRepository;
 import com.upiicsa.ApiSIP.Repository.ReviewDocumentRepository;
 import com.upiicsa.ApiSIP.Repository.StudentProcessRepository;
-import com.upiicsa.ApiSIP.Utils.AuthHelper;
 import com.upiicsa.ApiSIP.Utils.DocumentNamingUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -17,10 +17,15 @@ import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.time.LocalDateTime;
+import java.util.List;
 import java.util.Optional;
+import java.util.stream.Collectors;
 
 @Service
 public class DocumentService {
+
+    @Autowired
+    private DocumentTypeService docTypeService;
 
     @Autowired
     private DocumentRepository documentRepository;
@@ -41,10 +46,8 @@ public class DocumentService {
     private FileStorageService fileStorage;
 
     @Transactional
-    public void saveDoc(MultipartFile file, String typeName) {
-        Integer userId = AuthHelper.getAuthenticatedUserId();
-        StudentProcess process =  processRepository.findByStudentId(userId)
-                .orElseThrow(()->new IllegalArgumentException("Student not found"));
+    public void saveDoc(MultipartFile file, String typeName, Integer userId) {
+        StudentProcess process = getProcessForUserId(userId);
 
         DocumentType type = typeRepository.findByDescription(typeName).orElse(null);
 
@@ -71,7 +74,36 @@ public class DocumentService {
         }
     }
 
-    public void createNewDocument(StudentProcess process, DocumentType type, MultipartFile file){
+    @Transactional(readOnly = true)
+    public List<DocumentStatusDto> getStatus(Integer userId) {
+
+        StudentProcess process = getProcessForUserId(userId);
+
+        List<DocumentType> requiredTypes = docTypeService.getRequiredTypes(process);
+
+        return requiredTypes.stream().map(type -> {
+
+            Optional<Document> docOpt = documentRepository
+                    .findByStudentProcessAndDocumentTypeAndCancellationDateIsNull(process, type);
+
+            if (docOpt.isPresent()) {
+                Document doc = docOpt.get();
+                ReviewDocument review = reviewRepository.findFirstByDocumentOrderByIdDesc(doc);
+
+                if (review != null) {
+                    return new DocumentStatusDto(type.getDescription(),
+                            review.getStatus().getId() == 2 ? "REVISADO_CORRECTO" : "REVISADO_INCORRECTO",
+                            doc.getURL(), review.getComment(), "/view-document/" + doc.getURL()
+                    );
+                }
+                return new DocumentStatusDto(type.getDescription(), "EN_REVISION", doc.getURL(), "", "");
+            }
+            return new DocumentStatusDto(type.getDescription(), "PENDING", null, "Pendiente de cargar", "");
+
+        }).collect(Collectors.toList());
+    }
+
+    private void createNewDocument(StudentProcess process, DocumentType type, MultipartFile file){
         String finalName = documentNaming.generateVersionedName(process, type);
 
         Document newDocument = Document.builder()
@@ -85,12 +117,17 @@ public class DocumentService {
         fileStorage.store(file, finalName);
     }
 
-    public void updateDoc(Document currentDoc, String typeName, MultipartFile file) {
+    private void updateDoc(Document currentDoc, String typeName, MultipartFile file) {
         if(!currentDoc.getDocumentType().getDescription().equals(typeName)){
             throw new ValidationException("Type for document not coincided.");
         }
         currentDoc.setUploadDate(LocalDateTime.now());
         documentRepository.save(currentDoc);
         fileStorage.store(file, currentDoc.getURL());
+    }
+
+    private  StudentProcess getProcessForUserId(Integer userId){
+        return processRepository.findByStudentId(userId)
+                .orElseThrow(()->new IllegalArgumentException("Process not found"));
     }
 }
