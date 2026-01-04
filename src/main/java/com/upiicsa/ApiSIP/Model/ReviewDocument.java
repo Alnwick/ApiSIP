@@ -17,7 +17,7 @@ public class ReviewDocument {
 
     @ManyToOne(fetch = FetchType.LAZY)
     @MapsId("idOperative")
-    @JoinColumn(name = "ID_OPERATIVO", referencedColumnName = "ID_USUARIO")
+    @JoinColumn(name = "ID_USUARIO", referencedColumnName = "ID_USUARIO")
     private UserSIP operative;
 
     @ManyToOne(fetch = FetchType.LAZY)
