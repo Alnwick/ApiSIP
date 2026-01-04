@@ -1,4 +1,19 @@
 package com.upiicsa.ApiSIP.Repository;
 
-public interface DocumentProcessRepository {
+import com.upiicsa.ApiSIP.Model.Catalogs.DocumentType;
+import com.upiicsa.ApiSIP.Model.Catalogs.ProcessState;
+import com.upiicsa.ApiSIP.Model.DocumentProcess;
+import com.upiicsa.ApiSIP.Model.Support.DocumentProcessId;
+import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.data.jpa.repository.Query;
+import org.springframework.data.repository.query.Param;
+import org.springframework.stereotype.Repository;
+
+import java.util.List;
+
+@Repository
+public interface DocumentProcessRepository extends JpaRepository<DocumentProcess, DocumentProcessId> {
+
+    @Query("SELECT dp.documentType FROM DocumentProcess dp WHERE dp.processState = :state")
+    List<DocumentType> findDocumentTypesByProcessState(@Param("state") ProcessState state);
 }
