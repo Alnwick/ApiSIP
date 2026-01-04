@@ -9,7 +9,7 @@ import lombok.Setter;
 
 @Getter @Setter
 @Entity
-@Table(name = "SIP_CPROCESO_DOC")
+@Table(name = "SIP_CPROCESODOC")
 public class DocumentProcess {
 
     @EmbeddedId
@@ -21,7 +21,7 @@ public class DocumentProcess {
     private DocumentType documentType;
 
     @ManyToOne(fetch = FetchType.LAZY)
-    @MapsId("idTypeDocument")
+    @MapsId("idStateProcess")
     @JoinColumn(name = "ID_ESTPROCESO")
     private ProcessState processState;
 
