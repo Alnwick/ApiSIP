@@ -1,11 +1,14 @@
 package com.upiicsa.ApiSIP.Controller;
 
 import com.upiicsa.ApiSIP.Dto.Email.EmailConfirmDto;
+import com.upiicsa.ApiSIP.Dto.ProcessProgressDto;
 import com.upiicsa.ApiSIP.Dto.Student.ResponseStudentDto;
 import com.upiicsa.ApiSIP.Dto.Student.StudentRegistrationDto;
 import com.upiicsa.ApiSIP.Model.Student;
 import com.upiicsa.ApiSIP.Service.EmailVerificationService;
+import com.upiicsa.ApiSIP.Service.StudentProcessService;
 import com.upiicsa.ApiSIP.Service.StudentService;
+import com.upiicsa.ApiSIP.Utils.AuthHelper;
 import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
@@ -13,6 +16,7 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
 import java.net.URI;
+import java.util.List;
 
 @RestController
 @RequestMapping("/student")
@@ -23,6 +27,9 @@ public class StudentController {
 
     @Autowired
     private EmailVerificationService verificationService;
+
+    @Autowired
+    private StudentProcessService studentProcessService;
 
     @PostMapping("/register")
     public ResponseEntity<ResponseStudentDto> registerUser(@RequestBody @Valid StudentRegistrationDto registrationDto) {
@@ -48,5 +55,11 @@ public class StudentController {
 
         verificationService.resendConfirmationCode(email);
         return ResponseEntity.ok("Código reenviado correctamente.");
+    }
+
+    @GetMapping("/process-status")
+    public ResponseEntity<List<ProcessProgressDto>> getProcessStatus() {
+        return ResponseEntity.ok(studentProcessService.
+                getProcessHistory(AuthHelper.getAuthenticatedUserId()));
     }
 }
