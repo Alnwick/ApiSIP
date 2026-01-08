@@ -1,0 +1,234 @@
+* {
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+}
+
+body {
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    background-color: #f8f9fa;
+    color: #333;
+    line-height: 1.6;
+}
+
+.container {
+    max-width: 1400px;
+    margin: 0 auto;
+    padding: 20px;
+    margin-top: 130px;
+}
+
+header {
+    background: linear-gradient(135deg, #1A8C14 0%, #136b10 100%);
+    padding: 15px 30px;
+    color: white;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    z-index: 1000;
+}
+
+.logo {
+    height: 50px;
+    filter: brightness(0) invert(1);
+}
+
+.title {
+    font-size: 24px;
+    font-weight: bold;
+    text-align: center;
+}
+
+.top-icons {
+    display: flex;
+    gap: 15px;
+    align-items: center;
+    padding: 10px 20px;
+    background-color: #f8f8f8;
+    border-bottom: 1px solid #ddd;
+    flex-shrink: 0;
+    border-radius: 8px;
+    margin-bottom: 20px;
+    position: fixed;
+    top: 80px;
+    left: 0;
+    right: 0;
+    z-index: 999;
+}
+
+.icon {
+    width: 28px;
+    height: 28px;
+    cursor: pointer;
+    transition: transform 0.3s;
+}
+
+.icon:hover {
+    transform: scale(1.1);
+}
+
+.careers-nav {
+    background: white;
+    border-radius: 10px;
+    padding: 15px;
+    margin-bottom: 25px;
+    box-shadow: 0 4px 12px rgba(0,0,0,0.08);
+    position: sticky;
+    top: 140px;
+    z-index: 998;
+}
+
+.careers-title {
+    font-size: 18px;
+    color: #1A8C14;
+    margin-bottom: 15px;
+    font-weight: 600;
+    padding-bottom: 8px;
+    border-bottom: 2px solid #eaeaea;
+}
+
+.careers-container {
+    display: flex;
+    flex-wrap: nowrap;
+    gap: 8px;
+    justify-content: flex-start;
+    overflow-x: auto;
+    padding-bottom: 5px;
+}
+
+.career-item {
+    padding: 8px 12px;
+    background-color: #f1f8ff;
+    border-radius: 6px;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    border: 2px solid transparent;
+    font-weight: 500;
+    text-align: center;
+    white-space: nowrap;
+    font-size: 13px;
+    min-width: 120px;
+    flex-shrink: 0;
+}
+
+.career-item:hover {
+    background-color: #d4edda;
+    border-color: #1A8C14;
+    transform: translateY(-2px);
+}
+
+.career-item.active {
+    background-color: #1A8C14;
+    color: white;
+    border-color: #136b10;
+}
+
+.info-container {
+    background: white;
+    border-radius: 10px;
+    padding: 25px;
+    box-shadow: 0 4px 12px rgba(0,0,0,0.08);
+}
+
+.info-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 20px;
+}
+
+.info-title {
+    font-size: 22px;
+    color: #1A8C14;
+}
+
+.search-box {
+    display: flex;
+    align-items: center;
+    background: #f8f9fa;
+    border-radius: 30px;
+    padding: 8px 20px;
+    width: 300px;
+    border: 1px solid #e0e0e0;
+}
+
+.search-box input {
+    border: none;
+    background: transparent;
+    width: 100%;
+    outline: none;
+}
+
+.stats-container {
+    display: grid;
+    grid-template-columns: repeat(7, 1fr);
+    gap: 10px;
+    margin-bottom: 25px;
+}
+
+.stat-box {
+    background: linear-gradient(135deg, #f8f9fa 0%, #e9ecef 100%);
+    border-radius: 8px;
+    padding: 12px;
+    text-align: center;
+    cursor: pointer;
+    transition: transform 0.3s;
+}
+
+.stat-box.active {
+    background: linear-gradient(135deg, #d4edda 0%, #c3e6cb 100%);
+    border: 2px solid #1A8C14;
+}
+
+.stat-value {
+    font-size: 20px;
+    font-weight: 700;
+    color: #1A8C14;
+}
+
+.data-table {
+    width: 100%;
+    border-collapse: collapse;
+}
+
+.data-table th {
+    background: linear-gradient(135deg, #1A8C14 0%, #136b10 100%);
+    color: white;
+    padding: 15px;
+    text-align: left;
+    cursor: pointer;
+}
+
+.data-table td {
+    padding: 15px;
+    border-bottom: 1px solid #eaeaea;
+}
+
+.status-new { background-color: #28a745 !important; color: white; }
+.status-visited { background-color: #90ee90 !important; }
+.status-review { background-color: #ffc107 !important; }
+.status-correct { background-color: white !important; }
+
+.dropdown-content {
+    display: none;
+    position: absolute;
+    background-color: white;
+    min-width: 160px;
+    box-shadow: 0px 8px 16px rgba(0,0,0,0.2);
+    right: 0;
+    z-index: 1;
+}
+
+.show { display: block; }
+
+footer {
+    background: linear-gradient(135deg, #1A8C14 0%, #136b10 100%);
+    color: white;
+    text-align: center;
+    padding: 20px;
+}
