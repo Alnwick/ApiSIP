@@ -1,54 +1,87 @@
-// ========== FUNCIONES DE USUARIO ==========
+const PROCESS_STATUS_URL = '/student/process-status';
+
+document.addEventListener('DOMContentLoaded', () => {
+    loadProcessStatus();
+});
+
+async function loadProcessStatus() {
+    try {
+        const response = await fetch(PROCESS_STATUS_URL);
+        if (!response.ok) throw new Error('Error al obtener el estatus del proceso');
+
+        const stages = await response.json();
+
+        const tableBody = document.querySelector('.status-table-row');
+        if (tableBody) {
+            tableBody.innerHTML = stages.map(s => {
+                // Lógica simplificada: Si hay fecha y no es un guion, está completado
+                const isDone = s.date && s.date !== "" && s.date !== "-";
+
+                // Formateamos la fecha si existe, si no, dejamos el guion
+                const displayValue = isDone ? formatDate(s.date) : "-";
+
+                return `
+                    <td class="${s.isCurrent ? 'current-stage' : ''} ${isDone ? 'completed-stage' : ''}">
+                        ${displayValue}
+                    </td>
+                `;
+            }).join('');
+        }
+
+        // Actualizar el texto descriptivo del estatus actual
+        const currentStage = stages.find(s => s.isCurrent);
+        const statusLabel = document.querySelector('.status-description b');
+
+        if (currentStage && statusLabel) {
+            statusLabel.textContent = currentStage.stageName;
+            statusLabel.style.color = "#1A8C14";
+        }
+
+    } catch (error) {
+        console.error("Error cargando el estatus del proceso:", error);
+    }
+}
+
+/**
+ * Formatea strings de fecha (ISO o Timestamp) a formato DD/MM/YYYY
+ */
+function formatDate(dateString) {
+    try {
+        const d = new Date(dateString);
+        if (isNaN(d.getTime())) return dateString;
+
+        return d.toLocaleDateString('es-MX', {
+            day: '2-digit',
+            month: '2-digit',
+            year: 'numeric'
+        });
+    } catch (e) {
+        return dateString;
+    }
+}
+
+// ========== RESTO DE FUNCIONES (DROPDOWN Y LOGOUT) ==========
 
 function toggleDropdown() {
     document.getElementById("userDropdown").classList.toggle("show");
 }
 
-function verPerfil() {
-    alert('Funcionalidad de perfil en desarrollo');
-    // window.location.href = 'perfil.html';
-}
-
 async function cerrarSesion() {
-    if (!confirm('¿Estás seguro de que deseas cerrar sesión?')) {
-        return;
-    }
-
-    // Mostrar indicador visual
-    const logoutLink = document.querySelector('.dropdown-content a[onclick="cerrarSesion()"]');
-    if(logoutLink) logoutLink.textContent = 'Cerrando sesión...';
+    if (!confirm('¿Estás seguro de que deseas cerrar sesión?')) return;
 
     try {
-        const response = await fetch('/auth/logout', {
-            method: 'POST',
-            headers: {
-                'Content-Type': 'application/json'
-            }
-        });
-
-        if (response.ok) {
-            console.log('✅ Sesión cerrada correctamente');
-        } else {
-            console.warn('⚠️ El servidor no respondió 200 OK, pero redirigimos igual.');
-        }
+        await fetch('/auth/logout', { method: 'POST' });
     } catch (error) {
-        console.error('Error de red al cerrar sesión:', error);
+        console.error('Error al cerrar sesión:', error);
     } finally {
-        // Redirigir al login.
-        // Como estamos en /Student/js/home.js, primero salimos de js (../)
-        // y luego salimos de Student (../) para llegar a static/index.html
-        // Pero como el script se ejecuta en el contexto de home.html (que está en /Student),
-        // solo necesitamos subir un nivel.
         window.location.href = '../index.html';
     }
 }
 
-// Cerrar el menú desplegable si se hace clic fuera de él
 window.onclick = function(event) {
     if (!event.target.matches('.icon')) {
-        var dropdowns = document.getElementsByClassName("dropdown-content");
-        for (var i = 0; i < dropdowns.length; i++) {
-            var openDropdown = dropdowns[i];
+        const dropdowns = document.getElementsByClassName("dropdown-content");
+        for (const openDropdown of dropdowns) {
             if (openDropdown.classList.contains('show')) {
                 openDropdown.classList.remove('show');
             }

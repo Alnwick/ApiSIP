@@ -14,16 +14,12 @@
 </header>
 
 <div class="top-icons">
-    <a href="home.html">
-        <img src="../Imagenes/icono_home.png" alt="Menú" class="icon">
-    </a>
+    <a href="home.html"><img src="../Imagenes/icono_home.png" alt="Menú" class="icon"></a>
     <img src="../Imagenes/icono_mensaje.png" alt="Mensaje" class="icon">
     <img src="../Imagenes/icono_notificacion.png" alt="Notificaciones" class="icon">
     <div style="margin-left: auto;">
         <span>Alumno</span>
-        <a href="perfil.html">
-            <img src="../Imagenes/icono_usuario.png" alt="Usuario" class="icon">
-        </a>
+        <a href="perfil.html"><img src="../Imagenes/icono_usuario.png" alt="Usuario" class="icon"></a>
     </div>
 </div>
 
@@ -31,37 +27,29 @@
     <div class="contenido">
         <div class="titulo-seccion">Registro de documentación inicial de Prácticas Profesionales</div>
 
-        <div id="section-cedula" class="file-section pending" data-type="CEDULA">
-            <h3>
-                <span class="status-indicator"></span>
-                <svg class="status-icon" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor"><path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm1 15h-2v-6h2v6zm0-8h-2V7h2v2z"/></svg>
-                Cedula de registro
-            </h3>
+        <div id="section-cedula" class="file-section">
+            <h3><span class="status-indicator"></span> Cedula de registro</h3>
             <div class="file-content">
                 <div class="file-input-container">
                     <input type="file" id="input-cedula" class="file-input" accept=".pdf" />
                     <label for="input-cedula" class="file-label">Seleccionar Archivo</label>
                     <div class="file-info">
                         <span id="name-cedula" class="file-name">No se ha seleccionado ningún archivo</span>
-                        <img src="../Imagenes/reg_borra.png" class="delete-icon" id="delete-cedula" title="Eliminar archivo" style="display: none;" />
+                        <img src="../Imagenes/reg_borra.png" class="delete-icon" id="delete-cedula" style="display: none;" />
                     </div>
                 </div>
             </div>
             <div class="comment-content">
                 <div class="comments-title">Comentarios</div>
                 <div class="comment-section">
-                    <div class="comment-text" id="comment-cedula">Sin revisiones aún.</div>
+                    <div class="comment-text" id="comment-cedula">Pendiente de cargar.</div>
                     <div class="comment-date" id="date-cedula"></div>
                 </div>
             </div>
         </div>
 
-        <div id="section-imss" class="file-section pending" data-type="IMSS">
-            <h3>
-                <span class="status-indicator"></span>
-                <svg class="status-icon" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor"><path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm1 15h-2v-6h2v6zm0-8h-2V7h2v2z"/></svg>
-                Constancia de vigencia de derechos (IMSS)
-            </h3>
+        <div id="section-imss" class="file-section">
+            <h3><span class="status-indicator"></span> Constancia de vigencia de derechos (IMSS)</h3>
             <div class="file-content">
                 <div class="file-input-container">
                     <input type="file" id="input-imss" class="file-input" accept=".pdf" />
@@ -75,17 +63,14 @@
             <div class="comment-content">
                 <div class="comments-title">Comentarios</div>
                 <div class="comment-section">
-                    <div class="comment-text" id="comment-imss">Sin revisiones aún.</div>
+                    <div class="comment-text" id="comment-imss">Pendiente de cargar.</div>
+                    <div class="comment-date" id="date-imss"></div>
                 </div>
             </div>
         </div>
 
-        <div id="section-sisae-empresa" class="file-section pending" data-type="SISAE_EMPRESA">
-            <h3>
-                <span class="status-indicator"></span>
-                <svg class="status-icon" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor"><path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm1 15h-2v-6h2v6zm0-8h-2V7h2v2z"/></svg>
-                Captura del registro de la empresa (SISAE-SIBOLTRA)
-            </h3>
+        <div id="section-sisae-empresa" class="file-section">
+            <h3><span class="status-indicator"></span> Captura del registro de la empresa (SISAE-SIBOLTRA)</h3>
             <div class="file-content">
                 <div class="file-input-container">
                     <input type="file" id="input-sisae-empresa" class="file-input" accept=".pdf,.png,.jpg" />
@@ -99,17 +84,14 @@
             <div class="comment-content">
                 <div class="comments-title">Comentarios</div>
                 <div class="comment-section">
-                    <div class="comment-text" id="comment-sisae-empresa">Documento pendiente.</div>
+                    <div class="comment-text" id="comment-sisae-empresa">Pendiente de cargar.</div>
+                    <div class="comment-date" id="date-sisae-empresa"></div>
                 </div>
             </div>
         </div>
 
-        <div id="section-sisae-alumno" class="file-section pending" data-type="SISAE_ALUMNO">
-            <h3>
-                <span class="status-indicator"></span>
-                <svg class="status-icon" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor"><path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm1 15h-2v-6h2v6zm0-8h-2V7h2v2z"/></svg>
-                Captura del registro del alumno (SISAE-SIBOLTRA)
-            </h3>
+        <div id="section-sisae-alumno" class="file-section">
+            <h3><span class="status-indicator"></span> Captura del registro del alumno (SISAE-SIBOLTRA)</h3>
             <div class="file-content">
                 <div class="file-input-container">
                     <input type="file" id="input-sisae-alumno" class="file-input" accept=".pdf,.png,.jpg" />
@@ -123,17 +105,14 @@
             <div class="comment-content">
                 <div class="comments-title">Comentarios</div>
                 <div class="comment-section">
-                    <div class="comment-text" id="comment-sisae-alumno">Documento pendiente.</div>
+                    <div class="comment-text" id="comment-sisae-alumno">Pendiente de cargar.</div>
+                    <div class="comment-date" id="date-sisae-alumno"></div>
                 </div>
             </div>
         </div>
 
-        <div id="section-horario" class="file-section pending" data-type="HORARIO">
-            <h3>
-                <span class="status-indicator"></span>
-                <svg class="status-icon" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor"><path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm1 15h-2v-6h2v6zm0-8h-2V7h2v2z"/></svg>
-                Copia de horario (SAES)
-            </h3>
+        <div id="section-horario" class="file-section">
+            <h3><span class="status-indicator"></span> Copia de horario (SAES)</h3>
             <div class="file-content">
                 <div class="file-input-container">
                     <input type="file" id="input-horario" class="file-input" accept=".pdf" />
@@ -147,7 +126,8 @@
             <div class="comment-content">
                 <div class="comments-title">Comentarios</div>
                 <div class="comment-section">
-                    <div class="comment-text" id="comment-horario">Pendiente de revisión.</div>
+                    <div class="comment-text" id="comment-horario">Pendiente de cargar.</div>
+                    <div class="comment-date" id="date-horario"></div>
                 </div>
             </div>
         </div>

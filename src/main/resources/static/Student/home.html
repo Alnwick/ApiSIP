@@ -5,6 +5,11 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Prácticas Profesionales - Panel</title>
     <link rel="stylesheet" href="css/home.css">
+    <style>
+        /* Estilos rápidos para el dinamismo del estatus */
+        .current-stage { font-weight: bold; color: #1A8C14; }
+        .completed-stage { color: #555; }
+    </style>
 </head>
 <body>
 <header>
@@ -43,28 +48,24 @@
                 <p>¿Qué son las prácticas Profesionales?</p>
             </div>
         </a>
-
         <a href="info_reqyf.html" class="card">
             <div class="card-content">
                 <img src="../Imagenes/home_requisitos.png" alt="Requisitos">
                 <p>Requisitos y formatos</p>
             </div>
         </a>
-
         <a href="registrodocumentos.html" class="card">
             <div class="card-content">
                 <img src="../Imagenes/home_registrar.png" alt="Registro">
                 <p>Registro de Prácticas Profesionales</p>
             </div>
         </a>
-
         <a href="info_Canc.html" class="card">
             <div class="card-content">
                 <img src="../Imagenes/home_formato.png" alt="Formato">
                 <p>Motivos de Cancelación</p>
             </div>
         </a>
-
         <a href="registroseguimiento.html" class="card">
             <div class="card-content">
                 <img src="../Imagenes/home_seguimiento.png" alt="Seguimiento">
@@ -87,7 +88,7 @@
             </tr>
             </thead>
             <tbody>
-            <tr>
+            <tr class="status-table-row">
                 <td>-</td>
                 <td>-</td>
                 <td>-</td>
@@ -97,8 +98,8 @@
             </tr>
             </tbody>
         </table>
-        <div class="current-status">
-            Actualmente te encuentras en el estatus de: <strong>Sin revisión</strong>, por favor mantente al pendiente de tu proceso.
+        <div class="current-status status-description">
+            Actualmente te encuentras en el estatus de: <b>Sin revisión</b>, por favor mantente al pendiente de tu proceso.
         </div>
     </div>
 </div>

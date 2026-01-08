@@ -79,8 +79,8 @@ header {
     border-radius: 8px;
     margin-bottom: 20px;
     box-shadow: 0 2px 5px rgba(0,0,0,0.1);
-    border-left: 4px solid #ddd;
-    transition: all 0.3s ease; /* Añadido para cambios de estado suaves */
+    border-left: 4px solid #ddd; /* ESTADO GRIS POR DEFECTO */
+    transition: all 0.3s ease;
     display: flex;
     flex-wrap: wrap;
 }
@@ -100,20 +100,27 @@ header {
     border-left: 1px solid #eee;
 }
 
-/* Estados Dinámicos (Clases controladas por la API/JS) */
-.file-section.accepted {
+/* --- Estados Dinámicos --- */
+
+/* NARANJA: Pendiente de revisión (con archivo) */
+.file-section.pending,
+.file-section.en_revision {
+    border-left-color: #f0ad4e;
+    background-color: #fffcf5;
+}
+
+/* VERDE: Aceptado / Revisado Correcto */
+.file-section.accepted,
+.file-section.revisado_correcto {
     border-left-color: #1A8C14;
     background-color: #f8fff8;
 }
 
-.file-section.rejected {
+/* ROJO: Rechazado / Revisado Incorrecto */
+.file-section.rejected,
+.file-section.revisado_incorrecto {
     border-left-color: #d9534f;
     background-color: #fff8f8;
-}
-
-.file-section.pending {
-    border-left-color: #f0ad4e;
-    background-color: #fffcf5;
 }
 
 .file-section h3 {
@@ -132,11 +139,13 @@ header {
     height: 12px;
     border-radius: 50%;
     display: inline-block;
+    background-color: #ddd; /* PUNTO GRIS POR DEFECTO */
 }
 
-.accepted .status-indicator { background-color: #1A8C14; }
-.rejected .status-indicator { background-color: #d9534f; }
-.pending .status-indicator { background-color: #f0ad4e; }
+/* Colores dinámicos para el indicador */
+.pending .status-indicator, .en_revision .status-indicator { background-color: #f0ad4e; }
+.accepted .status-indicator, .revisado_correcto .status-indicator { background-color: #1A8C14; }
+.rejected .status-indicator, .revisado_incorrecto .status-indicator { background-color: #d9534f; }
 
 /* --- INPUTS Y BOTONES --- */
 .file-input-container {
@@ -162,13 +171,12 @@ header {
     transition: background-color 0.3s;
 }
 
-/* Estilo para botón cuando el documento ya fue aceptado */
-.accepted .file-label {
+.accepted .file-label, .revisado_correcto .file-label {
     background-color: #999;
     cursor: not-allowed;
 }
 
-.file-label:hover:not(.accepted .file-label) {
+.file-label:hover:not(.accepted .file-label):not(.revisado_correcto .file-label) {
     background-color: #45a049;
 }
 
@@ -197,10 +205,25 @@ header {
 
 .file-name {
     margin-left: 10px;
-    font-style: italic;
     font-size: 14px;
     color: #555;
     flex: 1;
+    display: flex;
+    align-items: center;
+}
+
+.file-link-style {
+    color: #1A8C14;
+    text-decoration: none;
+    font-weight: bold;
+    font-style: italic;
+    cursor: pointer;
+    transition: all 0.2s;
+}
+
+.file-link-style:hover {
+    text-decoration: underline;
+    color: #007bff;
 }
 
 .delete-icon {
@@ -212,8 +235,6 @@ header {
     transition: opacity 0.2s;
 }
 
-.delete-icon:hover { opacity: 1; }
-
 .btn-guardar {
     background-color: #1A8C14;
     color: white;
@@ -224,11 +245,8 @@ header {
     font-size: 16px;
     margin-top: 20px;
     font-weight: bold;
-    width: 20%;
-    transition: background-color 0.3s;
+    width: 200px;
 }
-
-.btn-guardar:hover { background-color: #157a10; }
 
 /* --- SECCIÓN DE COMENTARIOS --- */
 .comments-title {
@@ -245,28 +263,17 @@ header {
     border-radius: 5px;
     background-color: #f9f9f9;
     border-left: 4px solid #ddd;
+    min-height: 40px;
 }
 
-.accepted .comment-section { border-left-color: #1A8C14; }
-.rejected .comment-section { border-left-color: #d9534f; }
-.pending .comment-section { border-left-color: #f0ad4e; }
+.accepted .comment-section, .revisado_correcto .comment-section { border-left-color: #1A8C14; }
+.rejected .comment-section, .revisado_incorrecto .comment-section { border-left-color: #d9534f; }
+.pending .comment-section, .en_revision .comment-section { border-left-color: #f0ad4e; }
 
 .comment-text {
     font-size: 13px;
     color: #555;
     line-height: 1.5;
-}
-
-.comment-date {
-    font-size: 11px;
-    color: #888;
-    margin-top: 8px;
-    text-align: right;
-}
-
-.status-icon {
-    width: 20px;
-    height: 20px;
 }
 
 footer {
@@ -277,22 +284,8 @@ footer {
     margin-top: auto;
 }
 
-/* --- RESPONSIVE --- */
 @media (max-width: 1024px) {
     .file-section { flex-direction: column; }
     .file-content, .comment-content { flex-basis: 100%; padding: 0; }
-    .comment-content {
-        border-left: none;
-        border-top: 1px solid #eee;
-        padding-top: 15px;
-        margin-top: 15px;
-    }
-}
-
-@media (max-width: 768px) {
-    header { flex-direction: column; gap: 15px; text-align: center; }
-    .top-icons { top: 120px; }
-    .main-container { margin-top: 160px; }
-    .file-input-container { flex-direction: column; align-items: stretch; }
-    .file-label { text-align: center; }
+    .comment-content { border-left: none; border-top: 1px solid #eee; padding-top: 15px; margin-top: 15px; }
 }
