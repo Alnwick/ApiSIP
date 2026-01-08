@@ -40,7 +40,7 @@ public class SecurityConfig {
                 .addFilterBefore(new JwtTokenValidator(jwtUtils, userRepository), UsernamePasswordAuthenticationFilter.class)
                 .authorizeHttpRequests(auth -> auth
                         .requestMatchers("/", "/index.html", "/styles.css", "/script.js",
-                                "/Imagenes/**", "/Recursos/**")
+                                "/Imagenes/**", "/Recursos/**", "/view-documents/**")
                         .permitAll()
                         .requestMatchers("/auth/login", "/api/forgot-password", "/api/reset-password/**",
                                 "/student/register", "/student/confirm-email", "/student/resend-code",
