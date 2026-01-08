@@ -25,4 +25,11 @@ public enum StateProcessEnum {
         this.nextId = nextId;
     }
 
+    public static StateProcessEnum fromId(int id) {
+        for (StateProcessEnum state : values()) {
+            if (state.getId() == id) return state;
+        }
+        throw new IllegalArgumentException("ID de estado no válido: " + id);
+    }
+
 }
