@@ -1,0 +1,193 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Prácticas Profesionales - Documentación</title>
+    <link rel="stylesheet" href="css/documentosInicio.css">
+</head>
+<body>
+<header>
+    <img src="../Imagenes/ipn.png" alt="IPN Logo" class="logo">
+    <div class="title">Sistema de Prácticas Profesionales</div>
+    <img src="../Imagenes/logo blanco.png" alt="UPIICSA Logo" class="logo">
+</header>
+
+<div class="top-icons">
+    <a href="home2.html">
+        <img src="../Imagenes/icono_home.png" alt="Menú" class="icon">
+    </a>
+    <img src="../Imagenes/icono_mensaje.png" alt="Mensaje" class="icon">
+    <img src="../Imagenes/icono_notificacion.png" alt="Notificaciones" class="icon">
+    <div class="current-datetime" id="currentDateTime"></div>
+    <div style="margin-left: auto;">
+        <img src="../Imagenes/icono_usuario.png" alt="Usuario" class="icon">
+    </div>
+</div>
+
+<div class="content-container">
+    <h1>Documentación Inicio de practicas</h1>
+
+    <table class="info-table">
+        <tr>
+            <td class="green-text">Nombre</td>
+            <td>Santiago Hernandez Martinez</td>
+            <td class="green-text">Boleta</td>
+            <td>2021402087</td>
+            <td class="green-text">Estado</td>
+            <td>Revisado</td>
+        </tr>
+        <tr>
+            <td class="green-text">Fecha de recibo</td>
+            <td>08/06/2012</td>
+            <td class="green-text">Hora de recibo</td>
+            <td>16:44:00</td>
+            <td class="green-text">Fecha Y Hora</td>
+            <td id="tableDateTime">18/06/2021 17:55:00</td>
+        </tr>
+    </table>
+
+    <table class="document-table">
+        <tr class="document-header">
+            <td colspan="2">Cedula de registro</td>
+            <td>16/06/2021 17:55:00</td>
+        </tr>
+        <tr>
+            <td colspan="3">
+                <div class="validation-options">
+                    <div class="validation-option">
+                        <input type="checkbox" id="doc1-correcto" name="doc1-validation" onchange="toggleValidation('doc1', 'correcto')">
+                        <label for="doc1-correcto">Correcto</label>
+                    </div>
+                    <div class="validation-option">
+                        <input type="checkbox" id="doc1-incorrecto" name="doc1-validation" onchange="toggleValidation('doc1', 'incorrecto')">
+                        <label for="doc1-incorrecto">Incorrecto</label>
+                    </div>
+                </div>
+            </td>
+        </tr>
+        <tr>
+            <td colspan="3">
+                <input type="text" class="comment-input" placeholder="Agregar comentarios...">
+            </td>
+        </tr>
+    </table>
+
+    <table class="document-table">
+        <tr class="document-header">
+            <td colspan="2">Constancia de vigencia de derechos</td>
+            <td>16/06/2021 17:55:00</td>
+        </tr>
+        <tr>
+            <td colspan="3">
+                <div class="validation-options">
+                    <div class="validation-option">
+                        <input type="checkbox" id="doc2-correcto" name="doc2-validation" onchange="toggleValidation('doc2', 'correcto')">
+                        <label for="doc2-correcto">Correcto</label>
+                    </div>
+                    <div class="validation-option">
+                        <input type="checkbox" id="doc2-incorrecto" name="doc2-validation" onchange="toggleValidation('doc2', 'incorrecto')">
+                        <label for="doc2-incorrecto">Incorrecto</label>
+                    </div>
+                </div>
+            </td>
+        </tr>
+        <tr>
+            <td colspan="3">
+                <input type="text" class="comment-input" placeholder="Agregar comentarios...">
+            </td>
+        </tr>
+    </table>
+
+    <table class="document-table">
+        <tr class="document-header">
+            <td colspan="2">Captura de pantalla del registro de las empresas en la plataforma</td>
+            <td>16/06/2021 17:55:00</td>
+        </tr>
+        <tr>
+            <td colspan="3">
+                <div class="validation-options">
+                    <div class="validation-option">
+                        <input type="checkbox" id="doc3-correcto" name="doc3-validation" onchange="toggleValidation('doc3', 'correcto')">
+                        <label for="doc3-correcto">Correcto</label>
+                    </div>
+                    <div class="validation-option">
+                        <input type="checkbox" id="doc3-incorrecto" name="doc3-validation" onchange="toggleValidation('doc3', 'incorrecto')">
+                        <label for="doc3-incorrecto">Incorrecto</label>
+                    </div>
+                </div>
+            </td>
+        </tr>
+        <tr>
+            <td colspan="3">
+                <input type="text" class="comment-input" placeholder="Agregar comentarios...">
+            </td>
+        </tr>
+    </table>
+
+    <table class="document-table">
+        <tr class="document-header">
+            <td colspan="2">Impresión de captura de pantalla del registro en la plataforma del alumno</td>
+            <td>16/06/2021 17:55:00</td>
+        </tr>
+        <tr>
+            <td colspan="3">
+                <div class="validation-options">
+                    <div class="validation-option">
+                        <input type="checkbox" id="doc4-correcto" name="doc4-validation" onchange="toggleValidation('doc4', 'correcto')">
+                        <label for="doc4-correcto">Correcto</label>
+                    </div>
+                    <div class="validation-option">
+                        <input type="checkbox" id="doc4-incorrecto" name="doc4-validation" onchange="toggleValidation('doc4', 'incorrecto')">
+                        <label for="doc4-incorrecto">Incorrecto</label>
+                    </div>
+                </div>
+            </td>
+        </tr>
+        <tr>
+            <td colspan="3">
+                <input type="text" class="comment-input" placeholder="Agregar comentarios...">
+            </td>
+        </tr>
+    </table>
+
+    <table class="document-table">
+        <tr class="document-header">
+            <td colspan="2">Copia de horario</td>
+            <td>16/06/2021 17:55:00</td>
+        </tr>
+        <tr>
+            <td colspan="3">
+                <div class="validation-options">
+                    <div class="validation-option">
+                        <input type="checkbox" id="doc5-correcto" name="doc5-validation" onchange="toggleValidation('doc5', 'correcto')">
+                        <label for="doc5-correcto">Correcto</label>
+                    </div>
+                    <div class="validation-option">
+                        <input type="checkbox" id="doc5-incorrecto" name="doc5-validation" onchange="toggleValidation('doc5', 'incorrecto')">
+                        <label for="doc5-incorrecto">Incorrecto</label>
+                    </div>
+                </div>
+            </td>
+        </tr>
+        <tr>
+            <td colspan="3">
+                <input type="text" class="comment-input" placeholder="Agregar comentarios...">
+            </td>
+        </tr>
+    </table>
+
+    <hr style="margin: 30px 0; border: 0; border-top: 1px solid #ddd;">
+
+    <div class="button-container">
+        <button class="save-button">Guardar</button>
+    </div>
+</div>
+
+<footer>
+    <p>Instituto Politécnico Nacional - UPIICSA © 2025 | Sistema de Prácticas Profesionales</p>
+</footer>
+
+<script src="js/documentosInicio.js"></script>
+</body>
+</html>
