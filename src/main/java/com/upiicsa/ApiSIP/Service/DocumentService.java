@@ -37,6 +37,9 @@ public class DocumentService {
     private StudentProcessRepository processRepository;
 
     @Autowired
+    private StudentProcessService processService;
+
+    @Autowired
     private ReviewDocumentRepository reviewRepository;
 
     @Autowired
@@ -72,6 +75,7 @@ public class DocumentService {
         } else{
             createNewDocument(process, type, file);
         }
+        processService.updateProcessStatus(process.getId(), 2);
     }
 
     @Transactional(readOnly = true)
