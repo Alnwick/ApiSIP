@@ -2,16 +2,14 @@ package com.upiicsa.ApiSIP.Model;
 
 import com.upiicsa.ApiSIP.Model.Catalogs.ProcessState;
 import jakarta.persistence.*;
-import lombok.AllArgsConstructor;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.Setter;
+import lombok.*;
 
 import java.time.LocalDateTime;
 
 @NoArgsConstructor
 @AllArgsConstructor
 @Getter @Setter
+@Builder
 @Entity
 @Table(name = "SIP_HISTORIAL")
 public class History {
