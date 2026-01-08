@@ -1,4 +1,8 @@
 package com.upiicsa.ApiSIP.Dto;
 
-public class ProcessProgressDto {
+public record ProcessProgressDto(
+        String stageName,
+        String date,
+        boolean isCurrent
+) {
 }
