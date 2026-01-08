@@ -196,7 +196,7 @@ async function iniciarSesion() {
                     window.location.href = 'Administrator/home.html';
                     break;
                 case 'OPERADOR':
-                    window.location.href = 'Collaborator/home.html';
+                    window.location.href = 'Operative/home.html';
                     break;
                 default:
                     alert("Rol desconocido: " + data.userType);
