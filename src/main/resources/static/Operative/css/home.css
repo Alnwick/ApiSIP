@@ -1,4 +1,4 @@
-* {
+{
     box-sizing: border-box;
     margin: 0;
     padding: 0;
@@ -15,7 +15,7 @@ body {
     max-width: 1400px;
     margin: 0 auto;
     padding: 20px;
-    margin-top: 130px;
+    margin-top: 130px; /* Añadido: header (80px) + top-icons (50px) + espacio extra */
 }
 
 header {
@@ -42,6 +42,12 @@ header {
     font-size: 24px;
     font-weight: bold;
     text-align: center;
+}
+
+.user-section {
+    display: flex;
+    align-items: center;
+    gap: 15px;
 }
 
 .top-icons {
@@ -72,6 +78,7 @@ header {
     transform: scale(1.1);
 }
 
+/* Barra de carreras - MODIFICADO: Ahora está más arriba y sin separación al hacer scroll */
 .careers-nav {
     background: white;
     border-radius: 10px;
@@ -79,8 +86,9 @@ header {
     margin-bottom: 25px;
     box-shadow: 0 4px 12px rgba(0,0,0,0.08);
     position: sticky;
-    top: 140px;
+    top: 140px; /* Posicionar debajo de los iconos superiores */
     z-index: 998;
+    margin-top: 0; /* Eliminar separación superior */
 }
 
 .careers-title {
@@ -120,19 +128,23 @@ header {
     background-color: #d4edda;
     border-color: #1A8C14;
     transform: translateY(-2px);
+    box-shadow: 0 4px 8px rgba(26, 140, 20, 0.2);
 }
 
 .career-item.active {
     background-color: #1A8C14;
     color: white;
     border-color: #136b10;
+    box-shadow: 0 4px 12px rgba(26, 140, 20, 0.3);
 }
 
+/* Contenido de información - MODIFICADO: Recuadros más pequeños */
 .info-container {
     background: white;
     border-radius: 10px;
     padding: 25px;
     box-shadow: 0 4px 12px rgba(0,0,0,0.08);
+    margin-bottom: 30px;
 }
 
 .info-header {
@@ -140,11 +152,14 @@ header {
     justify-content: space-between;
     align-items: center;
     margin-bottom: 20px;
+    padding-bottom: 15px;
+    border-bottom: 2px solid #f0f0f0;
 }
 
 .info-title {
     font-size: 22px;
     color: #1A8C14;
+    font-weight: 600;
 }
 
 .search-box {
@@ -161,12 +176,38 @@ header {
     border: none;
     background: transparent;
     width: 100%;
+    padding: 8px;
+    outline: none;
+    font-size: 16px;
+}
+
+/* Selector de plan - NUEVO */
+.plan-selector {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    margin-bottom: 20px;
+}
+
+.plan-selector label {
+    font-weight: 600;
+    color: #1A8C14;
+}
+
+.plan-selector select {
+    padding: 8px 15px;
+    border-radius: 6px;
+    border: 1px solid #ddd;
+    background-color: #f8f9fa;
+    font-size: 14px;
+    cursor: pointer;
     outline: none;
 }
 
+/* Estadísticas - MODIFICADO: Recuadros más pequeños para que quepan en una hilera */
 .stats-container {
     display: grid;
-    grid-template-columns: repeat(7, 1fr);
+    grid-template-columns: repeat(7, 1fr); /* 7 columnas para que quepan en una hilera */
     gap: 10px;
     margin-bottom: 25px;
 }
@@ -176,13 +217,27 @@ header {
     border-radius: 8px;
     padding: 12px;
     text-align: center;
-    cursor: pointer;
+    box-shadow: 0 4px 8px rgba(0,0,0,0.05);
     transition: transform 0.3s;
+    cursor: pointer;
+    min-width: 0; /* Para que se ajuste al espacio disponible */
+}
+
+.stat-box:hover {
+    transform: translateY(-3px);
+    box-shadow: 0 6px 12px rgba(0,0,0,0.1);
 }
 
 .stat-box.active {
     background: linear-gradient(135deg, #d4edda 0%, #c3e6cb 100%);
     border: 2px solid #1A8C14;
+}
+
+.stat-title {
+    font-size: 12px;
+    color: #6c757d;
+    margin-bottom: 5px;
+    font-weight: 500;
 }
 
 .stat-value {
@@ -191,17 +246,36 @@ header {
     color: #1A8C14;
 }
 
+/* Tabla - MODIFICADO: Nueva estructura */
+.table-container {
+    overflow-x: auto;
+    border-radius: 10px;
+    box-shadow: 0 4px 12px rgba(0,0,0,0.08);
+}
+
 .data-table {
     width: 100%;
     border-collapse: collapse;
+    background: white;
 }
 
 .data-table th {
     background: linear-gradient(135deg, #1A8C14 0%, #136b10 100%);
     color: white;
-    padding: 15px;
     text-align: left;
+    padding: 15px;
+    font-weight: 600;
+    position: relative;
     cursor: pointer;
+}
+
+.data-table th:hover {
+    background: linear-gradient(135deg, #136b10 0%, #0f5210 100%);
+}
+
+.sort-icon {
+    margin-left: 5px;
+    font-size: 12px;
 }
 
 .data-table td {
@@ -209,26 +283,155 @@ header {
     border-bottom: 1px solid #eaeaea;
 }
 
-.status-new { background-color: #28a745 !important; color: white; }
-.status-visited { background-color: #90ee90 !important; }
-.status-review { background-color: #ffc107 !important; }
-.status-correct { background-color: white !important; }
+.data-table tr:nth-child(even) {
+    background-color: #f8f9fa;
+}
+
+.data-table tr:hover {
+    background-color: #e6f4ea;
+    cursor: pointer;
+}
+
+/* MODIFICADO: Colores de estado actualizados según especificaciones */
+.status-new {
+    background-color: #28a745 !important; /* Verde oscuro para nuevos (sin revisión) */
+}
+
+.status-visited {
+    background-color: #90ee90 !important; /* Verde claro para visitados (sin revisión) */
+}
+
+.status-review {
+    background-color: #ffc107 !important; /* Amarillo para revisado */
+}
+
+.status-correct {
+    background-color: white !important; /* Blanco para finalizado */
+}
+
+.dropdown {
+    position: relative;
+    display: inline-block;
+}
 
 .dropdown-content {
     display: none;
     position: absolute;
     background-color: white;
     min-width: 160px;
-    box-shadow: 0px 8px 16px rgba(0,0,0,0.2);
-    right: 0;
+    box-shadow: 0px 8px 16px 0px rgba(0,0,0,0.2);
     z-index: 1;
+    right: 0;
+    border-radius: 5px;
 }
 
-.show { display: block; }
+.dropdown-content a {
+    color: #333;
+    padding: 12px 16px;
+    text-decoration: none;
+    display: block;
+}
 
+.dropdown-content a:hover {
+    background-color: #f1f1f1;
+    border-radius: 5px;
+}
+
+.show {
+    display: block;
+}
+
+/* Paginación - ELIMINADA: Ya no se necesita paginación */
+.pagination {
+    display: none; /* Ocultar la paginación */
+}
+
+/* Footer */
 footer {
     background: linear-gradient(135deg, #1A8C14 0%, #136b10 100%);
     color: white;
     text-align: center;
     padding: 20px;
+    margin-top: auto;
+    font-size: 14px;
+}
+
+/* Responsive */
+@media (max-width: 1200px) {
+    .stats-container {
+        grid-template-columns: repeat(4, 1fr); /* 4 columnas en pantallas más pequeñas */
+    }
+}
+
+@media (max-width: 992px) {
+    .career-item {
+        min-width: 110px;
+        font-size: 12px;
+        padding: 6px 10px;
+    }
+
+    .stats-container {
+        grid-template-columns: repeat(3, 1fr); /* 3 columnas en tablets */
+    }
+}
+
+@media (max-width: 768px) {
+    header {
+        flex-direction: column;
+        gap: 15px;
+        text-align: center;
+    }
+
+    .top-icons {
+        top: 120px;
+        padding: 8px 15px;
+    }
+
+    .container {
+        margin-top: 160px;
+    }
+
+    .career-item {
+        min-width: 100px;
+        font-size: 11px;
+        padding: 5px 8px;
+    }
+
+    .search-box {
+        width: 100%;
+        margin-top: 15px;
+    }
+
+    .info-header {
+        flex-direction: column;
+        align-items: flex-start;
+    }
+
+    .stats-container {
+        grid-template-columns: repeat(2, 1fr); /* 2 columnas en móviles */
+    }
+}
+
+@media (max-width: 576px) {
+    .careers-container {
+        gap: 6px;
+    }
+
+    .career-item {
+        min-width: 90px;
+        font-size: 10px;
+        padding: 4px 6px;
+    }
+
+    .stat-box {
+        padding: 10px;
+    }
+
+    .stat-value {
+        font-size: 18px;
+    }
+
+    .stats-container {
+        grid-template-columns: 1fr; /* 1 columna en móviles muy pequeños */
+    }
 }
