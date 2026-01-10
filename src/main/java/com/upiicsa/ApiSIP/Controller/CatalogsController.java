@@ -1,13 +1,13 @@
 package com.upiicsa.ApiSIP.Controller;
 
-import com.upiicsa.ApiSIP.Model.Catalogs.Career;
-import com.upiicsa.ApiSIP.Model.Catalogs.School;
-import com.upiicsa.ApiSIP.Model.Catalogs.Syllabus;
-import com.upiicsa.ApiSIP.Model.Catalogs.Semester;
-import com.upiicsa.ApiSIP.Repository.OfferRepository;
-import com.upiicsa.ApiSIP.Repository.SemesterRepository;
+import com.upiicsa.ApiSIP.Dto.Catalogs.CareerDto;
+import com.upiicsa.ApiSIP.Dto.Catalogs.SchoolDto;
+import com.upiicsa.ApiSIP.Dto.Catalogs.SemesterDto;
+import com.upiicsa.ApiSIP.Dto.Catalogs.SyllabusDto;
+import com.upiicsa.ApiSIP.Service.CatalogsService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -20,28 +20,25 @@ import java.util.List;
 public class CatalogsController {
 
     @Autowired
-    private OfferRepository offerRepository;
-
-    @Autowired
-    private SemesterRepository semesterRepository;
+    private CatalogsService catalogsService;
 
     @GetMapping("/schools")
-    public ResponseEntity<List<School>> getSchools() {
-        return ResponseEntity.ok(offerRepository.findAllSchools());
+    public ResponseEntity<List<SchoolDto>> getSchools() {
+        return ResponseEntity.ok(catalogsService.getSchools());
     }
 
     @GetMapping("/careers")
-    public ResponseEntity<List<Career>> getCareers(@RequestParam Integer schoolId) {
-        return ResponseEntity.ok(offerRepository.findCareersBySchool(schoolId));
+    public ResponseEntity<List<CareerDto>> getCareers(@RequestParam String SchoolName) {
+        return ResponseEntity.ok(catalogsService.getCareers(SchoolName));
     }
 
     @GetMapping("/syllabus")
-    public ResponseEntity<List<Syllabus>> getSyllabus(@RequestParam Integer schoolId, @RequestParam Integer careerId) {
-        return ResponseEntity.ok(offerRepository.findSyllabusBySchoolAndCareer(schoolId, careerId));
+    public ResponseEntity<List<SyllabusDto>> getSyllabuses(@RequestParam String schoolAcronym, @RequestParam String careerAcronym) {
+        return ResponseEntity.ok(catalogsService.getSyllabuses(schoolAcronym, careerAcronym));
     }
 
     @GetMapping("/semesters")
-    public ResponseEntity<List<Semester>> getSemesters() {
-        return ResponseEntity.ok(semesterRepository.findAll());
+    public ResponseEntity<List<SemesterDto>> getSemesters() {
+        return ResponseEntity.ok(catalogsService.getSemesters());
     }
 }
