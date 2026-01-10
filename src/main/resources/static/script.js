@@ -62,7 +62,8 @@ async function cargarEscuelas() {
             schools.forEach(school => {
                 const option = document.createElement('option');
                 option.value = school.acronym;
-                option.dataset.id = school.id;
+                option.dataset.name = school.name;
+                option.dataset.acronym = school.acronym; // CAMBIO: Guardamos acronym también
                 option.textContent = school.acronym;
                 select.appendChild(option);
             });
@@ -72,7 +73,7 @@ async function cargarEscuelas() {
     }
 }
 
-async function cargarCarreras(escuelaId) {
+async function cargarCarreras(escuelaNombre) {
     const select = document.getElementById('carrera');
     const planSelect = document.getElementById('plan-estudios');
 
@@ -81,17 +82,17 @@ async function cargarCarreras(escuelaId) {
     planSelect.innerHTML = '<option value="">Primero selecciona escuela</option>';
     planSelect.disabled = true;
 
-    if (!escuelaId) return;
+    if (!escuelaNombre) return;
 
     try {
-        const response = await fetch(`${API_BASE_URL}/catalogs/careers?schoolId=${escuelaId}`);
+        const response = await fetch(`${API_BASE_URL}/catalogs/careers?SchoolName=${encodeURIComponent(escuelaNombre)}`);
         if (response.ok) {
             const carreras = await response.json();
             carreras.forEach(carrera => {
                 const option = document.createElement('option');
-                // API en inglés: carrera.acronym y carrera.name
                 option.value = carrera.acronym;
-                option.dataset.id = carrera.id;
+                option.dataset.name = carrera.name;
+                option.dataset.acronym = carrera.acronym; // CAMBIO: Guardamos acronym también
                 option.textContent = carrera.acronym;
                 select.appendChild(option);
             });
@@ -102,24 +103,19 @@ async function cargarCarreras(escuelaId) {
     }
 }
 
-async function cargarPlanes(carreraId) {
+async function cargarPlanes(escuelaAcronym, carreraAcronym) {
     const select = document.getElementById('plan-estudios');
     select.innerHTML = '<option value="">Selecciona un plan</option>';
     select.disabled = true;
 
-    const escuelaSelect = document.getElementById('escuela');
-    const escuelaId = escuelaSelect.options[escuelaSelect.selectedIndex].dataset.id;
-
-    if (!carreraId || !escuelaId) return;
+    if (!carreraAcronym || !escuelaAcronym) return;
 
     try {
-        // Endpoint actualizado: /catalogs/syllabus
-        const response = await fetch(`${API_BASE_URL}/catalogs/syllabus?schoolId=${escuelaId}&careerId=${carreraId}`);
+        const response = await fetch(`${API_BASE_URL}/catalogs/syllabus?schoolAcronym=${encodeURIComponent(escuelaAcronym)}&careerAcronym=${encodeURIComponent(carreraAcronym)}`);
         if (response.ok) {
             const planes = await response.json();
             planes.forEach(plan => {
                 const option = document.createElement('option');
-                // API en inglés: plan.code
                 option.value = plan.code;
                 option.textContent = plan.code;
                 select.appendChild(option);
@@ -144,7 +140,6 @@ async function cargarSemestres() {
 
             semestres.forEach(sem => {
                 const option = document.createElement('option');
-                // API en inglés: sem.description
                 option.value = sem.description;
                 option.textContent = "Semestre " + sem.description;
                 select.appendChild(option);
@@ -247,7 +242,7 @@ async function iniciarRegistro() {
                 syllabusCode: document.getElementById('plan-estudios').value
             };
 
-            console.log('Enviando DTO (Inglés):', datosEstudianteTemporal);
+            console.log('Enviando registro...');
 
             const response = await fetch(`${API_BASE_URL}/student/register`, {
                 method: 'POST',
@@ -433,8 +428,8 @@ document.addEventListener('DOMContentLoaded', function() {
         escuelaSelect.addEventListener('change', function() {
             const selectedOption = this.options[this.selectedIndex];
             if(selectedOption.value) {
-                const id = selectedOption.dataset.id;
-                cargarCarreras(id);
+                const nombre = selectedOption.dataset.name;
+                cargarCarreras(nombre);
             }
         });
     }
@@ -444,8 +439,11 @@ document.addEventListener('DOMContentLoaded', function() {
         carreraSelect.addEventListener('change', function() {
             const selectedOption = this.options[this.selectedIndex];
             if(selectedOption.value) {
-                const id = selectedOption.dataset.id;
-                cargarPlanes(id);
+                const carreraAcronym = selectedOption.dataset.acronym; // CAMBIO: Usa dataset.acronym
+                const escuelaSelectEl = document.getElementById('escuela');
+                const escuelaSelectedOption = escuelaSelectEl.options[escuelaSelectEl.selectedIndex];
+                const escuelaAcronym = escuelaSelectedOption.dataset.acronym; // CAMBIO: Usa dataset.acronym
+                cargarPlanes(escuelaAcronym, carreraAcronym);
             }
         });
     }
