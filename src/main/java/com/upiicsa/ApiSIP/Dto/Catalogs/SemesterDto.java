@@ -1,4 +1,4 @@
-package com.upiicsa.ApiSIP.Dto;
+package com.upiicsa.ApiSIP.Dto.Catalogs;
 
 import com.upiicsa.ApiSIP.Model.Catalogs.Semester;
 
