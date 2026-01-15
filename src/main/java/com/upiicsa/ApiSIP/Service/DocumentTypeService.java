@@ -13,7 +13,7 @@ import java.util.List;
 public class DocumentTypeService {
 
     @Autowired
-    private DocumentTypeRepository documentTypeRepository;
+    private DocumentTypeRepository typeRepository;
 
     @Autowired
     private DocumentProcessRepository docProcessRepository;
@@ -22,4 +22,9 @@ public class DocumentTypeService {
 
         return docProcessRepository.findDocumentTypesByProcessState(process.getProcessState());
     }
+
+    public DocumentType getByDescription(String typeName){
+        return typeRepository.findByDescription(typeName).orElse(null);
+    }
+
 }
