@@ -108,4 +108,9 @@ public class StudentProcessService {
         }
         return progress;
     }
+
+    public StudentProcess getByStudentId(Integer userId) {
+        return processRepository.findByStudentId(userId)
+                .orElseThrow(()->new IllegalArgumentException("Process not found"));
+    }
 }
