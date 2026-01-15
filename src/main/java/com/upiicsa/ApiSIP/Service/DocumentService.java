@@ -7,9 +7,7 @@ import com.upiicsa.ApiSIP.Model.Document;
 import com.upiicsa.ApiSIP.Model.ReviewDocument;
 import com.upiicsa.ApiSIP.Model.StudentProcess;
 import com.upiicsa.ApiSIP.Repository.DocumentRepository;
-import com.upiicsa.ApiSIP.Repository.DocumentTypeRepository;
 import com.upiicsa.ApiSIP.Repository.ReviewDocumentRepository;
-import com.upiicsa.ApiSIP.Repository.StudentProcessRepository;
 import com.upiicsa.ApiSIP.Utils.DocumentNamingUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -25,22 +23,16 @@ import java.util.stream.Collectors;
 public class DocumentService {
 
     @Autowired
-    private DocumentTypeService docTypeService;
-
-    @Autowired
     private DocumentRepository documentRepository;
 
     @Autowired
-    private DocumentTypeRepository typeRepository;
+    private ReviewDocumentRepository reviewRepository;
 
     @Autowired
-    private StudentProcessRepository processRepository;
+    private DocumentTypeService docTypeService;
 
     @Autowired
     private StudentProcessService processService;
-
-    @Autowired
-    private ReviewDocumentRepository reviewRepository;
 
     @Autowired
     private DocumentNamingUtils documentNaming;
@@ -50,9 +42,9 @@ public class DocumentService {
 
     @Transactional
     public void saveDoc(MultipartFile file, String typeName, Integer userId) {
-        StudentProcess process = getProcessForUserId(userId);
+        StudentProcess process = processService.getByStudentId(userId);
 
-        DocumentType type = typeRepository.findByDescription(typeName).orElse(null);
+        DocumentType type = docTypeService.getByDescription(typeName);
 
         Optional<Document> document = documentRepository.findByStudentProcessAndDocumentTypeAndCancellationDateIsNull
                 (process, type);
@@ -65,9 +57,7 @@ public class DocumentService {
                 if (review.getStatus().getId() == 2) {
                     throw new ValidationException("Este documento ya fue aprobado y no puede modificarse.");
                 } else if (review.getStatus().getId() == 3) {
-                    currentDoc.setCancellationDate(LocalDateTime.now());
-                    documentRepository.save(currentDoc);
-                    createNewDocument(process, type, file);
+                    cancelledAndCreated(currentDoc, type, file, process);
                 }
             } else{
                 updateDoc(currentDoc, typeName, file);
@@ -81,7 +71,7 @@ public class DocumentService {
     @Transactional(readOnly = true)
     public List<DocumentStatusDto> getStatus(Integer userId) {
 
-        StudentProcess process = getProcessForUserId(userId);
+        StudentProcess process = processService.getByStudentId(userId);
 
         List<DocumentType> requiredTypes = docTypeService.getRequiredTypes(process);
 
@@ -107,7 +97,8 @@ public class DocumentService {
         }).collect(Collectors.toList());
     }
 
-    private void createNewDocument(StudentProcess process, DocumentType type, MultipartFile file){
+    @Transactional
+    public void createNewDocument(StudentProcess process, DocumentType type, MultipartFile file){
         String finalName = documentNaming.generateVersionedName(process, type);
 
         Document newDocument = Document.builder()
@@ -121,7 +112,8 @@ public class DocumentService {
         fileStorage.store(file, finalName);
     }
 
-    private void updateDoc(Document currentDoc, String typeName, MultipartFile file) {
+    @Transactional
+    public void updateDoc(Document currentDoc, String typeName, MultipartFile file) {
         if(!currentDoc.getDocumentType().getDescription().equals(typeName)){
             throw new ValidationException("Type for document not coincided.");
         }
@@ -130,8 +122,10 @@ public class DocumentService {
         fileStorage.store(file, currentDoc.getURL());
     }
 
-    private  StudentProcess getProcessForUserId(Integer userId){
-        return processRepository.findByStudentId(userId)
-                .orElseThrow(()->new IllegalArgumentException("Process not found"));
+    @Transactional
+    public void cancelledAndCreated(Document currentDoc, DocumentType type,  MultipartFile file, StudentProcess process) {
+        currentDoc.setCancellationDate(LocalDateTime.now());
+        documentRepository.save(currentDoc);
+        createNewDocument(process, type, file);
     }
 }
