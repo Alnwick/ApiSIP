@@ -4,6 +4,7 @@ import com.upiicsa.ApiSIP.Dto.Document.DocumentStatusDto;
 import com.upiicsa.ApiSIP.Exception.ValidationException;
 import com.upiicsa.ApiSIP.Model.Catalogs.DocumentType;
 import com.upiicsa.ApiSIP.Model.Document;
+import com.upiicsa.ApiSIP.Model.Enum.StateProcessEnum;
 import com.upiicsa.ApiSIP.Model.ReviewDocument;
 import com.upiicsa.ApiSIP.Model.StudentProcess;
 import com.upiicsa.ApiSIP.Repository.DocumentRepository;
@@ -65,7 +66,9 @@ public class DocumentService {
         } else{
             createNewDocument(process, type, file);
         }
-        processService.updateProcessStatus(process.getId(), 2);
+        if(process.getProcessState().getId() != 2){
+            processService.updateProcessStatus(process.getId(), StateProcessEnum.INITIAL_DOC);
+        }
     }
 
     @Transactional(readOnly = true)

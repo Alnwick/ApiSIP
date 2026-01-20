@@ -2,6 +2,7 @@ package com.upiicsa.ApiSIP.Service;
 
 import com.upiicsa.ApiSIP.Dto.ProcessProgressDto;
 import com.upiicsa.ApiSIP.Exception.ResourceNotFoundException;
+import com.upiicsa.ApiSIP.Model.Catalogs.ProcessState;
 import com.upiicsa.ApiSIP.Model.Enum.StateProcessEnum;
 import com.upiicsa.ApiSIP.Model.History;
 import com.upiicsa.ApiSIP.Model.Student;
@@ -51,31 +52,25 @@ public class StudentProcessService {
     }
 
     @Transactional
-    public void updateProcessStatus(Integer processId, int targetStateId) {
+    public void updateProcessStatus(Integer processId, StateProcessEnum nextProcess) {
         StudentProcess process = processRepository.findById(processId)
                 .orElseThrow(() -> new EntityNotFoundException("Process not found"));
 
         StateProcessEnum currentState = StateProcessEnum.fromId(process.getProcessState().getId());
-        StateProcessEnum targetState = StateProcessEnum.fromId(targetStateId);
 
-        boolean isValid = false;
-
-        if (targetState.getId() == currentState.getNextId()) {
-            isValid = true;
-        } else if (targetState.getId() == currentState.getPreviousId()) {
-            isValid = true;
-        } else if (targetState == StateProcessEnum.CANCELLATION && currentState != StateProcessEnum.FINAL_DOC) {
-            isValid = true;
-        }
+        boolean isValid = currentState.getNextId() == nextProcess.getId() ||
+                nextProcess == StateProcessEnum.CANCELLATION;
 
         if (!isValid) {
-            throw new IllegalStateException("Transición no permitida de " +
-                    currentState.getName() + " a " + targetState.getName());
+            throw new IllegalStateException("Transición no permitida");
         }
 
-        process.setProcessState(processStateRepository.getById(targetStateId));
+        ProcessState newState = processStateRepository.findById(nextProcess.getId())
+                .orElseThrow(() -> new EntityNotFoundException("Estado no encontrado"));
+        process.setProcessState(newState);
+
         processRepository.save(process);
-        historyService.saveHistory(process, currentState, targetState);
+        historyService.saveHistory(process, currentState, nextProcess);
     }
 
     public List<ProcessProgressDto> getProcessHistory(Integer userId) {
