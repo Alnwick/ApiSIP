@@ -5,7 +5,7 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 
 public class PasswordHashingTest {
     public static void main(String[] args) {
-        String password = "Yatg0809";
+        String password = "SpringCreator";
 
         // Crea el codificador de contraseñas usando BCrypt
         PasswordEncoder passwordEncoder = new BCryptPasswordEncoder();
