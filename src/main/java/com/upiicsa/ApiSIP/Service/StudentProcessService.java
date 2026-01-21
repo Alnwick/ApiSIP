@@ -7,12 +7,10 @@ import com.upiicsa.ApiSIP.Model.Enum.StateProcessEnum;
 import com.upiicsa.ApiSIP.Model.History;
 import com.upiicsa.ApiSIP.Model.Student;
 import com.upiicsa.ApiSIP.Model.StudentProcess;
-import com.upiicsa.ApiSIP.Repository.HistoryRepository;
 import com.upiicsa.ApiSIP.Repository.ProcessStateRepository;
 import com.upiicsa.ApiSIP.Repository.StudentProcessRepository;
 import jakarta.persistence.EntityNotFoundException;
 import jakarta.transaction.Transactional;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDateTime;
@@ -23,17 +21,18 @@ import java.util.Optional;
 @Service
 public class StudentProcessService {
 
-    @Autowired
     private StudentProcessRepository processRepository;
 
-    @Autowired
     private ProcessStateRepository processStateRepository;
 
-    @Autowired
-    private HistoryRepository historyRepository;
-
-    @Autowired
     private HistoryService historyService;
+
+    public StudentProcessService(StudentProcessRepository processRepository, ProcessStateRepository processStateRepository,
+                                 HistoryService historyService) {
+        this.processRepository = processRepository;
+        this.processStateRepository = processStateRepository;
+        this.historyService = historyService;
+    }
 
     @Transactional
     public void setFirstState(Student student) {
@@ -78,7 +77,7 @@ public class StudentProcessService {
                 .filter(StudentProcess::getActive)
                 .orElseThrow(() -> new RuntimeException("Proceso no encontrado"));
 
-        List<History> history = historyRepository.findByProcessOrderByUpdateDateAsc(process);
+        List<History> history = historyService.getHistoriesByProcess(process);
 
         String[] stages = {
                 "Registrado", "Documentación de inicio", "Carta de aceptación",
@@ -99,7 +98,6 @@ public class StudentProcessService {
             boolean current = process.getProcessState().getId() == stageId;
 
             progress.add(new ProcessProgressDto(stages[i], dateStr, current));
-            System.out.println("Status: " + stageId + " - " + dateStr + " - " + current);
         }
         return progress;
     }
