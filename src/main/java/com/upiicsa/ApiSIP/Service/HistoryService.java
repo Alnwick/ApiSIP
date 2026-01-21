@@ -9,23 +9,36 @@ import com.upiicsa.ApiSIP.Repository.HistoryRepository;
 import com.upiicsa.ApiSIP.Repository.ProcessStateRepository;
 import com.upiicsa.ApiSIP.Repository.UserRepository;
 import jakarta.persistence.EntityNotFoundException;
-import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.time.LocalDateTime;
+import java.util.List;
 
 @Service
 public class HistoryService {
 
-    @Autowired
+    @Value("${default.user}")
+    private Integer defaultUser;
+
     private HistoryRepository historyRepository;
 
-    @Autowired
     private UserRepository userRepository;
 
-    @Autowired
     private ProcessStateRepository stateRepository;
+
+    public HistoryService(HistoryRepository historyRepository, UserRepository userRepository,
+                          ProcessStateRepository stateRepository) {
+        this.historyRepository = historyRepository;
+        this.userRepository = userRepository;
+        this.stateRepository = stateRepository;
+    }
+
+    @Transactional(readOnly = true)
+    public List<History> getHistoriesByProcess(StudentProcess process){
+        return  historyRepository.findByProcessOrderByUpdateDateAsc(process);
+    }
 
     @Transactional
     public void saveHistory(StudentProcess process, StateProcessEnum oldState, StateProcessEnum newState) {
@@ -46,7 +59,7 @@ public class HistoryService {
     }
 
     private UserSIP getDefaultUser(){
-        UserSIP user = userRepository.findById(3)
+        UserSIP user = userRepository.findById(defaultUser)
                 .orElseThrow(() -> new EntityNotFoundException("User not found"));
 
         return user;
