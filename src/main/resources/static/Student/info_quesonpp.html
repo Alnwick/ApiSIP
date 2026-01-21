@@ -7,92 +7,109 @@
     <link rel="stylesheet" href="css/info_quesonpp.css">
 </head>
 <body>
+
 <header>
-    <img src="../Imagenes/ipn.png" alt="IPN Logo" class="logo" />
-    <div class="title">Sistema de Prácticas Profesionales</div>
-    <img src="../Imagenes/logo blanco.png" alt="UPIICSA Logo" class="logo" />
+    <div class="header-brand">
+        <div class="logo-box">
+            <img src="../Imagenes/ipn.png" alt="IPN" class="logo-img">
+            <img src="../Imagenes/logo blanco.png" alt="UPIICSA" class="logo-img">
+        </div>
+        <div class="title-box">
+            <h1>Sistema para Practicas Profesionales</h1>
+            <p>Portal Estudiantil</p>
+        </div>
+    </div>
+
+    <div class="user-nav">
+        <span>Santiago Martínez</span>
+        <div class="user-avatar">S</div>
+    </div>
 </header>
 
-<div class="top-icons">
-    <a href="home.html">
-        <img src="../Imagenes/home_queson.png" alt="Menú" class="icon" style="filter: grayscale(1);">
+<nav class="nav-bar">
+    <a href="home.html" class="back-link">
+        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><line x1="19" y1="12" x2="5" y2="12"></line><polyline points="12 19 5 12 12 5"></polyline></svg>
+        Volver al Inicio
     </a>
-    <img src="../Imagenes/icono_mensaje.png" alt="Mensaje" class="icon">
-    <img src="../Imagenes/icono_notificacion.png" alt="Notificaciones" class="icon">
-    <div style="margin-left: auto;">
-        <span>Alumno</span>
-        <a href="perfil.html">
-            <img src="../Imagenes/icono_usuario.png" alt="Usuario" class="icon">
-        </a>
-    </div>
-</div>
+</nav>
 
-<div class="container contenido">
-    <div class="titulo-seccion">¿Qué son las Prácticas Profesionales?</div>
+<div class="container">
 
-    <div class="lista-mejorada">
-        <ul class="lista-simple">
-            <li>Las Prácticas Profesionales como opción curricular, constituyen un ejercicio guiado y supervisado donde se ponen en juego los conocimientos adquiridos durante el proceso formativo del estudiante, permiten concretizar teorías aplicándolas a situaciones problemáticas reales.</li>
+    <!-- Sección 1: Concepto -->
+    <div class="info-card">
+        <h2>¿Qué son las Prácticas Profesionales?</h2>
+        <p>Las Prácticas Profesionales como opción curricular, constituyen un ejercicio guiado y supervisado donde se ponen en juego los conocimientos adquiridos durante el proceso formativo del estudiante, permiten concretizar teorías aplicándolas a situaciones problemáticas reales.</p>
+        <ul>
             <li>Este ejercicio Profesional posibilita a los Estudiantes reconocer los límites de la teoría y acceder a los requerimientos de la realidad.</li>
             <li>Las Prácticas Profesionales no tienen un solo sentido; establecen un diálogo continuo entre la formación recibida en la escuela y la realidad.</li>
-            <li>Se espera que la realidad en la que se insertan los estudiantes sea un espacio que nutra los procesos de aprendizaje y contribuya a una comprensión más compleja y global de las problemáticas y situaciones en las que esté involucrado de acuerdo a la línea específica.</li>
+            <li>Se espera que la realidad en la que se insertan los estudiantes sea un espacio que nutra los procesos de aprendizaje y contribuya a una comprensión más compleja y global de las problemáticas.</li>
         </ul>
     </div>
 
-    <div class="titulo-seccion">Indicaciones sobre la prestación de prácticas profesionales</div>
-    <div class="lista-mejorada">
-        <p><strong>1. </strong>Solo se podrán registrar los alumnos que tengan el 50% y el 99.99% de créditos y que se encuentren inscritos en el periodo. La presente situación es debido a que únicamente los alumnos que se encuentran inscritos son derechohabientes al seguro facultativo del IMSS.</p>
-        <p><strong>2. </strong>Podrán registrar Prácticas Profesionales los egresados que cuenten con seguro vigente (IMSS, ISSSTE, IMSS BIENESTAR, PRIVADO) recuerda que como egresado puedes realizar hasta 8 horas como máximo diarias, de lunes a viernes.</p>
-        <p><strong>3. </strong>El lugar donde se pretenda realizar las estancias o prácticas profesionales, puede ser en dependencias públicas o en empresas privadas (si es empresa privada, deberá contar con registro en la página de SISA-SIBOLTRA).</p>
-        <p><strong>4. </strong>Las estancias o prácticas profesionales deberán realizarse de forma presencial.</p>
+    <!-- Sección 2: Indicaciones -->
+    <div class="info-card">
+        <h2>Indicaciones sobre la prestación</h2>
+        <ol>
+            <li>Solo se podrán registrar los alumnos que tengan el <strong>50% y el 99.99% de créditos</strong> y que se encuentren inscritos en el periodo. Esto debido a que únicamente los alumnos inscritos son derechohabientes al seguro facultativo del IMSS.</li>
+            <li>Podrán registrar Prácticas Profesionales los egresados que cuenten con <strong>seguro vigente</strong> (IMSS, ISSSTE, IMSS BIENESTAR, PRIVADO). Como egresado puedes realizar hasta 8 horas como máximo diarias, de lunes a viernes.</li>
+            <li>El lugar de las prácticas puede ser en dependencias públicas o empresas privadas (estas últimas deberán contar con registro en la página de SISA-SIBOLTRA).</li>
+            <li>Las estancias o prácticas profesionales deberán realizarse de forma <strong>presencial</strong>.</li>
+        </ol>
     </div>
 
-    <div class="lista-mejorada recuadro-5">
-        <p><strong>5. Los registros se llevarán de la siguiente forma:</strong></p>
-        <ol>
-            <li>El prestador deberá enviar los siguientes documentos en formato PDF y archivos separados al correo <a href="mailto:practicas_upiicsa@ipn.mx" class="enlace-descarga">practicas_upiicsa@ipn.mx</a> con el asunto: <strong>INICIO PRÁCTICAS PROFESIONALES</strong>.
-                <ol class="sublista">
-                    <li>Constancia de créditos o estudios (la podrás descargar directamente de tu SAES)</li>
-                    <li>Cédula de registro <a href="#" class="enlace-descarga">descarga aquí</a></li>
-                    <li>Constancia de vigencia de derechos al IMSS, ISSSTE, IMSS BIENESTAR, PRIVADO, vigente (en caso de no entregarlo se considerará inválido).</li>
-                    <li>Impresión de captura de pantalla del registro de la empresa en la plataforma SISAE-SIBOLTRA (dicha captura la debe proporcionar la empresa).
-                        <div class="nota">NOTA: El registro lo deberá realizar la empresa.</div>
+    <!-- Sección 3: Registro -->
+    <div class="info-card">
+        <h2>Proceso de Registro</h2>
+        <ol class="step-list">
+            <li>
+                <strong>Envío de Documentación Inicial:</strong>
+                Enviar los siguientes documentos en formato PDF y archivos separados al correo <a href="mailto:practicas_upiicsa@ipn.mx" class="enlace-descarga">practicas_upiicsa@ipn.mx</a> con el asunto: <strong>INICIO PRÁCTICAS PROFESIONALES</strong>.
+                <ul class="sublista">
+                    <li>Constancia de créditos o estudios (descargable de SAES).</li>
+                    <li>Cédula de registro (<a href="#" class="enlace-descarga">descarga aquí</a>).</li>
+                    <li>Constancia de vigencia de derechos (IMSS, ISSSTE, etc.) vigente.</li>
+                    <li>Captura de pantalla del registro de la empresa en SISAE-SIBOLTRA.
+                        <div class="nota-box">NOTA: El registro lo deberá realizar la empresa.</div>
                     </li>
-                    <li>Impresión de captura de pantalla del registro en la plataforma SISAE-SIBOLTRA del alumno.</li>
-                    <li>Copia de horario de clases del periodo inscrito (sólo alumnos) recuerda que si eres alumno inscrito solo puedes realizar 4 horas diarias de lunes a viernes.</li>
-                </ol>
+                    <li>Captura de pantalla del registro del alumno en SISAE-SIBOLTRA.</li>
+                    <li>Copia de horario de clases (sólo alumnos). Máximo 4 horas diarias.</li>
+                </ul>
+            </li>
+            <li>
+                <strong>Seguimiento de Documentos:</strong>
+                El área de prácticas profesionales les enviará vía correo electrónico la <strong>carta de presentación</strong>. Ustedes deberán reenviar la <strong>carta de aceptación</strong> por parte de la empresa sobre el mismo hilo de mensajes.
             </li>
         </ol>
-
-        <div class="destacado">
-            El área de prácticas profesionales les enviará vía correo electrónico, carta de presentación y ustedes deberán de enviarnos la carta de aceptación por parte de la empresa sobre el mismo hilo de mensajes, esto para llevar un seguimiento a su trámite.
+        <div class="highlight-box">
+            <strong>RECUERDA:</strong> Deberás cubrir un mínimo de <strong>150 horas</strong>.
         </div>
-
-        <p><strong>Deberás cubrir mínimo 150 horas.</strong></p>
     </div>
 
-    <div class="lista-mejorada">
-        <p><strong>6.</strong> Las Prácticas Profesionales no acepta horas retroactivas, todo el trámite deberá de ser con fechas actuales al inicio de las mismas.</p>
-
-        <p><strong>7.</strong> Al término de las Prácticas Profesionales deberán de enviar al correo electrónico <a href="mailto:practicas_upiicsa@ipn.mx" class="enlace-descarga">practicas_upiicsa@ipn.mx</a> con el asunto <strong>TÉRMINO DE PRÁCTICAS PROFESIONALES</strong> en formato PDF y en archivos separados la documentación de término:
-        <ul class="sublista">
-            <li>Carta de término <a href="#" class="enlace-descarga">consulta ejemplo aquí</a></li>
-            <li>Reportes mensuales <a href="#" class="enlace-descarga">descarga aquí</a></li>
-            <li>Informe final <a href="#" class="enlace-descarga">consulta ejemplo aquí</a></li>
+    <!-- Sección 4: Notas de Proceso y Término -->
+    <div class="info-card">
+        <h2>Notas Importantes y Término</h2>
+        <h3>Sobre el proceso:</h3>
+        <ul>
+            <li>No se aceptan horas retroactivas; todo el trámite debe ser con fechas actuales al inicio.</li>
+            <li>Después de <strong>3 meses sin actividad</strong>, tu proceso será <strong>CANCELADO</strong>.</li>
+            <li>No se puede realizar prácticas en la misma institución donde hubo una cancelación anterior.</li>
+            <li>La empresa debe contar con hoja membretada y sello oficial.</li>
+            <li>Tanto firmas como sellos deben ser <strong>autógrafos</strong> (originales).</li>
         </ul>
 
-        <p><strong>8.</strong> Después de 3 meses sin actividad en tu trámite, tu proceso será <strong>CANCELADO</strong>.</p>
-
-        <p><strong>9.</strong> No se puede realizar prácticas o estancias en la institución donde hubo una cancelación anterior.</p>
-
-        <p><strong>10.</strong> La empresa deberá de contar con su propia hoja membretada y sello oficial.</p>
-
-        <p><strong>11.</strong> Las firmas como los sellos deben ser autógrafos.</p>
+        <h3>Al término de las prácticas:</h3>
+        <p>Deberán enviar al correo institucional con el asunto <strong>TÉRMINO DE PRÁCTICAS PROFESIONALES</strong> la siguiente documentación en PDF:</p>
+        <ul class="sublista">
+            <li>Carta de término (<a href="#" class="enlace-descarga">consulta ejemplo aquí</a>).</li>
+            <li>Reportes mensuales (<a href="#" class="enlace-descarga">descarga aquí</a>).</li>
+            <li>Informe final (<a href="#" class="enlace-descarga">consulta ejemplo aquí</a>).</li>
+        </ul>
     </div>
+
 </div>
 
 <footer>
-    <p>Instituto Politécnico Nacional - UPIICSA © 2025 | Sistema de Prácticas Profesionales</p>
+    <p><strong>Instituto Politécnico Nacional</strong> | UPIICSA | © 2025 Sistema ApiSIP</p>
 </footer>
 </body>
 </html>
