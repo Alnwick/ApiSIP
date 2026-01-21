@@ -1,90 +1,60 @@
-const PROCESS_STATUS_URL = '/student/process-status';
+const API_URL = '/student/process-status';
+const PHASES = ["Registrado", "Doc Inicial", "Carta de Aceptación", "Informes Finales", "Doc Término", "Liberación"];
 
-document.addEventListener('DOMContentLoaded', () => {
-    loadProcessStatus();
-});
+document.addEventListener('DOMContentLoaded', loadData);
 
-async function loadProcessStatus() {
+async function loadData() {
+    let stagesData = [];
     try {
-        const response = await fetch(PROCESS_STATUS_URL);
-        if (!response.ok) throw new Error('Error al obtener el estatus del proceso');
+        const resp = await fetch(API_URL);
+        if (resp.ok) stagesData = await resp.json();
+    } catch (e) { console.warn("API offline"); }
 
-        const stages = await response.json();
+    renderProgress(stagesData);
+    updateHeaderInfo();
+}
 
-        const tableBody = document.querySelector('.status-table-row');
-        if (tableBody) {
-            tableBody.innerHTML = stages.map(s => {
-                // Lógica simplificada: Si hay fecha y no es un guion, está completado
-                const isDone = s.date && s.date !== "" && s.date !== "-";
+function renderProgress(apiData) {
+    const stepper = document.getElementById('main-stepper');
 
-                // Formateamos la fecha si existe, si no, dejamos el guion
-                const displayValue = isDone ? formatDate(s.date) : "-";
+    stepper.innerHTML = PHASES.map((name, idx) => {
+        const data = apiData[idx] || {};
+        const done = data.date && data.date !== "" && data.date !== "-";
+        const current = data.isCurrent || false;
 
-                return `
-                    <td class="${s.isCurrent ? 'current-stage' : ''} ${isDone ? 'completed-stage' : ''}">
-                        ${displayValue}
-                    </td>
-                `;
-            }).join('');
-        }
+        let cls = done && !current ? 'completed' : (current ? 'active' : '');
 
-        // Actualizar el texto descriptivo del estatus actual
-        const currentStage = stages.find(s => s.isCurrent);
-        const statusLabel = document.querySelector('.status-description b');
+        return `
+                <div class="step ${cls}">
+                    <div class="dot">${(done && !current) ? '✓' : idx + 1}</div>
+                    <div class="step-info">
+                        <span class="label">${name}</span>
+                        <span class="date-badge">${done ? 'Inició: ' + fmt(data.date) : (current ? 'Fase actual' : '—')}</span>
+                    </div>
+                </div>
+            `;
+    }).join('');
 
-        if (currentStage && statusLabel) {
-            statusLabel.textContent = currentStage.stageName;
-            statusLabel.style.color = "#1A8C14";
-        }
-
-    } catch (error) {
-        console.error("Error cargando el estatus del proceso:", error);
+    // Lógica Bloqueo
+    const docIniciada = apiData[1] && apiData[1].date && apiData[1].date !== "-";
+    if (docIniciada) {
+        document.getElementById('card-seguimiento').classList.remove('locked');
+        document.getElementById('lock-tag').style.display = 'none';
+    } else {
+        document.getElementById('card-seguimiento').onclick = (e) => e.preventDefault();
     }
 }
 
-/**
- * Formatea strings de fecha (ISO o Timestamp) a formato DD/MM/YYYY
- */
-function formatDate(dateString) {
+function updateHeaderInfo() {
+    // Simulación de datos de sesión
+    document.getElementById('user-pill-name').textContent = "Santiago Martínez";
+    document.getElementById('user-pill-initial').textContent = "S";
+}
+
+function fmt(d) {
     try {
-        const d = new Date(dateString);
-        if (isNaN(d.getTime())) return dateString;
-
-        return d.toLocaleDateString('es-MX', {
-            day: '2-digit',
-            month: '2-digit',
-            year: 'numeric'
-        });
-    } catch (e) {
-        return dateString;
-    }
-}
-
-// ========== RESTO DE FUNCIONES (DROPDOWN Y LOGOUT) ==========
-
-function toggleDropdown() {
-    document.getElementById("userDropdown").classList.toggle("show");
-}
-
-async function cerrarSesion() {
-    if (!confirm('¿Estás seguro de que deseas cerrar sesión?')) return;
-
-    try {
-        await fetch('/auth/logout', { method: 'POST' });
-    } catch (error) {
-        console.error('Error al cerrar sesión:', error);
-    } finally {
-        window.location.href = '../index.html';
-    }
-}
-
-window.onclick = function(event) {
-    if (!event.target.matches('.icon')) {
-        const dropdowns = document.getElementsByClassName("dropdown-content");
-        for (const openDropdown of dropdowns) {
-            if (openDropdown.classList.contains('show')) {
-                openDropdown.classList.remove('show');
-            }
-        }
-    }
+        const date = new Date(d);
+        if (isNaN(date.getTime())) return d;
+        return date.toLocaleDateString('es-MX', { day: '2-digit', month: '2-digit', year: 'numeric' });
+    } catch (e) { return d; }
 }
