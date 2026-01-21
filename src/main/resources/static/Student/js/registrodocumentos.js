@@ -1,140 +1,143 @@
-// ========== CONFIGURACIÓN ==========
-const UPLOAD_URL = '/documents/upload';
-const STATUS_URL = '/documents/my-status';
-const VIEW_URL_PREFIX = '/view-documents/';
+const API_GET_STATUS = '/documents/my-status';
+const API_POST_UPLOAD = '/documents/upload';
+const DOC_PATH = '/view-documents/';
 
-const DOC_MAP = {
-    'cedula': 'Cedula de Registro',
-    'imss': 'Constancia de Vigencia',
-    'sisae-empresa': 'Captura de Empresa',
-    'sisae-alumno': 'Captura de Alumno',
-    'horario': 'Copia de Horario'
-};
+// Mapeo exacto según tu catálogo de backend
+const DOC_CONFIG = [
+    { id: 'cedula', label: 'Cédula de Registro', typeCode: 'Cedula de Registro' },
+    { id: 'imss', label: 'Constancia de Vigencia (IMSS)', typeCode: 'Constancia de Vigencia' },
+    { id: 'sisae-empresa', label: 'Captura Empresa (SISAE)', typeCode: 'Captura de Empresa' },
+    { id: 'sisae-alumno', label: 'Captura Alumno (SISAE)', typeCode: 'Captura de Alumno' },
+    { id: 'horario', label: 'Copia de Horario (SAES)', typeCode: 'Copia de Horario' }
+];
 
 document.addEventListener('DOMContentLoaded', () => {
-    fetchDocumentStatus();
-    setupUIListeners();
+    initUI();
+    loadStatus();
 });
 
-async function fetchDocumentStatus() {
-    try {
-        const response = await fetch(STATUS_URL);
-        if (!response.ok) return;
-        const documents = await response.json();
-        documents.forEach(doc => {
-            const htmlId = Object.keys(DOC_MAP).find(key => DOC_MAP[key] === doc.typeCode);
-            if (htmlId) updateSectionUI(htmlId, doc);
-        });
-    } catch (error) {
-        console.warn("Error al cargar estados:", error);
-    }
-}
+/**
+ * Renderiza los esqueletos de las tarjetas (Estado Gris Inicial)
+ */
+function initUI() {
+    const container = document.getElementById('docs-container');
+    container.innerHTML = DOC_CONFIG.map(doc => `
+            <div class="doc-card status-none" id="card-${doc.id}">
+                <div class="doc-header">
+                    <span class="doc-title">${doc.label}</span>
+                    <span class="status-badge badge-none" id="badge-${doc.id}">Sin Cargar</span>
+                </div>
+                <div class="doc-body">
+                    <div class="upload-area">
+                        <div class="file-controls">
+                            <input type="file" id="file-${doc.id}" style="display:none" accept=".pdf">
+                            <label for="file-${doc.id}" class="btn-browse" id="btn-${doc.id}">Seleccionar PDF</label>
+                            <span class="file-display" id="name-${doc.id}">No se ha seleccionado archivo</span>
+                        </div>
+                    </div>
+                    <div class="comment-area">
+                        <span class="comment-label">Observaciones</span>
+                        <p class="comment-text" id="comment-${doc.id}">Pendiente de carga inicial.</p>
+                    </div>
+                </div>
+            </div>
+        `).join('');
 
-function updateSectionUI(id, data) {
-    const section = document.getElementById(`section-${id}`);
-    const nameSpan = document.getElementById(`name-${id}`);
-    const commentText = document.getElementById(`comment-${id}`);
-    const input = document.getElementById(`input-${id}`);
-
-    if (!section) return;
-
-    // 1. RESET DE CLASES (Volver al Gris)
-    section.className = 'file-section';
-
-    // 2. DETECTAR SI HAY ARCHIVO REAL
-    const hasFile = data.fileName && data.fileName.trim() !== "" && data.fileName !== "null";
-
-    if (!hasFile) {
-        // --- ESTADO: SIN ARCHIVO (GRIS) ---
-        nameSpan.textContent = 'No se ha seleccionado ningún archivo';
-        if (commentText) commentText.textContent = "Pendiente de cargar.";
-    }
-    else {
-        // --- ESTADO: CON ARCHIVO (NARANJA, VERDE O ROJO) ---
-        let statusClass = data.status.toLowerCase();
-
-        // Mapeo de estados del backend a clases CSS
-        if (statusClass === 'revisado_correcto') statusClass = 'accepted';
-        if (statusClass === 'revisado_incorrecto') statusClass = 'rejected';
-
-        // Aplicamos clase de color
-        section.classList.add(statusClass);
-
-        // Crear link de visualización
-        nameSpan.innerHTML = '';
-        const link = document.createElement('a');
-        link.href = `${VIEW_URL_PREFIX}${data.fileName}`;
-        link.textContent = data.fileName;
-        link.target = "_blank";
-        link.className = "file-link-style";
-        nameSpan.appendChild(link);
-
-        // Mensaje de comentario
-        if (commentText) {
-            if (data.comment && data.comment.trim() !== "" && data.comment !== "Pendiente de cargar") {
-                commentText.textContent = data.comment;
-            } else {
-                commentText.textContent = "Pendiente de Revision.";
+    // Listeners para cambios de archivo local
+    DOC_CONFIG.forEach(doc => {
+        document.getElementById(`file-${doc.id}`).addEventListener('change', (e) => {
+            if (e.target.files.length > 0) {
+                document.getElementById(`name-${doc.id}`).textContent = e.target.files[0].name;
             }
-        }
-    }
+        });
+    });
 
-    // Bloqueo si ya está aprobado
-    if ((data.status === 'REVISADO_CORRECTO' || data.status === 'ACCEPTED') && input) {
+    document.getElementById('btn-global-save').addEventListener('click', handleGlobalUpload);
+}
+
+/**
+ * Carga el estado real desde el API
+ */
+async function loadStatus() {
+    try {
+        const resp = await fetch(API_GET_STATUS);
+        if (!resp.ok) return;
+        const data = await resp.json();
+
+        data.forEach(item => {
+            const config = DOC_CONFIG.find(c => c.typeCode === item.typeCode);
+            if (config) updateCard(config.id, item);
+        });
+    } catch (e) { console.error("Error cargando estatus:", e); }
+}
+
+/**
+ * Actualiza visualmente una tarjeta según el estado del servidor
+ */
+function updateCard(id, data) {
+    const card = document.getElementById(`card-${id}`);
+    const badge = document.getElementById(`badge-${id}`);
+    const comment = document.getElementById(`comment-${id}`);
+    const display = document.getElementById(`name-${id}`);
+    const input = document.getElementById(`file-${id}`);
+    const labelBtn = document.getElementById(`btn-${id}`);
+
+    card.className = "doc-card"; // Reset
+    let statusCls = "status-none", badgeCls = "badge-none", label = "Sin Cargar";
+
+    // Mapeo de estados del backend
+    if (data.status === "REVISADO_CORRECTO") {
+        statusCls = "status-correct"; badgeCls = "badge-correct"; label = "Aceptado";
         input.disabled = true;
-        const label = document.querySelector(`label[for="input-${id}"]`);
-        if (label) { label.style.pointerEvents = 'none'; label.style.opacity = '0.5'; }
+        labelBtn.style.opacity = "0.5";
+        labelBtn.style.pointerEvents = "none";
+    } else if (data.status === "REVISADO_INCORRECTO") {
+        statusCls = "status-incorrect"; badgeCls = "badge-incorrect"; label = "Rechazado";
+    } else if (data.status === "EN_REVISION") {
+        statusCls = "status-pending"; badgeCls = "badge-pending"; label = "En Revisión";
+    } else if (data.fileName) {
+        statusCls = "status-pending"; badgeCls = "badge-pending"; label = "Pendiente";
+    }
+
+    card.classList.add(statusCls);
+    badge.textContent = label;
+    badge.className = `status-badge ${badgeCls}`;
+    comment.textContent = data.comment || "Sin observaciones.";
+
+    if (data.fileName) {
+        display.innerHTML = `<a href="${DOC_PATH}${data.fileName}" target="_blank" class="file-link">Ver archivo actual: ${data.fileName}</a>`;
     }
 }
 
-function setupUIListeners() {
-    Object.keys(DOC_MAP).forEach(id => {
-        const input = document.getElementById(`input-${id}`);
-        const nameSpan = document.getElementById(`name-${id}`);
-        const deleteIcon = document.getElementById(`delete-${id}`);
+/**
+ * Procesa la subida de múltiples archivos
+ */
+async function handleGlobalUpload() {
+    const btn = document.getElementById('btn-global-save');
+    let filesSent = 0;
 
-        if (input && nameSpan) {
-            input.addEventListener('change', (e) => {
-                if (e.target.files.length > 0) {
-                    nameSpan.textContent = e.target.files[0].name;
-                    if (deleteIcon) deleteIcon.style.display = 'block';
-                }
-            });
-        }
-        if (deleteIcon) {
-            deleteIcon.addEventListener('click', () => {
-                input.value = '';
-                nameSpan.textContent = 'No se ha seleccionado ningún archivo';
-                deleteIcon.style.display = 'none';
-            });
-        }
-    });
-    const btnSave = document.getElementById('btn-save-all');
-    if (btnSave) btnSave.addEventListener('click', handleUploadProcess);
-}
-
-async function handleUploadProcess() {
-    const btn = document.getElementById('btn-save-all');
-    let filesToUpload = [];
-    Object.keys(DOC_MAP).forEach(id => {
-        const input = document.getElementById(`input-${id}`);
-        if (input && input.files.length > 0) {
-            filesToUpload.push({ file: input.files[0], typeName: DOC_MAP[id] });
-        }
-    });
-    if (filesToUpload.length === 0) return alert("Selecciona un archivo.");
     btn.disabled = true;
-    btn.textContent = 'Subiendo...';
-    for (const item of filesToUpload) {
-        await uploadFile(item.file, item.typeName);
-    }
-    alert('Carga finalizada.');
-    location.reload();
-}
+    btn.textContent = "Subiendo archivos...";
 
-async function uploadFile(file, typeName) {
-    const formData = new FormData();
-    formData.append('file', file);
-    formData.append('type', typeName);
-    try { await fetch(UPLOAD_URL, { method: 'POST', body: formData }); } catch (error) { console.error(error); }
+    for (const config of DOC_CONFIG) {
+        const input = document.getElementById(`file-${config.id}`);
+        if (input.files.length > 0) {
+            const formData = new FormData();
+            formData.append('file', input.files[0]);
+            formData.append('type', config.typeCode);
+            try {
+                await fetch(API_POST_UPLOAD, { method: 'POST', body: formData });
+                filesSent++;
+            } catch (e) { console.error("Error subiendo " + config.label); }
+        }
+    }
+
+    if (filesSent > 0) {
+        alert("Documentos enviados correctamente.");
+        location.reload();
+    } else {
+        alert("No has seleccionado nuevos archivos para subir.");
+        btn.disabled = false;
+        btn.textContent = "Guardar Cambios y Enviar";
+    }
 }

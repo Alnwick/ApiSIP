@@ -7,137 +7,48 @@
     <link rel="stylesheet" href="css/registrodocumentos.css">
 </head>
 <body>
+
 <header>
-    <img src="../Imagenes/ipn.png" alt="IPN Logo" class="logo" />
-    <div class="title">Sistema de Prácticas Profesionales</div>
-    <img src="../Imagenes/logo blanco.png" alt="UPIICSA Logo" class="logo" />
+    <div class="header-brand">
+        <div class="logo-box">
+            <img src="../Imagenes/ipn.png" alt="IPN" class="logo-img">
+            <img src="../Imagenes/logo blanco.png" alt="UPIICSA" class="logo-img">
+        </div>
+        <div class="title-box">
+            <h1>ApiSIP</h1>
+            <p>Portal de Gestión de Prácticas</p>
+        </div>
+    </div>
+    <div class="user-nav" onclick="window.location.href='perfil.html'">
+        <span>Santiago Martínez</span>
+        <div class="user-avatar">S</div>
+    </div>
 </header>
 
-<div class="top-icons">
-    <a href="home.html"><img src="../Imagenes/icono_home.png" alt="Menú" class="icon"></a>
-    <img src="../Imagenes/icono_mensaje.png" alt="Mensaje" class="icon">
-    <img src="../Imagenes/icono_notificacion.png" alt="Notificaciones" class="icon">
-    <div style="margin-left: auto;">
-        <span>Alumno</span>
-        <a href="perfil.html"><img src="../Imagenes/icono_usuario.png" alt="Usuario" class="icon"></a>
+<nav class="nav-bar">
+    <a href="home.html" class="back-link">
+        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><line x1="19" y1="12" x2="5" y2="12"></line><polyline points="12 19 5 12 12 5"></polyline></svg>
+        Volver al Inicio
+    </a>
+</nav>
+
+<div class="container">
+    <div class="page-intro">
+        <h2>Documentación Inicial</h2>
+        <p>Por favor, carga tus archivos en formato PDF. Peso no mayor a 1MB.</p>
     </div>
-</div>
 
-<div class="main-container">
-    <div class="contenido">
-        <div class="titulo-seccion">Registro de documentación inicial de Prácticas Profesionales</div>
+    <div id="docs-container">
+        <!-- Generación dinámica de tarjetas -->
+    </div>
 
-        <div id="section-cedula" class="file-section">
-            <h3><span class="status-indicator"></span> Cedula de registro</h3>
-            <div class="file-content">
-                <div class="file-input-container">
-                    <input type="file" id="input-cedula" class="file-input" accept=".pdf" />
-                    <label for="input-cedula" class="file-label">Seleccionar Archivo</label>
-                    <div class="file-info">
-                        <span id="name-cedula" class="file-name">No se ha seleccionado ningún archivo</span>
-                        <img src="../Imagenes/reg_borra.png" class="delete-icon" id="delete-cedula" style="display: none;" />
-                    </div>
-                </div>
-            </div>
-            <div class="comment-content">
-                <div class="comments-title">Comentarios</div>
-                <div class="comment-section">
-                    <div class="comment-text" id="comment-cedula">Pendiente de cargar.</div>
-                    <div class="comment-date" id="date-cedula"></div>
-                </div>
-            </div>
-        </div>
-
-        <div id="section-imss" class="file-section">
-            <h3><span class="status-indicator"></span> Constancia de vigencia de derechos (IMSS)</h3>
-            <div class="file-content">
-                <div class="file-input-container">
-                    <input type="file" id="input-imss" class="file-input" accept=".pdf" />
-                    <label for="input-imss" class="file-label">Seleccionar Archivo</label>
-                    <div class="file-info">
-                        <span id="name-imss" class="file-name">No se ha seleccionado ningún archivo</span>
-                        <img src="../Imagenes/reg_borra.png" class="delete-icon" id="delete-imss" style="display: none;" />
-                    </div>
-                </div>
-            </div>
-            <div class="comment-content">
-                <div class="comments-title">Comentarios</div>
-                <div class="comment-section">
-                    <div class="comment-text" id="comment-imss">Pendiente de cargar.</div>
-                    <div class="comment-date" id="date-imss"></div>
-                </div>
-            </div>
-        </div>
-
-        <div id="section-sisae-empresa" class="file-section">
-            <h3><span class="status-indicator"></span> Captura del registro de la empresa (SISAE-SIBOLTRA)</h3>
-            <div class="file-content">
-                <div class="file-input-container">
-                    <input type="file" id="input-sisae-empresa" class="file-input" accept=".pdf,.png,.jpg" />
-                    <label for="input-sisae-empresa" class="file-label">Seleccionar Archivo</label>
-                    <div class="file-info">
-                        <span id="name-sisae-empresa" class="file-name">No se ha seleccionado ningún archivo</span>
-                        <img src="../Imagenes/reg_borra.png" class="delete-icon" id="delete-sisae-empresa" style="display: none;" />
-                    </div>
-                </div>
-            </div>
-            <div class="comment-content">
-                <div class="comments-title">Comentarios</div>
-                <div class="comment-section">
-                    <div class="comment-text" id="comment-sisae-empresa">Pendiente de cargar.</div>
-                    <div class="comment-date" id="date-sisae-empresa"></div>
-                </div>
-            </div>
-        </div>
-
-        <div id="section-sisae-alumno" class="file-section">
-            <h3><span class="status-indicator"></span> Captura del registro del alumno (SISAE-SIBOLTRA)</h3>
-            <div class="file-content">
-                <div class="file-input-container">
-                    <input type="file" id="input-sisae-alumno" class="file-input" accept=".pdf,.png,.jpg" />
-                    <label for="input-sisae-alumno" class="file-label">Seleccionar Archivo</label>
-                    <div class="file-info">
-                        <span id="name-sisae-alumno" class="file-name">No se ha seleccionado ningún archivo</span>
-                        <img src="../Imagenes/reg_borra.png" class="delete-icon" id="delete-sisae-alumno" style="display: none;" />
-                    </div>
-                </div>
-            </div>
-            <div class="comment-content">
-                <div class="comments-title">Comentarios</div>
-                <div class="comment-section">
-                    <div class="comment-text" id="comment-sisae-alumno">Pendiente de cargar.</div>
-                    <div class="comment-date" id="date-sisae-alumno"></div>
-                </div>
-            </div>
-        </div>
-
-        <div id="section-horario" class="file-section">
-            <h3><span class="status-indicator"></span> Copia de horario (SAES)</h3>
-            <div class="file-content">
-                <div class="file-input-container">
-                    <input type="file" id="input-horario" class="file-input" accept=".pdf" />
-                    <label for="input-horario" class="file-label">Seleccionar Archivo</label>
-                    <div class="file-info">
-                        <span id="name-horario" class="file-name">No se ha seleccionado ningún archivo</span>
-                        <img src="../Imagenes/reg_borra.png" class="delete-icon" id="delete-horario" style="display: none;" />
-                    </div>
-                </div>
-            </div>
-            <div class="comment-content">
-                <div class="comments-title">Comentarios</div>
-                <div class="comment-section">
-                    <div class="comment-text" id="comment-horario">Pendiente de cargar.</div>
-                    <div class="comment-date" id="date-horario"></div>
-                </div>
-            </div>
-        </div>
-
-        <button type="button" class="btn-guardar" id="btn-save-all">Guardar Cambios</button>
+    <div class="sticky-action-bar">
+        <button class="btn-submit" id="btn-global-save">Guardar Cambios y Enviar</button>
     </div>
 </div>
 
 <footer>
-    <p>Instituto Politécnico Nacional - UPIICSA © 2025 | Sistema de Prácticas Profesionales</p>
+    <p><strong>Instituto Politécnico Nacional</strong> | UPIICSA | © 2025 Sistema ApiSIP</p>
 </footer>
 
 <script src="js/registrodocumentos.js"></script>
