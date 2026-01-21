@@ -16,6 +16,11 @@ public class OperativeService {
 
     private StudentProcessRepository processRepository;
 
+    public OperativeService(StudentRepository studentRepository, StudentProcessRepository processRepository) {
+        this.studentRepository = studentRepository;
+        this.processRepository = processRepository;
+    }
+
     public DashboardStatsDto getStats(String careerAcronym){
         List<Student> students;
 

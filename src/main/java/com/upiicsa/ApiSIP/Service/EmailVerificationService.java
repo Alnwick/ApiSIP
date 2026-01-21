@@ -7,7 +7,6 @@ import com.upiicsa.ApiSIP.Model.Token_Restore.ConfirmationCode;
 import com.upiicsa.ApiSIP.Model.UserSIP;
 import com.upiicsa.ApiSIP.Repository.Token_Restore.ConfirmationCodeRepository;
 import com.upiicsa.ApiSIP.Repository.UserRepository;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -17,14 +16,16 @@ import java.util.Random;
 @Service
 public class EmailVerificationService {
 
-    @Autowired
     private UserRepository userRepository;
-
-    @Autowired
     private EmailService emailService;
-
-    @Autowired
     private ConfirmationCodeRepository confirmationCodeRepository;
+
+    public EmailVerificationService (UserRepository userRepository, EmailService emailService,
+                                     ConfirmationCodeRepository confirmationCodeRepository) {
+        this.userRepository = userRepository;
+        this.emailService = emailService;
+        this.confirmationCodeRepository = confirmationCodeRepository;
+    }
 
     @Transactional
     public void createAndSendConfirmationCode(UserSIP user) {

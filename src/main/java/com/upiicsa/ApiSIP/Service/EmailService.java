@@ -1,6 +1,5 @@
 package com.upiicsa.ApiSIP.Service;
 
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.mail.SimpleMailMessage;
 import org.springframework.mail.javamail.JavaMailSender;
@@ -9,11 +8,14 @@ import org.springframework.stereotype.Service;
 @Service
 public class EmailService {
 
-    @Autowired
-    private JavaMailSender mailSender;
-
     @Value("${SPRING_EMAIL_USERNAME}")
     private String email;
+
+    private JavaMailSender mailSender;
+
+    public EmailService(JavaMailSender mailSender) {
+        this.mailSender = mailSender;
+    }
 
     public void sendResetEmail(String toEmail, String resetUrl) {
         SimpleMailMessage message = new SimpleMailMessage();

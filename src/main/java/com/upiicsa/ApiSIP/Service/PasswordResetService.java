@@ -6,7 +6,6 @@ import com.upiicsa.ApiSIP.Model.Token_Restore.TokenReset;
 import com.upiicsa.ApiSIP.Model.UserSIP;
 import com.upiicsa.ApiSIP.Repository.Token_Restore.TokenResetRepository;
 import com.upiicsa.ApiSIP.Repository.UserRepository;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
@@ -19,17 +18,18 @@ import java.util.UUID;
 @Service
 public class PasswordResetService {
 
-    @Autowired
     private UserRepository userRepository;
-
-    @Autowired
     private TokenResetRepository tokenResetRepository;
-
-    @Autowired
     private PasswordEncoder  passwordEncoder;
-
-    @Autowired
     private EmailService emailService;
+
+    public PasswordResetService(UserRepository userRepository, TokenResetRepository tokenResetRepository,
+                                PasswordEncoder passwordEncoder,  EmailService emailService) {
+        this.userRepository = userRepository;
+        this.tokenResetRepository = tokenResetRepository;
+        this.passwordEncoder = passwordEncoder;
+        this.emailService = emailService;
+    }
 
     @Transactional
     public void createPasswordResetToken(ForgotPasswordDto request) {

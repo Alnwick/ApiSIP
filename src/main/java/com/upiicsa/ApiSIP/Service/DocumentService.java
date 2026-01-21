@@ -10,7 +10,6 @@ import com.upiicsa.ApiSIP.Model.StudentProcess;
 import com.upiicsa.ApiSIP.Repository.DocumentRepository;
 import com.upiicsa.ApiSIP.Repository.ReviewDocumentRepository;
 import com.upiicsa.ApiSIP.Utils.DocumentNamingUtils;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.multipart.MultipartFile;
@@ -23,23 +22,28 @@ import java.util.stream.Collectors;
 @Service
 public class DocumentService {
 
-    @Autowired
     private DocumentRepository documentRepository;
 
-    @Autowired
     private ReviewDocumentRepository reviewRepository;
 
-    @Autowired
     private DocumentTypeService docTypeService;
 
-    @Autowired
     private StudentProcessService processService;
 
-    @Autowired
     private DocumentNamingUtils documentNaming;
 
-    @Autowired
     private FileStorageService fileStorage;
+
+    public DocumentService(DocumentRepository documentRepository, ReviewDocumentRepository reviewRepository,
+    DocumentTypeService typeService, StudentProcessService processService, DocumentNamingUtils documentNaming,
+                           FileStorageService fileStorage) {
+        this.documentRepository = documentRepository;
+        this.reviewRepository = reviewRepository;
+        this.docTypeService = typeService;
+        this.processService = processService;
+        this.documentNaming = documentNaming;
+        this.fileStorage = fileStorage;
+    }
 
     @Transactional
     public void saveDoc(MultipartFile file, String typeName, Integer userId) {

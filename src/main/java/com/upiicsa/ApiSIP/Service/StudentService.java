@@ -4,7 +4,6 @@ import com.upiicsa.ApiSIP.Dto.Student.StudentRegistrationDto;
 import com.upiicsa.ApiSIP.Exception.ValidationException;
 import com.upiicsa.ApiSIP.Model.Student;
 import com.upiicsa.ApiSIP.Repository.*;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.security.crypto.password.PasswordEncoder;
@@ -16,20 +15,21 @@ import java.time.LocalDateTime;
 @Service
 public class StudentService {
 
-    @Autowired
     private StudentRepository studentRepository;
-
-    @Autowired
     private PasswordEncoder passwordEncoder;
-
-    @Autowired
     private EmailVerificationService verificationService;
-
-    @Autowired
-    private DataForStudentService dataService;
-
-    @Autowired
+    private CatalogsService catalogsService;
     private StudentProcessService processService;
+
+    public StudentService (StudentRepository studentRepository, PasswordEncoder passwordEncoder,
+                           EmailVerificationService verificationService, CatalogsService catalogsService,
+                           StudentProcessService processService) {
+        this.studentRepository = studentRepository;
+        this.passwordEncoder = passwordEncoder;
+        this.verificationService = verificationService;
+        this.catalogsService = catalogsService;
+        this.processService = processService;
+    }
 
     public Page<Student> getStudents(Pageable pageable) {
         return studentRepository.findAll(pageable);
@@ -46,12 +46,12 @@ public class StudentService {
                 .fLastName(registrationDto.fLastName()).mLastName(registrationDto.mLastName())
                 .name(registrationDto.name())
                 .enabled(false).registrationDate(LocalDateTime.now())
-                .userType(dataService.getType("ALUMNO"))
-                .status(dataService.getStatus("ACTIVO"))
+                .userType(catalogsService.getType("ALUMNO"))
+                .status(catalogsService.getStatus("ACTIVO"))
                 .enrollment(registrationDto.enrollment()).phone(registrationDto.phone())
-                .semester(dataService.getSemester(registrationDto))
+                .semester(catalogsService.getSemester(registrationDto))
                 .graduate(registrationDto.graduated())
-                .offer(dataService.getOffer(registrationDto))
+                .offer(catalogsService.getOffer(registrationDto))
                 .build();
 
         studentRepository.save(newStudent);
