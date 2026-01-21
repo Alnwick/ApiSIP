@@ -7,65 +7,116 @@
     <link rel="stylesheet" href="css/info_reqyf.css">
 </head>
 <body>
+
 <header>
-    <img src="../Imagenes/ipn.png" alt="IPN Logo" class="logo" />
-    <div class="title">Sistema de Prácticas Profesionales</div>
-    <img src="../Imagenes/logo blanco.png" alt="UPIICSA Logo" class="logo" />
+    <div class="header-brand">
+        <div class="logo-box">
+            <img src="../Imagenes/ipn.png" alt="IPN" class="logo-img">
+            <img src="../Imagenes/logo blanco.png" alt="UPIICSA" class="logo-img">
+        </div>
+        <div class="title-box">
+            <h1>ApiSIP</h1>
+            <p>Portal de Gestión de Prácticas</p>
+        </div>
+    </div>
+
+    <div class="user-nav" onclick="window.location.href='perfil.html'">
+        <span>Santiago Martínez</span>
+        <div class="user-avatar">S</div>
+    </div>
 </header>
 
-<div class="top-icons">
-    <a href="home.html">
-        <img src="../Imagenes/icono_home.png" alt="Menú" class="icon">
+<nav class="nav-bar">
+    <a href="home.html" class="back-link">
+        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><line x1="19" y1="12" x2="5" y2="12"></line><polyline points="12 19 5 12 12 5"></polyline></svg>
+        Volver al Inicio
     </a>
-    <img src="../Imagenes/icono_mensaje.png" alt="Mensaje" class="icon">
-    <img src="../Imagenes/icono_notificacion.png" alt="Notificaciones" class="icon">
-    <div style="margin-left: auto;">
-        <span>Alumno</span>
-        <a href="perfil.html">
-            <img src="../Imagenes/icono_usuario.png" alt="Usuario" class="icon">
-        </a>
-    </div>
-</div>
+</nav>
 
-<div class="container contenido">
-    <div class="titulo-seccion">Requisitos y formatos</div>
+<div class="container">
 
-    <div class="lista-mejorada">
-        <div class="subtitulo">Principales requisitos:</div>
+    <!-- Sección: Requisitos -->
+    <div class="info-card">
+        <h2>Principales Requisitos</h2>
         <ul>
             <li>Ser alumnos inscritos o egresados de programas académicos con planes y programas de estudio de la Unidad Académica.</li>
-            <li>Tener al menos el 50% de créditos del plan de estudios y situación académica regular.</li>
+            <li>Tener al menos el <strong>50% de créditos</strong> del plan de estudios y situación académica regular.</li>
             <li>No haber tenido una cancelación previa con la misma empresa.</li>
-            <li>Horario permitido de prácticas: 07:00 a 22:00 hrs.</li>
-            <li>Toda la documentación debe estar firmada y sellada autógrafamente (no digitalizada).</li>
+            <li>Horario permitido de prácticas: <strong>07:00 a 22:00 hrs.</strong></li>
+            <li>Toda la documentación debe estar firmada y sellada <strong>autógrafamente</strong> (no se aceptan digitalizaciones ni firmas pegadas).</li>
         </ul>
 
-        <div class="destacado">
-            Recuerda que como alumno inscrito solo puedes realizar 4 horas diarias de lunes a viernes. Los egresados pueden realizar hasta 8 horas como máximo diarias.
+        <div class="highlight-box">
+            <strong>RECUERDA:</strong> Como alumno inscrito solo puedes realizar 4 horas diarias de lunes a viernes. Los egresados pueden realizar hasta 8 horas como máximo diarias.
         </div>
     </div>
 
-    <div class="lista-mejorada">
-        <div class="subtitulo">Formatos disponibles:</div>
+    <!-- Sección: Formatos -->
+    <div class="info-card">
+        <h2>Formatos Disponibles</h2>
+        <div class="format-list">
+            <div class="format-item">
+                <div class="icon-doc">DOC</div>
+                <div class="format-info">
+                    <span class="format-name">Cédula de registro</span>
+                    <span class="format-desc">Documento indispensable para dar de alta tu proceso de prácticas.</span>
+                </div>
+                <a href="#" class="btn-action">DESCARGAR</a>
+            </div>
+
+            <div class="format-item">
+                <div class="icon-doc">PDF</div>
+                <div class="format-info">
+                    <span class="format-name">Carta de término (Ejemplo)</span>
+                    <span class="format-desc">Guía del formato oficial que debe emitir la empresa al finalizar.</span>
+                </div>
+                <a href="#" class="btn-action">VER EJEMPLO</a>
+            </div>
+
+            <div class="format-item">
+                <div class="icon-doc">DOC</div>
+                <div class="format-info">
+                    <span class="format-name">Reportes mensuales</span>
+                    <span class="format-desc">Formato para el registro detallado de tus actividades mensuales.</span>
+                </div>
+                <a href="#" class="btn-action">DESCARGAR</a>
+            </div>
+
+            <div class="format-item">
+                <div class="icon-doc">PDF</div>
+                <div class="format-info">
+                    <span class="format-name">Carta de aceptación (Ejemplo)</span>
+                    <span class="format-desc">Requisitos mínimos que debe contener la carta de la empresa receptora.</span>
+                </div>
+                <a href="#" class="btn-action">VER EJEMPLO</a>
+            </div>
+        </div>
+
+        <div class="nota-box">
+            <strong>IMPORTANTE:</strong> Todos los formatos deben ser llenados con información verídica y actualizada. Las firmas y sellos deben ser originales para que el trámite sea válido.
+        </div>
+    </div>
+
+    <!-- Sección: Envío (Verde corregido) -->
+    <div class="info-card" style="border-top-color: var(--primary-dark);">
+        <h2>Envío de Documentación</h2>
+        <p>Todos los documentos solicitados deben ser enviados en formato <strong>PDF</strong> y en archivos separados a la coordinación de prácticas profesionales.</p>
+
+        <div class="highlight-box">
+            <strong>Correo Institucional:</strong> <a href="mailto:practicas_upiicsa@ipn.mx" style="color: var(--primary-dark); font-weight: 800;">practicas_upiicsa@ipn.mx</a>
+        </div>
+
+        <p>Asegúrate de colocar el <strong>asunto</strong> correspondiente según tu etapa actual:</p>
         <ul>
-            <li><a href="#" class="enlace-descarga">Cédula de registro</a> - Documento necesario para iniciar el proceso de prácticas</li>
-            <li><a href="#" class="enlace-descarga">Carta de término (ejemplo)</a> - Formato que debe presentarse al finalizar las prácticas</li>
-            <li><a href="#" class="enlace-descarga">Reportes mensuales</a> - Formato para documentar tus actividades durante las prácticas</li>
-            <li><a href="#" class="enlace-descarga">Carta de aceptación (ejemplo)</a> - Documento que debe proporcionar la empresa</li>
+            <li><strong>INICIO PRÁCTICAS PROFESIONALES:</strong> Para el registro y validación inicial.</li>
+            <li><strong>TÉRMINO DE PRÁCTICAS PROFESIONALES:</strong> Para la entrega de informes finales y liberación.</li>
         </ul>
-
-        <div class="nota">
-            NOTA: Todos los formatos deben ser llenados con información verídica y actualizada. Las firmas y sellos deben ser originales, no se aceptan digitalizaciones.
-        </div>
     </div>
 
-    <div class="texto">
-        <p><strong>Importante:</strong> Todos los documentos deben ser enviados en formato PDF y archivos separados al correo <a href="mailto:practicas_upiicsa@ipn.mx" class="enlace-descarga">practicas_upiicsa@ipn.mx</a> con el asunto correspondiente según el trámite que estés realizando (INICIO o TÉRMINO de prácticas profesionales).</p>
-    </div>
 </div>
 
 <footer>
-    <p>Instituto Politécnico Nacional - UPIICSA © 2025 | Sistema de Prácticas Profesionales</p>
+    <p><strong>Instituto Politécnico Nacional</strong> | UPIICSA | © 2025 Sistema ApiSIP</p>
 </footer>
 </body>
 </html>
