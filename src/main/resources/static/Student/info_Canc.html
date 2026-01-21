@@ -7,66 +7,71 @@
     <link rel="stylesheet" href="css/info_Canc.css">
 </head>
 <body>
+
 <header>
-    <img src="../Imagenes/ipn.png" alt="IPN Logo" class="logo" />
-    <div class="title">Sistema de Prácticas Profesionales</div>
-    <img src="../Imagenes/logo blanco.png" alt="UPIICSA Logo" class="logo" />
+    <div class="header-brand">
+        <div class="logo-box">
+            <img src="../Imagenes/ipn.png" alt="IPN" class="logo-img">
+            <img src="../Imagenes/logo blanco.png" alt="UPIICSA" class="logo-img">
+        </div>
+        <div class="title-box">
+            <h1>ApiSIP</h1>
+            <p>Portal de Gestión de Prácticas</p>
+        </div>
+    </div>
+
+    <div class="user-nav" onclick="window.location.href='perfil.html'">
+        <span>Santiago Martínez</span>
+        <div class="user-avatar">S</div>
+    </div>
 </header>
 
-<div class="top-icons">
-    <a href="home.html">
-        <img src="../Imagenes/icono_home.png" alt="Menú" class="icon">
+<nav class="nav-bar">
+    <a href="home.html" class="back-link">
+        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><line x1="19" y1="12" x2="5" y2="12"></line><polyline points="12 19 5 12 12 5"></polyline></svg>
+        Volver al Inicio
     </a>
-    <img src="../Imagenes/icono_mensaje.png" alt="Mensaje" class="icon">
-    <img src="../Imagenes/icono_notificacion.png" alt="Notificaciones" class="icon">
-    <div style="margin-left: auto;">
-        <span>Alumno</span>
-        <a href="perfil.html">
-            <img src="../Imagenes/icono_usuario.png" alt="Usuario" class="icon">
-        </a>
-    </div>
-</div>
+</nav>
 
-<div class="container contenido">
-    <div class="titulo-seccion">Motivos de Cancelación</div>
+<div class="container">
 
-    <div class="lista-mejorada">
-        <p>Las prácticas profesionales pueden ser canceladas por los siguientes motivos:</p>
+    <div class="info-card">
+        <h2>Motivos de Cancelación</h2>
+        <p>Las prácticas profesionales pueden ser canceladas por los siguientes motivos, afectando la continuidad de tu proceso administrativo y académico:</p>
 
-        <ul class="lista-simple">
-            <li><strong>Inactividad de más de 3 meses:</strong> Si no hay avance en tu proceso durante este período, se cancelará automáticamente.</li>
-
-            <li><strong>Documentos falsos o no verificables:</strong> Cualquier documento con información falsa o que no pueda ser verificado resultará en la cancelación inmediata.</li>
-
-            <li><strong>Solicitud del alumno o egresado:</strong> Puedes solicitar la cancelación de tus prácticas en cualquier momento.</li>
-
-            <li><strong>Causas ajenas al alumno o a la coordinación:</strong> Situaciones imprevistas que impidan la continuidad de las prácticas.</li>
+        <ul>
+            <li><strong>Inactividad de más de 3 meses:</strong> Si no existe avance o comunicación en tu proceso durante este período, el sistema lo cancelará automáticamente.</li>
+            <li><strong>Documentos falsos o no verificables:</strong> Cualquier documento que presente información alterada, firmas digitales no autorizadas o datos que no puedan ser corroborados.</li>
+            <li><strong>Solicitud del alumno o egresado:</strong> Cuando el prestador decide suspender el trámite por motivos personales o profesionales.</li>
+            <li><strong>Causas ajenas al alumno o a la coordinación:</strong> Situaciones imprevistas de fuerza mayor que impidan la continuidad de la prestación en la empresa.</li>
         </ul>
 
-        <div class="destacado">
-            <strong>Importante:</strong> Una vez canceladas las prácticas, no podrás realizar actividades en la misma empresa donde ocurrió la cancelación.
+        <div class="alert-box">
+            IMPORTANTE: Una vez canceladas las prácticas, no podrás realizar actividades en la misma empresa donde ocurrió la cancelación para este trámite.
         </div>
     </div>
 
-    <div class="titulo-seccion">Consecuencias de la Cancelación</div>
+    <div class="info-card warning-card">
+        <h2>Consecuencias de la Cancelación</h2>
+        <p>Es fundamental evitar la cancelación del trámite, ya que conlleva las siguientes repercusiones:</p>
 
-    <div class="lista-mejorada">
-        <ul class="lista-simple">
-            <li><strong>Pérdida de horas acumuladas:</strong> Todas las horas realizadas antes de la cancelación no serán válidas.</li>
-
-            <li><strong>Imposibilidad de reanudación:</strong> No podrás continuar en la misma empresa donde se cancelaron las prácticas.</li>
-
-            <li><strong>Retraso en tu plan de estudios:</strong> Deberás buscar una nueva opción para cumplir con este requisito curricular.</li>
+        <ul>
+            <li><strong>Pérdida de horas acumuladas:</strong> Todas las horas registradas y realizadas antes de la cancelación no serán válidas para el cumplimiento del requisito.</li>
+            <li><strong>Imposibilidad de reanudación:</strong> No se permite continuar el proceso en la misma empresa receptora bajo el mismo registro.</li>
+            <li><strong>Retraso en el plan de estudios:</strong> Deberás buscar una nueva opción y comenzar el registro desde cero, lo que posterga tu fecha de titulación.</li>
         </ul>
 
-        <div class="nota">
-            Si necesitas cancelar tus prácticas, contacta inmediatamente a la coordinación a través del correo <a href="mailto:practicas_upiicsa@ipn.mx" style="color: #1A8C14; font-weight: 600;">practicas_upiicsa@ipn.mx</a> para realizar el proceso adecuadamente.
+        <div class="contact-box">
+            Si necesitas orientación sobre la cancelación de tus prácticas, contacta a la coordinación inmediatamente:
+            <br><br>
+            <a href="mailto:practicas_upiicsa@ipn.mx">practicas_upiicsa@ipn.mx</a>
         </div>
     </div>
+
 </div>
 
 <footer>
-    <p>Instituto Politécnico Nacional - UPIICSA © 2025 | Sistema de Prácticas Profesionales</p>
+    <p><strong>Instituto Politécnico Nacional</strong> | UPIICSA | © 2025 Sistema ApiSIP</p>
 </footer>
 </body>
 </html>
