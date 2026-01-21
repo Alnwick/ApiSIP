@@ -12,100 +12,84 @@
     </style>
 </head>
 <body>
-<header>
-    <img src="../Imagenes/ipn.png" alt="IPN Logo" class="logo">
-    <div class="title">Sistema de Prácticas Profesionales</div>
-    <img src="../Imagenes/logo blanco.png" alt="UPIICSA Logo" class="logo">
-</header>
 
-<div class="top-icons">
-    <img src="../Imagenes/icono_mensaje.png" alt="Mensaje" class="icon">
-    <img src="../Imagenes/icono_notificacion.png" alt="Notificaciones" class="icon">
-    <div class="dropdown" style="margin-left: auto;">
-        <span id="user-name">Alumno</span>
-        <img src="../Imagenes/icono_usuario.png" alt="Usuario" class="icon" onclick="toggleDropdown()">
-        <div id="userDropdown" class="dropdown-content">
-            <a href="#" onclick="verPerfil()">Perfil</a>
-            <a href="#" onclick="cerrarSesion()">Cerrar sesión</a>
+<header>
+    <div class="header-brand">
+        <div class="logo-group">
+            <img src="../Imagenes/ipn.png" alt="IPN" class="logo-img">
+            <img src="../Imagenes/logo blanco.png" alt="UPIICSA" class="logo-img">
+        </div>
+        <div class="title-box">
+            <h1>Sistema para Practicas Profesionales</h1>
+            <p>Portal Estudiantil</p>
         </div>
     </div>
-</div>
 
-<div class="session-info" id="sessionInfo" style="display: none;">
-    <strong>Información de Sesión:</strong>
-    Token: <span id="token-preview"></span> |
-    Estado: <span id="session-status">Activa</span> |
-    <a href="#" onclick="toggleSessionInfo()">Ocultar</a>
-</div>
+    <div class="user-pill" onclick="window.location.href='perfil.html'">
+        <span id="user-pill-name">Cargando...</span>
+        <div class="user-avatar" id="user-pill-initial">U</div>
+    </div>
+</header>
 
-<div class="main-content">
-    <h2>Inicio</h2>
+<div class="container">
 
-    <div class="card-container">
-        <a href="info_quesonpp.html" class="card">
-            <div class="card-content">
-                <img src="../Imagenes/home_queson.png" alt="¿Qué son?">
-                <p>¿Qué son las prácticas Profesionales?</p>
-            </div>
-        </a>
-        <a href="info_reqyf.html" class="card">
-            <div class="card-content">
-                <img src="../Imagenes/home_requisitos.png" alt="Requisitos">
-                <p>Requisitos y formatos</p>
-            </div>
-        </a>
-        <a href="registrodocumentos.html" class="card">
-            <div class="card-content">
-                <img src="../Imagenes/home_registrar.png" alt="Registro">
-                <p>Registro de Prácticas Profesionales</p>
-            </div>
-        </a>
-        <a href="info_Canc.html" class="card">
-            <div class="card-content">
-                <img src="../Imagenes/home_formato.png" alt="Formato">
-                <p>Motivos de Cancelación</p>
-            </div>
-        </a>
-        <a href="registroseguimiento.html" class="card">
-            <div class="card-content">
-                <img src="../Imagenes/home_seguimiento.png" alt="Seguimiento">
-                <p>Registro de Documentación de Seguimiento</p>
-            </div>
-        </a>
+    <!-- 1. INFORMACIÓN Y GUÍAS -->
+    <div class="section-group">
+        <div class="section-header">
+            <h2>Información y Guías</h2>
+            <div class="line"></div>
+        </div>
+        <div class="card-grid">
+            <a href="info_quesonpp.html" class="rect-link">
+                <div class="icon-box"><img src="../Imagenes/home_queson.png" alt=""></div>
+                <span>¿Qué son las prácticas profesionales?</span>
+            </a>
+            <a href="info_reqyf.html" class="rect-link">
+                <div class="icon-box"><img src="../Imagenes/home_requisitos.png" alt=""></div>
+                <span>Requisitos y formatos oficiales</span>
+            </a>
+            <a href="info_Canc.html" class="rect-link">
+                <div class="icon-box"><img src="../Imagenes/home_formato.png" alt=""></div>
+                <span>Motivos y causas de cancelación</span>
+            </a>
+        </div>
     </div>
 
-    <div class="status-section">
-        <div class="status-title">Estatus de tus prácticas profesionales</div>
-        <table class="status-table">
-            <thead>
-            <tr>
-                <th>Registrado</th>
-                <th>Documentación de inicio</th>
-                <th>Carta de aceptación</th>
-                <th>Finalización de informes</th>
-                <th>Documentación de término</th>
-                <th>Liberación</th>
-            </tr>
-            </thead>
-            <tbody>
-            <tr class="status-table-row">
-                <td>-</td>
-                <td>-</td>
-                <td>-</td>
-                <td>-</td>
-                <td>-</td>
-                <td>-</td>
-            </tr>
-            </tbody>
-        </table>
-        <div class="current-status status-description">
-            Actualmente te encuentras en el estatus de: <b>Sin revisión</b>, por favor mantente al pendiente de tu proceso.
+    <!-- 2. TRÁMITES Y REGISTRO -->
+    <div class="section-group">
+        <div class="section-header">
+            <h2>Trámites y Registro</h2>
+            <div class="line"></div>
+        </div>
+        <div class="card-grid">
+            <a href="registrodocumentos.html" class="rect-link">
+                <div class="icon-box"><img src="../Imagenes/home_registrar.png" alt=""></div>
+                <span>Registro de Prácticas Profesionales</span>
+            </a>
+            <a href="registroseguimiento.html" class="rect-link locked" id="card-seguimiento">
+                <div class="icon-box"><img src="../Imagenes/home_seguimiento.png" alt=""></div>
+                <span>Documentación de Seguimiento</span>
+                <div class="lock-tag" id="lock-tag">BLOQUEADO</div>
+            </a>
+        </div>
+    </div>
+
+    <!-- 3. ESTADO DE TU TRÁMITE -->
+    <div class="section-group">
+        <div class="section-header">
+            <h2>Estado de tu Trámite</h2>
+            <div class="line"></div>
+        </div>
+        <div class="progress-card">
+            <div class="stepper" id="main-stepper">
+                <!-- Dinámico -->
+            </div>
         </div>
     </div>
 </div>
 
 <footer>
-    <p>Instituto Politécnico Nacional - UPIICSA © 2025 | Sistema de Prácticas Profesionales</p>
+    <p><strong>Instituto Politécnico Nacional</strong> | UPIICSA | © 2025 Sistema ApiSIP</p>
 </footer>
 
 <script src="js/home.js"></script>
