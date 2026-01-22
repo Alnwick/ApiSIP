@@ -4,6 +4,12 @@ let emailRegistro = '';
 let datosEstudianteTemporal = null;
 let countdownTimer = null;
 
+// Variables para recuperación de contraseña
+let recoveryTimer = null;
+let recoveryUserEmail = '';
+let recoveryCountdown = 60;
+let passwordResetToken = '';
+
 // ========== FUNCIONES DE NAVEGACIÓN (VISTAS) ==========
 function mostrarLogin() {
     document.getElementById('login-form').style.display = 'block';
@@ -50,6 +56,175 @@ function volverAlRegistro() {
     mostrarRegistro();
 }
 
+// ========== FUNCIONES DE RECUPERACIÓN DE CONTRASEÑA ==========
+
+function mostrarRecuperacionModal() {
+    const modal = document.getElementById('recuperar-contrasena-modal');
+    const emailInput = document.getElementById('recovery-email');
+    const errorMsg = document.getElementById('recovery-email-error');
+
+    if (modal && emailInput) {
+        modal.style.display = 'flex';
+        emailInput.value = '';
+        emailInput.classList.remove('input-error');
+        errorMsg.style.display = 'none';
+
+        // Ocultar mensaje de éxito si existe
+        const successMsg = document.getElementById('recovery-success');
+        if (successMsg) successMsg.style.display = 'none';
+    }
+}
+
+function cerrarRecuperacionModal() {
+    const modal = document.getElementById('recuperar-contrasena-modal');
+    if (modal) {
+        modal.style.display = 'none';
+    }
+}
+
+async function enviarCodigoRecuperacion() {
+    const emailInput = document.getElementById('recovery-email');
+    const errorMsg = document.getElementById('recovery-email-error');
+    const sendBtn = document.getElementById('send-recovery');
+    const successMsg = document.getElementById('recovery-success');
+
+    if (!emailInput || !errorMsg || !sendBtn) return;
+
+    const email = emailInput.value.trim();
+
+    // Validar email
+    if (!isValidEmail(email)) {
+        emailInput.classList.add('input-error');
+        errorMsg.textContent = 'Por favor ingresa un correo electrónico válido';
+        errorMsg.style.display = 'block';
+        return;
+    }
+
+    // Limpiar errores
+    emailInput.classList.remove('input-error');
+    errorMsg.style.display = 'none';
+
+    // Deshabilitar botón temporalmente
+    const originalText = sendBtn.textContent;
+    sendBtn.textContent = 'Enviando...';
+    sendBtn.disabled = true;
+
+    try {
+        // Usar tu endpoint real para recuperación
+        const response = await fetch(`${API_BASE_URL}/api/forgot-password`, {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({
+                email: email
+            })
+        });
+
+        if (response.ok) {
+            // Guardar email para uso posterior
+            recoveryUserEmail = email;
+
+            // Mostrar mensaje de éxito
+            if (successMsg) {
+                successMsg.textContent = `Se ha enviado un código de verificación a ${email}`;
+                successMsg.style.display = 'block';
+            }
+
+            // IMPORTANTE: Tu backend usa tokens por URL, no códigos por formulario
+            // Muestra mensaje indicando que revise el correo
+            mostrarMensaje('Código enviado', 'Revisa tu correo electrónico para encontrar el enlace de recuperación de contraseña.');
+
+            // Cerrar modal después de 2 segundos
+            setTimeout(() => {
+                cerrarRecuperacionModal();
+            }, 2000);
+
+        } else {
+            throw new Error('No se pudo enviar el código de recuperación');
+        }
+
+    } catch (error) {
+        console.error('Error enviando código:', error);
+        errorMsg.textContent = 'Error al enviar el código de recuperación';
+        errorMsg.style.display = 'block';
+        emailInput.classList.add('input-error');
+    } finally {
+        // Restaurar botón
+        sendBtn.textContent = originalText;
+        sendBtn.disabled = false;
+    }
+}
+
+function mostrarMensaje(titulo, mensaje) {
+    const messageModal = document.getElementById('recovery-message');
+    const messageTitle = document.getElementById('message-title');
+    const messageText = document.getElementById('message-text');
+
+    if (messageModal && messageTitle && messageText) {
+        messageTitle.textContent = titulo;
+        messageText.textContent = mensaje;
+        messageModal.style.display = 'flex';
+    }
+}
+
+function cerrarMensaje() {
+    const messageModal = document.getElementById('recovery-message');
+    if (messageModal) {
+        messageModal.style.display = 'none';
+    }
+}
+
+// NOTA: Tu backend usa un sistema diferente:
+// 1. /api/forgot-password envía un correo con un token
+// 2. El usuario hace clic en el enlace del correo
+// 3. El enlace lo lleva a una página con el token en la URL
+// 4. /api/reset-password/validate valida el token
+// 5. /api/reset-password cambia la contraseña
+
+// Por lo tanto, NO necesitas el formulario de código de 6 dígitos
+// Ya que tu sistema usa tokens en URLs
+
+// ========== FUNCIONES AUXILIARES ==========
+
+function isValidEmail(email) {
+    const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+    return emailRegex.test(email);
+}
+
+function generateVerificationCode() {
+    return Math.floor(100000 + Math.random() * 900000).toString();
+}
+
+function manejarCodigoInputs() {
+    const codeInputs = document.querySelectorAll('.code-input');
+
+    if (!codeInputs) return;
+
+    codeInputs.forEach((input, index) => {
+        input.addEventListener('input', function() {
+            // Validar que solo sean números
+            this.value = this.value.replace(/\D/g, '');
+
+            // Si se ingresó un dígito, pasar al siguiente input
+            if (this.value.length === 1 && index < codeInputs.length - 1) {
+                codeInputs[index + 1].focus();
+            }
+        });
+
+        input.addEventListener('keydown', function(e) {
+            // Navegación con flechas
+            if (e.key === 'ArrowLeft' && index > 0) {
+                codeInputs[index - 1].focus();
+            } else if (e.key === 'ArrowRight' && index < codeInputs.length - 1) {
+                codeInputs[index + 1].focus();
+            } else if (e.key === 'Backspace' && !this.value && index > 0) {
+                codeInputs[index - 1].focus();
+            }
+        });
+    });
+}
+
+// ========== FUNCIONES EXISTENTES (mantenerlas) ==========
+
 async function cargarEscuelas() {
     try {
         const response = await fetch(`${API_BASE_URL}/catalogs/schools`);
@@ -63,7 +238,7 @@ async function cargarEscuelas() {
                 const option = document.createElement('option');
                 option.value = school.acronym;
                 option.dataset.name = school.name;
-                option.dataset.acronym = school.acronym; // CAMBIO: Guardamos acronym también
+                option.dataset.acronym = school.acronym;
                 option.textContent = school.acronym;
                 select.appendChild(option);
             });
@@ -92,7 +267,7 @@ async function cargarCarreras(escuelaNombre) {
                 const option = document.createElement('option');
                 option.value = carrera.acronym;
                 option.dataset.name = carrera.name;
-                option.dataset.acronym = carrera.acronym; // CAMBIO: Guardamos acronym también
+                option.dataset.acronym = carrera.acronym;
                 option.textContent = carrera.acronym;
                 select.appendChild(option);
             });
@@ -135,7 +310,6 @@ async function cargarSemestres() {
             const select = document.getElementById('semestre');
             select.innerHTML = '<option value="">Selecciona un semestre</option>';
 
-            // Ordenar numéricamente usando 'description'
             semestres.sort((a, b) => parseInt(a.description) - parseInt(b.description));
 
             semestres.forEach(sem => {
@@ -312,7 +486,7 @@ async function verificarCodigo() {
     }
 }
 
-// ========== UTILIDADES (Timer, Validaciones, Listeners) ==========
+// ========== UTILIDADES (Timer, Validaciones) ==========
 function iniciarCountdown() {
     let tiempoRestante = 60;
     const countdownElement = document.getElementById('countdown');
@@ -439,10 +613,10 @@ document.addEventListener('DOMContentLoaded', function() {
         carreraSelect.addEventListener('change', function() {
             const selectedOption = this.options[this.selectedIndex];
             if(selectedOption.value) {
-                const carreraAcronym = selectedOption.dataset.acronym; // CAMBIO: Usa dataset.acronym
+                const carreraAcronym = selectedOption.dataset.acronym;
                 const escuelaSelectEl = document.getElementById('escuela');
                 const escuelaSelectedOption = escuelaSelectEl.options[escuelaSelectEl.selectedIndex];
-                const escuelaAcronym = escuelaSelectedOption.dataset.acronym; // CAMBIO: Usa dataset.acronym
+                const escuelaAcronym = escuelaSelectedOption.dataset.acronym;
                 cargarPlanes(escuelaAcronym, carreraAcronym);
             }
         });
@@ -462,5 +636,107 @@ document.addEventListener('DOMContentLoaded', function() {
     document.getElementById('verify-button').addEventListener('click', (e) => {
         e.preventDefault();
         verificarCodigo();
+    });
+
+    // ========== LISTENERS PARA RECUPERACIÓN DE CONTRASEÑA ==========
+
+    // Enlace "¿Olvidaste tu contraseña?"
+    const olvidoContrasenaLink = document.getElementById('olvido-contrasena-link');
+    if (olvidoContrasenaLink) {
+        olvidoContrasenaLink.addEventListener('click', function(e) {
+            e.preventDefault();
+            mostrarRecuperacionModal();
+        });
+    }
+
+    // Botones del modal de recuperación
+    const closeModalBtn = document.getElementById('close-modal');
+    const cancelRecoveryBtn = document.getElementById('cancel-recovery');
+    if (closeModalBtn) {
+        closeModalBtn.addEventListener('click', cerrarRecuperacionModal);
+    }
+    if (cancelRecoveryBtn) {
+        cancelRecoveryBtn.addEventListener('click', cerrarRecuperacionModal);
+    }
+
+    // Botón enviar código de recuperación
+    const sendRecoveryBtn = document.getElementById('send-recovery');
+    if (sendRecoveryBtn) {
+        sendRecoveryBtn.addEventListener('click', enviarCodigoRecuperacion);
+    }
+
+    // Configurar inputs de código
+    manejarCodigoInputs();
+
+    // Botones de formulario de verificación
+    const closeVerificationBtn = document.getElementById('close-verification');
+    const backToRecoveryBtn = document.getElementById('back-to-recovery');
+    const verifyRecoveryBtn = document.getElementById('verify-recovery-button');
+    const recoveryResendBtn = document.getElementById('recovery-resend-button');
+
+    if (closeVerificationBtn) {
+        closeVerificationBtn.addEventListener('click', cerrarVerificacionRecuperacion);
+    }
+    if (backToRecoveryBtn) {
+        backToRecoveryBtn.addEventListener('click', function() {
+            cerrarVerificacionRecuperacion();
+            mostrarRecuperacionModal();
+        });
+    }
+    if (verifyRecoveryBtn) {
+        verifyRecoveryBtn.addEventListener('click', verificarCodigoRecuperacion);
+    }
+    if (recoveryResendBtn) {
+        recoveryResendBtn.addEventListener('click', reenviarCodigoRecuperacion);
+    }
+
+    // Botones de formulario de nueva contraseña
+    const closeNewPasswordBtn = document.getElementById('close-new-password');
+    const backToVerificationBtn = document.getElementById('back-to-verification');
+    const saveNewPasswordBtn = document.getElementById('save-new-password');
+
+    if (closeNewPasswordBtn) {
+        closeNewPasswordBtn.addEventListener('click', cerrarNuevaContrasenaForm);
+    }
+    if (backToVerificationBtn) {
+        backToVerificationBtn.addEventListener('click', function() {
+            cerrarNuevaContrasenaForm();
+            mostrarVerificacionRecuperacion();
+        });
+    }
+    if (saveNewPasswordBtn) {
+        saveNewPasswordBtn.addEventListener('click', guardarNuevaContrasena);
+    }
+
+    // Botones del modal de mensajes
+    const closeMessageBtn = document.getElementById('close-message');
+    const acceptMessageBtn = document.getElementById('accept-message');
+
+    if (closeMessageBtn) {
+        closeMessageBtn.addEventListener('click', cerrarMensaje);
+    }
+    if (acceptMessageBtn) {
+        acceptMessageBtn.addEventListener('click', cerrarMensaje);
+    }
+
+    // Cerrar modales al hacer clic fuera
+    window.addEventListener('click', function(e) {
+        const recuperacionModal = document.getElementById('recuperar-contrasena-modal');
+        const verificacionModal = document.getElementById('verificacion-recuperacion-form');
+        const nuevaContrasenaModal = document.getElementById('nueva-contrasena-form');
+        const messageModal = document.getElementById('recovery-message');
+
+        if (recuperacionModal && e.target === recuperacionModal) {
+            cerrarRecuperacionModal();
+        }
+        if (verificacionModal && e.target === verificacionModal) {
+            cerrarVerificacionRecuperacion();
+        }
+        if (nuevaContrasenaModal && e.target === nuevaContrasenaModal) {
+            cerrarNuevaContrasenaForm();
+        }
+        if (messageModal && e.target === messageModal) {
+            cerrarMensaje();
+        }
     });
 });

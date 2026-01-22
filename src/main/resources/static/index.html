@@ -33,7 +33,46 @@
                 <div class="error-message" id="login-password-error">La contraseña es requerida</div>
             </div>
             <button class="boton-form" id="login-button">Iniciar Sesión</button>
-            <div class="footer"><a href="#">¿Olvidaste tu contraseña?</a></div>
+            <div class="footer"><a href="#" id="olvido-contrasena-link">¿Olvidaste tu contraseña?</a></div>
+        </div>
+
+        <!-- Modal para recuperación de contraseña -->
+        <div id="recuperar-contrasena-modal" class="modal">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h3>Recuperar Contraseña</h3>
+                    <button class="close-modal" id="close-modal">&times;</button>
+                </div>
+                <div class="modal-body">
+                    <p>Ingresa tu correo electrónico y te enviaremos un enlace para restablecer tu contraseña.</p>
+                    <div class="form-group">
+                        <label for="recovery-email" class="required">Correo electrónico</label>
+                        <input type="email" id="recovery-email" placeholder="usuario@ejemplo.com">
+                        <div class="error-message" id="recovery-email-error">Por favor ingresa un correo electrónico válido</div>
+                    </div>
+                    <div id="recovery-success" class="success-message" style="display: none;"></div>
+                </div>
+                <div class="modal-footer">
+                    <button class="boton-secundario" id="cancel-recovery">Cancelar</button>
+                    <button class="boton-form" id="send-recovery">Enviar enlace</button>
+                </div>
+            </div>
+        </div>
+
+        <!-- Modal para mensajes -->
+        <div id="recovery-message" class="modal">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h3 id="message-title">Mensaje</h3>
+                    <button class="close-modal" id="close-message">&times;</button>
+                </div>
+                <div class="modal-body">
+                    <p id="message-text"></p>
+                </div>
+                <div class="modal-footer">
+                    <button class="boton-form" id="accept-message">Aceptar</button>
+                </div>
+            </div>
         </div>
 
         <div id="registro-form">
@@ -83,10 +122,10 @@
                 <div class="form-group">
                     <label style="visibility: hidden;">Estatus</label>
                     <label class="checkbox-wrapper" for="egresado-check">
-                    <input type="checkbox" id="egresado-check">
-                    <span class="custom-checkmark"></span>
-                    <span class="checkbox-label">Soy Egresado</span>
-                </label>
+                        <input type="checkbox" id="egresado-check">
+                        <span class="custom-checkmark"></span>
+                        <span class="checkbox-label">Soy Egresado</span>
+                    </label>
                 </div>
                 <div class="form-group semester-group" id="semester-group">
                     <label for="semestre" class="required">Semestre</label>
@@ -151,6 +190,7 @@
             <button class="boton-form" id="verify-button" onclick="verificarCodigo(); return false;">Verificar y Completar Registro</button>
             <button class="boton-secundario" onclick="volverAlRegistro(); return false;">← Volver al registro</button>
         </div>
+
     </div>
 </div>
 
