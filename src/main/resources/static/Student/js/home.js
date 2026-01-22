@@ -1,17 +1,20 @@
-const API_URL = '/student/process-status';
-const PHASES = ["Registrado", "Doc Inicial", "Carta de Aceptación", "Informes Finales", "Doc Término", "Liberación"];
+const API_STATUS = '/student/process-status';
+const API_LOGOUT = '/auth/logout';
+const PHASES = ["Registrado", "Doc Inicial", "Carta de Aceptación", "Finalización de informes", "Doc Término", "Liberación"];
 
-document.addEventListener('DOMContentLoaded', loadData);
+document.addEventListener('DOMContentLoaded', () => {
+    loadData();
+    setupLogout();
+});
 
 async function loadData() {
     let stagesData = [];
     try {
-        const resp = await fetch(API_URL);
+        const resp = await fetch(API_STATUS);
         if (resp.ok) stagesData = await resp.json();
-    } catch (e) { console.warn("API offline"); }
+    } catch (e) { console.warn("Modo Offline"); }
 
     renderProgress(stagesData);
-    updateHeaderInfo();
 }
 
 function renderProgress(apiData) {
@@ -21,34 +24,42 @@ function renderProgress(apiData) {
         const data = apiData[idx] || {};
         const done = data.date && data.date !== "" && data.date !== "-";
         const current = data.isCurrent || false;
-
-        let cls = done && !current ? 'completed' : (current ? 'active' : '');
+        let statusClass = done && !current ? 'completed' : (current ? 'active' : '');
 
         return `
-                <div class="step ${cls}">
+                <div class="step ${statusClass}">
                     <div class="dot">${(done && !current) ? '✓' : idx + 1}</div>
                     <div class="step-info">
                         <span class="label">${name}</span>
-                        <span class="date-badge">${done ? 'Inició: ' + fmt(data.date) : (current ? 'Fase actual' : '—')}</span>
+                        <div class="date-container">
+                            <span class="date-badge">${done ? 'Inició: ' + fmt(data.date) : (current ? 'En progreso' : '—')}</span>
+                        </div>
                     </div>
                 </div>
             `;
     }).join('');
 
-    // Lógica Bloqueo
-    const docIniciada = apiData[1] && apiData[1].date && apiData[1].date !== "-";
-    if (docIniciada) {
+    const docIniciado = apiData[1] && apiData[1].date && apiData[1].date !== "-";
+    if (docIniciado) {
         document.getElementById('card-seguimiento').classList.remove('locked');
-        document.getElementById('lock-tag').style.display = 'none';
+        const tag = document.getElementById('lock-tag');
+        if (tag) tag.style.display = 'none';
     } else {
         document.getElementById('card-seguimiento').onclick = (e) => e.preventDefault();
     }
 }
 
-function updateHeaderInfo() {
-    // Simulación de datos de sesión
-    document.getElementById('user-pill-name').textContent = "Santiago Martínez";
-    document.getElementById('user-pill-initial').textContent = "S";
+function setupLogout() {
+    document.getElementById('logoutBtn').addEventListener('click', async () => {
+        try {
+            const response = await fetch(API_LOGOUT, { method: 'POST' });
+            if (response.ok) {
+                window.location.href = '/index.html';
+            }
+        } catch (error) {
+            console.error("Error al cerrar sesión:", error);
+        }
+    });
 }
 
 function fmt(d) {

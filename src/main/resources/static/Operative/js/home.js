@@ -1,16 +1,37 @@
 const API_CATALOGS = window.location.origin + '/catalogs';
 const API_OPERATIVES = window.location.origin + '/operatives';
+const API_LOGOUT = '/auth/logout';
 
 let selectedCareer = 'all';
 let selectedPlan = 'all';
 let selectedFilter = 'total';
 
-document.addEventListener('DOMContentLoaded', init);
+document.addEventListener('DOMContentLoaded', () => {
+    init();
+    setupLogout();
+});
 
 async function init() {
     setupListeners();
     await fetchCareers();
     await updateDashboard();
+}
+
+/**
+ * Lógica de Cierre de Sesión
+ */
+function setupLogout() {
+    document.getElementById('logoutBtn').addEventListener('click', async () => {
+        try {
+            const response = await fetch(API_LOGOUT, { method: 'POST' });
+            if (response.ok) {
+                // Redirige al login principal al limpiar la cookie
+                window.location.href = '/index.html';
+            }
+        } catch (error) {
+            console.error("Error al cerrar sesión:", error);
+        }
+    });
 }
 
 function setupListeners() {
@@ -92,7 +113,6 @@ async function renderTable() {
     const container = document.getElementById('studentTableBody');
     const search = document.getElementById('searchInput').value;
 
-    // NOTA: Ajustar endpoint según el controlador real (getAllStudents)
     const response = await fetch(`${API_OPERATIVES}/get-allStudents?page=0&size=50`);
     const data = await response.json();
     const students = data.content || [];
@@ -107,7 +127,7 @@ async function renderTable() {
                 <td><strong>${s.offer?.syllabus?.code || 'N/A'}</strong></td>
                 <td>${s.name} ${s.fLastName} ${s.mLastName}</td>
                 <td>${s.enrollment}</td>
-                <td><span class="visual-status" style="background:#e0f2fe; color:#0369a1;">En Proceso</span></td>
+                <td><span class="visual-status" style="background:#e0f2fe; color:#0369a1; padding:4px 10px; border-radius:20px; font-size:0.7rem; font-weight:800;">En Proceso</span></td>
             </tr>
         `).join('');
 }
