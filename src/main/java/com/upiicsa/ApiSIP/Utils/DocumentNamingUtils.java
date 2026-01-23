@@ -4,14 +4,16 @@ import com.upiicsa.ApiSIP.Model.Catalogs.DocumentType;
 import com.upiicsa.ApiSIP.Model.Student;
 import com.upiicsa.ApiSIP.Model.StudentProcess;
 import com.upiicsa.ApiSIP.Repository.DocumentRepository;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
 @Component
 public class DocumentNamingUtils {
 
-    @Autowired
     private DocumentRepository docRepository;
+
+    public DocumentNamingUtils(DocumentRepository documentRepository) {
+        this.docRepository = documentRepository;
+    }
 
     public String generateVersionedName(StudentProcess process, DocumentType type) {
         String cleanTypeName = type.getDescription().replaceAll("\\s+", "");
@@ -26,5 +28,8 @@ public class DocumentNamingUtils {
                 cleanTypeName,
                 nextVersion,
                 extension);
+    }
+    public String generateCertificateName(){
+        return "certificate";
     }
 }
