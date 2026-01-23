@@ -29,7 +29,7 @@
 <nav class="nav-bar">
     <a href="registrodocumentos.html" class="back-link">
         <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><line x1="19" y1="12" x2="5" y2="12"></line><polyline points="12 19 5 12 12 5"></polyline></svg>
-        Volver a los documentos
+        Volver al Registro
     </a>
 </nav>
 
@@ -44,27 +44,23 @@
             <div class="input-grid">
                 <div class="input-group full">
                     <label>Calle</label>
-                    <input type="text" name="studentCalle" required placeholder="Ej. Av. Té">
+                    <input type="text" id="studentStreet" name="studentStreet" required placeholder="Nombre de la calle o vialidad">
                 </div>
                 <div class="input-group">
-                    <label>No. Exterior</label>
-                    <input type="text" name="studentNumExt" required placeholder="Ej. 950">
-                </div>
-                <div class="input-group">
-                    <label>No. Interior</label>
-                    <input type="text" name="studentNumInt" placeholder="Opcional">
-                </div>
-                <div class="input-group">
-                    <label>Colonia</label>
-                    <input type="text" name="studentColonia" required placeholder="Ej. Granjas México">
+                    <label>Número</label>
+                    <input type="text" id="studentNumber" name="studentNumber" required placeholder="Ej. 123 o S/N">
                 </div>
                 <div class="input-group">
                     <label>Código Postal</label>
-                    <input type="text" name="studentCP" required maxlength="5" placeholder="08400">
+                    <input type="text" id="studentPostalCode" name="studentPostalCode" required maxlength="5" placeholder="08400">
+                </div>
+                <div class="input-group full">
+                    <label>Colonia</label>
+                    <input type="text" id="studentNeighborhood" name="studentNeighborhood" required placeholder="Nombre de la colonia">
                 </div>
                 <div class="input-group full">
                     <label>Estado</label>
-                    <select name="studentEstado" id="studentEstado" required>
+                    <select id="studentStateId" name="studentStateId" required>
                         <option value="">Selecciona un estado...</option>
                     </select>
                 </div>
@@ -75,41 +71,55 @@
         <section class="form-section">
             <div class="section-title">Información de la Empresa</div>
             <div class="input-grid">
+                <div class="input-group full">
+                    <label>Razón Social</label>
+                    <input type="text" id="companyName" name="companyName" required placeholder="Nombre de la Empresa (Como aparece en el SIBOLTRA)">
+                </div>
                 <div class="input-group">
                     <label>Correo Electrónico</label>
-                    <input type="email" name="companyEmail" required placeholder="empresa@ejemplo.com">
+                    <input type="email" id="companyEmail" name="companyEmail" required placeholder="empresa@ejemplo.com">
                 </div>
                 <div class="input-group">
                     <label>Teléfono</label>
-                    <input type="tel" name="companyPhone" required placeholder="5512345678">
+                    <input type="tel" id="companyPhone" name="companyPhone" required placeholder="5512345678">
                 </div>
                 <div class="input-group">
                     <label>Extensión</label>
-                    <input type="text" name="companyExt" placeholder="Ej. 101">
+                    <input type="text" id="companyExtension" name="companyExtension" placeholder="Ej. 101">
                 </div>
                 <div class="input-group">
                     <label>FAX</label>
-                    <input type="text" name="companyFax" placeholder="Opcional">
+                    <input type="text" id="companyFax" name="companyFax" placeholder="Opcional">
                 </div>
                 <div class="input-group full">
                     <label>Sector de la Empresa</label>
-                    <select name="companySector" required>
+                    <select id="companySector" name="companySector" required>
                         <option value="PUBLICO">Público</option>
                         <option value="PRIVADO">Privado</option>
-                        <option value="SOCIAL">Social</option>
                     </select>
                 </div>
+
+                <!-- Responsable -->
                 <div class="input-group full">
                     <label>Responsable del Alumno</label>
-                    <input type="text" name="companyBoss" required placeholder="Nombre completo del jefe directo">
+                    <div class="double-group">
+                        <select id="bossGrade" name="bossGrade" required>
+                            <option value="Lic.">Lic.</option>
+                            <option value="Ing.">Ing.</option>
+                            <option value="Mtro.">Mtro.</option>
+                            <option value="Dr.">Dr.</option>
+                        </select>
+                        <input type="text" id="bossName" name="bossName" required placeholder="Nombre completo del responsable">
+                    </div>
                 </div>
+
                 <div class="input-group">
                     <label>Puesto del Responsable</label>
-                    <input type="text" name="companyBossJob" required placeholder="Ej. Gerente de TI">
+                    <input type="text" id="bossJob" name="bossJob" required placeholder="Ej. Gerente de TI">
                 </div>
                 <div class="input-group">
                     <label>Puesto del Alumno</label>
-                    <input type="text" name="studentJob" required placeholder="Ej. Desarrollador Junior">
+                    <input type="text" id="studentJob" name="studentJob" required placeholder="Ej. Desarrollador Junior">
                 </div>
 
                 <!-- Dirección Empresa -->
@@ -118,43 +128,39 @@
                 </div>
                 <div class="input-group full">
                     <label>Calle</label>
-                    <input type="text" name="companyCalle" required>
+                    <input type="text" id="companyStreet" name="companyStreet" required>
                 </div>
                 <div class="input-group">
-                    <label>No. Ext</label>
-                    <input type="text" name="companyNumExt" required>
-                </div>
-                <div class="input-group">
-                    <label>No. Int</label>
-                    <input type="text" name="companyNumInt">
-                </div>
-                <div class="input-group">
-                    <label>Colonia</label>
-                    <input type="text" name="companyColonia" required>
+                    <label>Número</label>
+                    <input type="text" id="companyNumber" name="companyNumber" required>
                 </div>
                 <div class="input-group">
                     <label>C.P.</label>
-                    <input type="text" name="companyCP" required maxlength="5">
+                    <input type="text" id="companyPostalCode" name="companyPostalCode" required maxlength="5">
+                </div>
+                <div class="input-group full">
+                    <label>Colonia</label>
+                    <input type="text" id="companyNeighborhood" name="companyNeighborhood" required>
                 </div>
                 <div class="input-group full">
                     <label>Estado</label>
-                    <select name="companyEstado" id="companyEstado" required>
+                    <select id="companyStateId" name="companyStateId" required>
                         <option value="">Selecciona un estado...</option>
                     </select>
                 </div>
             </div>
-            <button type="submit" class="btn-generate">Generar PDF de Cédula</button>
+            <button type="submit" class="btn-generate" id="submitBtn">Generar Cédula</button>
         </section>
     </form>
 
     <!-- VISOR PDF -->
     <aside class="preview-side">
         <div class="pdf-viewer" id="viewerContainer">
-            <div class="placeholder-text">
+            <div class="placeholder-text" id="placeholder">
                 <svg width="60" height="60" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1" style="opacity: 0.3; margin-bottom: 1rem;">
                     <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"></path>
                     <polyline points="14 2 14 8 20 8"></polyline>
-                    </polyline></svg>
+                </svg>
                 <p>Completa el formulario y presiona "Generar" para visualizar tu cédula aquí.</p>
             </div>
         </div>

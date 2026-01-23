@@ -125,6 +125,12 @@ header {
 .input-group { display: flex; flex-direction: column; gap: 0.4rem; margin-bottom: 1rem; }
 .input-group.full { grid-column: span 2; }
 
+.double-group {
+    display: grid;
+    grid-template-columns: 100px 1fr;
+    gap: 1rem;
+}
+
 label { font-size: 0.75rem; font-weight: 800; color: var(--text-muted); text-transform: uppercase; }
 
 input, select {
@@ -135,6 +141,7 @@ input, select {
     outline: none;
     transition: border-color 0.2s;
     background: #fcfcfc;
+    width: 100%;
 }
 input:focus, select:focus { border-color: var(--primary); background: white; box-shadow: 0 0 0 3px var(--primary-light); }
 
@@ -191,7 +198,7 @@ input:focus, select:focus { border-color: var(--primary); background: white; box
     font-weight: 800;
     text-align: center;
     transition: 0.2s;
-    display: none; /* Se muestra al generar */
+    display: none;
 }
 .btn-download:hover { background: #000; transform: translateY(-2px); }
 
