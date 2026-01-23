@@ -25,7 +25,7 @@ public class PdfStampingService {
 
     public void stampTextOnPdf(Student student, Company company) {
         String companyAddress = company.getAddress().getStreet() + " " + company.getAddress().getNumber() + " " +
-                company.getAddress().getColony()  + " " + company.getAddress().getZipCode() + " "
+                company.getAddress().getNeighborhood()  + " " + company.getAddress().getZipCode() + " "
                 + company.getAddress().getState().getName();
 
         int[] semesterCoords = getSemesterCoords(student);
@@ -62,7 +62,7 @@ public class PdfStampingService {
                     CoordsEnum.CALLE.getCoordsX(),  CoordsEnum.CALLE.getCoordsY());
             writeText(content, student.getAddress().getNumber(),
                     CoordsEnum.NUMERO.getCoordsX(), CoordsEnum.NUMERO.getCoordsY());
-            writeText(content, student.getAddress().getColony(),
+            writeText(content, student.getAddress().getNeighborhood(),
                     CoordsEnum.COLONIA.getCoordsX(),  CoordsEnum.COLONIA.getCoordsY());
             writeText(content, student.getAddress().getZipCode(),
                     CoordsEnum.CODIGO_P.getCoordsX(),  CoordsEnum.CODIGO_P.getCoordsY());
@@ -89,7 +89,7 @@ public class PdfStampingService {
             writeText(content, company.getEmail(),
                     CoordsEnum.CORREO_EMPRESA.getCoordsX(),  CoordsEnum.CORREO_EMPRESA.getCoordsY());
             writeText(content, "X", sectorCoords[0], sectorCoords[1]);
-            writeText(content, company.getDegreeSupervisor() + " " + company.getSupervisor(),
+            writeText(content, company.getSupervisorGrade() + " " + company.getSupervisor(),
                     CoordsEnum.RESPONSABLE.getCoordsX(), CoordsEnum.RESPONSABLE.getCoordsY());
             writeText(content, company.getPositionSupervisor(),
                     CoordsEnum.PUESTO_RESPONSABLE.getCoordsX(),  CoordsEnum.PUESTO_RESPONSABLE.getCoordsY());
