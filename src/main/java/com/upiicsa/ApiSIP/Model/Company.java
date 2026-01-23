@@ -40,7 +40,7 @@ public class Company {
     private String supervisor;
 
     @Column(name = "GRADO_ACA_REPO", length = 10)
-    private String degreeSupervisor;
+    private String supervisorGrade;
 
     @Column(name = "PUESTO_RESPO", length = 100)
     private String positionSupervisor;

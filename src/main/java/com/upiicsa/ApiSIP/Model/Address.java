@@ -23,7 +23,7 @@ public class Address {
     private String number;
 
     @Column(name = "COLONIA", length = 100)
-    private String colony;
+    private String neighborhood;
 
     @Column(name = "CODIGOP", length = 10)
     private String zipCode;
