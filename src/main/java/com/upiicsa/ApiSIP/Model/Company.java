@@ -18,6 +18,9 @@ public class Company {
     @Column(name = "ID_EMPRESA")
     public Integer id;
 
+    @Column(name = "RAZON_SOCIAL", length = 100)
+    private String name;
+
     @Column(name = "CORREO", length = 100)
     private String email;
 
@@ -35,6 +38,9 @@ public class Company {
 
     @Column(name = "RESPONSABLE", length = 45)
     private String supervisor;
+
+    @Column(name = "GRADO_ACA_REPO", length = 10)
+    private String degreeSupervisor;
 
     @Column(name = "PUESTO_RESPO", length = 100)
     private String positionSupervisor;
