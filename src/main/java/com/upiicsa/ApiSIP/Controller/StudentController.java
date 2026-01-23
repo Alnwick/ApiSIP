@@ -1,17 +1,19 @@
 package com.upiicsa.ApiSIP.Controller;
 
+import com.upiicsa.ApiSIP.Dto.CedulaDto;
 import com.upiicsa.ApiSIP.Dto.Email.EmailConfirmDto;
 import com.upiicsa.ApiSIP.Dto.ProcessProgressDto;
 import com.upiicsa.ApiSIP.Dto.Student.ResponseStudentDto;
 import com.upiicsa.ApiSIP.Dto.Student.StudentRegistrationDto;
 import com.upiicsa.ApiSIP.Model.Student;
+import com.upiicsa.ApiSIP.Service.CedulaService;
 import com.upiicsa.ApiSIP.Service.EmailVerificationService;
 import com.upiicsa.ApiSIP.Service.StudentProcessService;
 import com.upiicsa.ApiSIP.Service.StudentService;
 import com.upiicsa.ApiSIP.Utils.AuthHelper;
 import jakarta.validation.Valid;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
@@ -22,14 +24,18 @@ import java.util.List;
 @RequestMapping("/student")
 public class StudentController {
 
-    @Autowired
     private StudentService studentService;
-
-    @Autowired
     private EmailVerificationService verificationService;
-
-    @Autowired
     private StudentProcessService studentProcessService;
+    private CedulaService cedulaService;
+
+    public StudentController(StudentService studentService, EmailVerificationService verificationService,
+                             StudentProcessService studentProcessService, CedulaService cedulaService) {
+        this.studentService = studentService;
+        this.verificationService = verificationService;
+        this.studentProcessService = studentProcessService;
+        this.cedulaService = cedulaService;
+    }
 
     @PostMapping("/register")
     public ResponseEntity<ResponseStudentDto> registerUser(@RequestBody @Valid StudentRegistrationDto registrationDto) {
@@ -58,8 +64,17 @@ public class StudentController {
     }
 
     @GetMapping("/process-status")
+    @PreAuthorize("hasAnyRole('ALUMNO')")
     public ResponseEntity<List<ProcessProgressDto>> getProcessStatus() {
         return ResponseEntity.ok(studentProcessService.
                 getProcessHistory(AuthHelper.getAuthenticatedUserId()));
+    }
+
+    @GetMapping("/cedula-data")
+    @PreAuthorize("hasAnyRole('ALUMNO')")
+    public ResponseEntity<CedulaDto> getCedulaData() {
+        CedulaDto data = cedulaService.getAllData(AuthHelper.getAuthenticatedUserId());
+
+        return ResponseEntity.ok(data);
     }
 }
