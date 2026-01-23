@@ -19,11 +19,8 @@ public class Address {
     @Column(name = "CALLE", length = 100)
     private String street;
 
-    @Column(name = "NUM_EXT", length = 5)
-    private String outNumber;
-
-    @Column(name = "NUM_INT", length = 5)
-    private String intNumber;
+    @Column(name = "NUMERO", length = 5)
+    private String number;
 
     @Column(name = "COLONIA", length = 100)
     private String colony;
