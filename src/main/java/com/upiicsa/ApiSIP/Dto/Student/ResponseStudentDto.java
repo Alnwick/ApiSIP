@@ -7,7 +7,7 @@ public record ResponseStudentDto(
     String email,
     String enrollment
 ) {
-    public ResponseStudentDto(Student alumno) {
-        this(alumno.getFLastName(), alumno.getEmail(), alumno.getEnrollment());
+    public ResponseStudentDto(Student student) {
+        this(student.getFLastName(), student.getEmail(), student.getEnrollment());
     }
 }
