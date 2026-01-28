@@ -9,10 +9,15 @@ import com.upiicsa.ApiSIP.Model.Company;
 import com.upiicsa.ApiSIP.Model.Enum.CoordsEnum;
 import com.upiicsa.ApiSIP.Model.Student;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.core.io.Resource;
+import org.springframework.core.io.UrlResource;
 import org.springframework.stereotype.Service;
 
 import java.io.FileOutputStream;
 import java.io.IOException;
+import java.net.MalformedURLException;
+import java.nio.file.Path;
+import java.nio.file.Paths;
 
 @Service
 public class PdfStampingService {
@@ -21,7 +26,7 @@ public class PdfStampingService {
     private String SCR;
 
     @Value("${storage.save.certificate}")
-    private  String DEST;
+    private String DEST;
 
     public void stampTextOnPdf(Student student, Company company) {
         String companyAddress = company.getAddress().getStreet() + " " + company.getAddress().getNumber() + " " +
@@ -34,7 +39,8 @@ public class PdfStampingService {
 
         try {
             PdfReader pdfReader = new PdfReader(SCR);
-            PdfStamper pdfStamper = new PdfStamper(pdfReader, new FileOutputStream(DEST + student.getEnrollment() + ".pdf"));
+            PdfStamper pdfStamper = new PdfStamper(pdfReader, new FileOutputStream(DEST + "cedula_"
+                    + student.getEnrollment() + ".pdf"));
 
             PdfContentByte content = pdfStamper.getOverContent(1);
 
@@ -107,6 +113,25 @@ public class PdfStampingService {
             e.printStackTrace();
         }
     }
+
+    public Resource loadCedulaAsResource(String enrollment) {
+
+        try {
+            Path filePath = Paths.get(DEST).resolve("cedula_" + enrollment).normalize();
+            Resource resource = new UrlResource(filePath.toUri());
+
+            if (resource.exists() || resource.isReadable()) {
+                return resource;
+            } else {
+                return null;
+            }
+        } catch (MalformedURLException ex) {
+            ex.printStackTrace();
+            return null;
+        }
+    }
+
+
     private void writeText(PdfContentByte content, String text, float x, float y) {
         if(text != null && !text.trim().isEmpty()){
             content.showTextAligned(

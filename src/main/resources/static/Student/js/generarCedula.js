@@ -1,23 +1,27 @@
 const API_STATES = '/catalogs/states';
-const API_CEDULA_DATA = '/student/cedula-data'; // GET: Obtener datos guardados
-const API_GENERATE_CEDULA = '/student/generate-cedula'; // POST: Enviar 3 JSON y generar PDF
-const API_VIEW_PDF = '/student/view-cedula-pdf'; // GET: Obtener stream del PDF
+const API_CEDULA_DATA = '/student/cedula-data';
+const API_GENERATE_CEDULA = '/student/generate-cedula';
+const API_VIEW_PDF = '/student/view-cedula-pdf';
 
 document.addEventListener('DOMContentLoaded', async () => {
     setupLogout();
+    // 1. Cargamos estados (Debes actualizar el StateDto en Java para incluir el id)
     await loadStates();
+    // 2. Cargamos datos previos si existen
     await loadExistingData();
+    // 3. Activamos el listener del formulario
     setupForm();
 });
 
 /**
- * 1. Carga los estados en los selectores
+ * Carga estados. Espera que StateDto tenga {id, name}
  */
 async function loadStates() {
     try {
         const resp = await fetch(API_STATES);
         if (resp.ok) {
             const states = await resp.json();
+            // Usamos s.id como value para que regrese un entero al backend
             const options = states.map(s => `<option value="${s.id}">${s.name}</option>`).join('');
             document.getElementById('studentStateId').innerHTML += options;
             document.getElementById('companyStateId').innerHTML += options;
@@ -25,39 +29,30 @@ async function loadStates() {
     } catch (e) { console.error("Error al cargar estados"); }
 }
 
-/**
- * 2. Intenta cargar datos existentes y previsualizar PDF
- */
 async function loadExistingData() {
     try {
         const resp = await fetch(API_CEDULA_DATA);
         if (resp.ok) {
             const data = await resp.json();
-            if (data) {
+            if (data && (data.studentAddress || data.companyInfo)) {
                 fillFormData(data);
-                // Si hay datos, intentamos cargar el PDF generado anteriormente
                 loadPdfPreview();
             }
         }
-    } catch (e) { console.warn("No hay datos previos del alumno"); }
+    } catch (e) { console.warn("No hay datos previos"); }
 }
 
-/**
- * 3. Rellena los campos del formulario con el objeto compuesto
- */
 function fillFormData(data) {
     const { studentAddress, companyInfo, companyAddress } = data;
 
-    // Dirección Alumno
     if (studentAddress) {
         document.getElementById('studentStreet').value = studentAddress.street || '';
         document.getElementById('studentNumber').value = studentAddress.number || '';
-        document.getElementById('studentPostalCode').value = studentAddress.postalCode || '';
+        document.getElementById('studentZipCode').value = studentAddress.zipCode || '';
         document.getElementById('studentNeighborhood').value = studentAddress.neighborhood || '';
         document.getElementById('studentStateId').value = studentAddress.stateId || '';
     }
 
-    // Información Empresa
     if (companyInfo) {
         document.getElementById('companyName').value = companyInfo.name || '';
         document.getElementById('companyEmail').value = companyInfo.email || '';
@@ -65,42 +60,56 @@ function fillFormData(data) {
         document.getElementById('companyExtension').value = companyInfo.extension || '';
         document.getElementById('companyFax').value = companyInfo.fax || '';
         document.getElementById('companySector').value = companyInfo.sector || 'PUBLICO';
-        document.getElementById('bossGrade').value = companyInfo.bossGrade || 'Lic.';
-        document.getElementById('bossName').value = companyInfo.bossName || '';
-        document.getElementById('bossJob').value = companyInfo.bossJob || '';
-        document.getElementById('studentJob').value = companyInfo.studentJob || '';
+        document.getElementById('companySupervisorGrade').value = companyInfo.supervisorGrade || 'Lic.';
+        document.getElementById('companySupervisor').value = companyInfo.supervisor || '';
+        document.getElementById('companyPositionSupervisor').value = companyInfo.positionSupervisor || '';
+        document.getElementById('companyPositionStudent').value = companyInfo.positionStudent || '';
     }
 
-    // Dirección Empresa
     if (companyAddress) {
         document.getElementById('companyStreet').value = companyAddress.street || '';
         document.getElementById('companyNumber').value = companyAddress.number || '';
-        document.getElementById('companyPostalCode').value = companyAddress.postalCode || '';
+        document.getElementById('companyZipCode').value = companyAddress.zipCode || '';
         document.getElementById('companyNeighborhood').value = companyAddress.neighborhood || '';
         document.getElementById('companyStateId').value = companyAddress.stateId || '';
     }
 }
 
-/**
- * 4. Maneja el envío del formulario (Generar Cédula)
- */
 function setupForm() {
     const form = document.getElementById('cedulaForm');
     const btn = document.getElementById('submitBtn');
 
+    if(!form) return;
+
     form.onsubmit = async (e) => {
         e.preventDefault();
+
+        // Validamos presencia de elementos para evitar el error 'Cannot read properties of null'
+        const requiredFields = [
+            'studentStreet', 'studentNumber', 'studentZipCode', 'studentNeighborhood', 'studentStateId',
+            'companyName', 'companyEmail', 'companyPhone', 'companyExtension', 'companyFax', 'companySector',
+            'companySupervisorGrade', 'companySupervisor', 'companyPositionSupervisor', 'companyPositionStudent',
+            'companyStreet', 'companyNumber', 'companyZipCode', 'companyNeighborhood', 'companyStateId'
+        ];
+
+        for(let id of requiredFields) {
+            if(!document.getElementById(id)) {
+                console.error("No se encontró el elemento con ID:", id);
+                return;
+            }
+        }
+
         btn.disabled = true;
         btn.textContent = "Generando...";
 
-        // Construir los 3 objetos JSON
+        // Payload alineado exactamente con tus records Java
         const payload = {
             studentAddress: {
                 street: document.getElementById('studentStreet').value,
                 number: document.getElementById('studentNumber').value,
-                postalCode: document.getElementById('studentPostalCode').value,
+                zipCode: document.getElementById('studentZipCode').value,
                 neighborhood: document.getElementById('studentNeighborhood').value,
-                stateId: document.getElementById('studentStateId').value
+                stateId: parseInt(document.getElementById('studentStateId').value) || null
             },
             companyInfo: {
                 name: document.getElementById('companyName').value,
@@ -109,17 +118,17 @@ function setupForm() {
                 extension: document.getElementById('companyExtension').value,
                 fax: document.getElementById('companyFax').value,
                 sector: document.getElementById('companySector').value,
-                bossGrade: document.getElementById('bossGrade').value,
-                bossName: document.getElementById('bossName').value,
-                bossJob: document.getElementById('bossJob').value,
-                studentJob: document.getElementById('studentJob').value
+                supervisorGrade: document.getElementById('companySupervisorGrade').value,
+                supervisor: document.getElementById('companySupervisor').value,
+                positionSupervisor: document.getElementById('companyPositionSupervisor').value,
+                positionStudent: document.getElementById('companyPositionStudent').value
             },
             companyAddress: {
                 street: document.getElementById('companyStreet').value,
                 number: document.getElementById('companyNumber').value,
-                postalCode: document.getElementById('companyPostalCode').value,
+                zipCode: document.getElementById('companyZipCode').value,
                 neighborhood: document.getElementById('companyNeighborhood').value,
-                stateId: document.getElementById('companyStateId').value
+                stateId: parseInt(document.getElementById('companyStateId').value) || null
             }
         };
 
@@ -131,15 +140,15 @@ function setupForm() {
             });
 
             if (response.ok) {
-                // Recargar el PDF en el visor
                 await loadPdfPreview();
-                alert("Cédula generada y guardada correctamente.");
+                alert("Cédula generada correctamente.");
             } else {
-                alert("Error al procesar los datos. Revisa la información.");
+                const errText = await response.text();
+                alert("Error al procesar: " + errText);
             }
         } catch (error) {
             console.error("Error:", error);
-            alert("Problema de conexión con el servidor.");
+            alert("Sin conexión al servidor.");
         } finally {
             btn.disabled = false;
             btn.textContent = "Generar PDF de Cédula";
@@ -147,9 +156,6 @@ function setupForm() {
     };
 }
 
-/**
- * 5. Carga el stream del PDF en el Visor
- */
 async function loadPdfPreview() {
     const viewer = document.getElementById('viewerContainer');
     const downloadBtn = document.getElementById('downloadBtn');
@@ -158,20 +164,22 @@ async function loadPdfPreview() {
         const response = await fetch(API_VIEW_PDF);
         if (response.ok) {
             const blob = await response.blob();
+            if (blob.size < 500) return; // Filtro de seguridad para archivos vacíos
             const url = URL.createObjectURL(blob);
-
             viewer.innerHTML = `<iframe src="${url}"></iframe>`;
             downloadBtn.href = url;
             downloadBtn.style.display = "block";
         }
-    } catch (e) { console.warn("Aún no se ha generado el PDF"); }
+    } catch (e) { console.warn("PDF no disponible."); }
 }
 
-async function setupLogout() {
-    document.getElementById('logoutBtn').addEventListener('click', async () => {
+function setupLogout() {
+    const btn = document.getElementById('logoutBtn');
+    if(!btn) return;
+    btn.addEventListener('click', async () => {
         try {
             const response = await fetch('/auth/logout', { method: 'POST' });
             if (response.ok) window.location.href = '/index.html';
-        } catch (error) { console.error("Error logout:", error); }
+        } catch (error) { console.error("Error al cerrar sesión."); }
     });
 }
