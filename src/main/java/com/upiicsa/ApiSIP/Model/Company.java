@@ -1,14 +1,12 @@
 package com.upiicsa.ApiSIP.Model;
 
 import jakarta.persistence.*;
-import lombok.AllArgsConstructor;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.Setter;
+import lombok.*;
 
 @Getter @Setter
 @NoArgsConstructor
 @AllArgsConstructor
+@Builder
 @Entity
 @Table(name = "SIP_EMPRESA")
 public class Company {
@@ -39,7 +37,7 @@ public class Company {
     @Column(name = "RESPONSABLE", length = 45)
     private String supervisor;
 
-    @Column(name = "GRADO_ACA_REPO", length = 10)
+    @Column(name = "GRADO_ACA_RESPO", length = 10)
     private String supervisorGrade;
 
     @Column(name = "PUESTO_RESPO", length = 100)

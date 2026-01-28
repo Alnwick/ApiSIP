@@ -8,6 +8,7 @@ import lombok.*;
 @Entity
 @NoArgsConstructor
 @AllArgsConstructor
+@Builder
 @Table(name = "SIP_DIRECCION")
 public class Address {
 
