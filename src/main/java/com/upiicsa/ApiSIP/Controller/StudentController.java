@@ -77,4 +77,12 @@ public class StudentController {
 
         return ResponseEntity.ok(data);
     }
+
+    @PostMapping("/generate-cedula")
+    @PreAuthorize("hasAnyRole('ALUMNO')")
+    public ResponseEntity<String> generateCedula(@RequestBody @Valid CedulaDto cedulaDto) {
+        Integer studentId = AuthHelper.getAuthenticatedUserId();
+
+        return ResponseEntity.ok(cedulaService.generateCedula(studentId, cedulaDto));
+    }
 }
