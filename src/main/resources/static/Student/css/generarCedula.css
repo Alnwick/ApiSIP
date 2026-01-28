@@ -32,8 +32,8 @@ header {
     top: 0;
     z-index: 1000;
     box-shadow: 0 4px 12px rgba(0,0,0,0.2);
-    border-bottom-left-radius: 20px;
-    border-bottom-right-radius: 20px;
+    border-bottom-left-radius: 15px;
+    border-bottom-right-radius: 15px;
 }
 
 .header-brand { display: flex; align-items: center; gap: 1.5rem; }
@@ -48,7 +48,7 @@ header {
 }
 .logo-img { height: 40px; filter: brightness(0) invert(1); }
 .title-box h1 { font-size: 1.25rem; font-weight: 800; margin: 0; }
-.title-box p { font-size: 0.7rem; opacity: 0.9; margin: 0; text-transform: uppercase; }
+.title-box p { font-size: 0.7rem; opacity: 0.9; margin: 0; }
 
 .user-actions { display: flex; align-items: center; gap: 0.8rem; }
 .btn-logout {
