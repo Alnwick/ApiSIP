@@ -1,13 +1,8 @@
 package com.upiicsa.ApiSIP.Controller;
 
-import com.upiicsa.ApiSIP.Dto.Catalogs.CareerDto;
-import com.upiicsa.ApiSIP.Dto.Catalogs.SchoolDto;
-import com.upiicsa.ApiSIP.Dto.Catalogs.SemesterDto;
-import com.upiicsa.ApiSIP.Dto.Catalogs.SyllabusDto;
+import com.upiicsa.ApiSIP.Dto.Catalogs.*;
 import com.upiicsa.ApiSIP.Service.CatalogsService;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
-import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -19,8 +14,11 @@ import java.util.List;
 @RequestMapping("/catalogs")
 public class CatalogsController {
 
-    @Autowired
     private CatalogsService catalogsService;
+
+    public CatalogsController(CatalogsService catalogsService) {
+        this.catalogsService = catalogsService;
+    }
 
     @GetMapping("/schools")
     public ResponseEntity<List<SchoolDto>> getSchools() {
@@ -40,5 +38,10 @@ public class CatalogsController {
     @GetMapping("/semesters")
     public ResponseEntity<List<SemesterDto>> getSemesters() {
         return ResponseEntity.ok(catalogsService.getSemesters());
+    }
+
+    @GetMapping("/states")
+    public ResponseEntity<List<StateDto>> getStates(){
+        return ResponseEntity.ok(catalogsService.getStates());
     }
 }

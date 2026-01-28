@@ -1,9 +1,6 @@
 package com.upiicsa.ApiSIP.Service;
 
-import com.upiicsa.ApiSIP.Dto.Catalogs.CareerDto;
-import com.upiicsa.ApiSIP.Dto.Catalogs.SchoolDto;
-import com.upiicsa.ApiSIP.Dto.Catalogs.SemesterDto;
-import com.upiicsa.ApiSIP.Dto.Catalogs.SyllabusDto;
+import com.upiicsa.ApiSIP.Dto.Catalogs.*;
 import com.upiicsa.ApiSIP.Dto.Student.StudentRegistrationDto;
 import com.upiicsa.ApiSIP.Exception.ResourceNotFoundException;
 import com.upiicsa.ApiSIP.Model.Catalogs.Career;
@@ -22,26 +19,24 @@ import java.util.List;
 public class CatalogsService {
 
     private SemesterRepository semesterRepository;
-
     private OfferRepository offerRepository;
-
     private SchoolRepository schoolRepository;
-
     private CareerRepository careerRepository;
-
     private UserTypeRepository typeRepository;
-
     private StatusRepository statusRepository;
+    private StateRepository stateRepository;
 
     public CatalogsService(SemesterRepository semesterRepository, OfferRepository offerRepository,
                            SchoolRepository schoolRepository, CareerRepository careerRepository,
-                           UserTypeRepository typeRepository, StatusRepository statusRepository) {
+                           UserTypeRepository typeRepository, StatusRepository statusRepository,
+                           StateRepository stateRepository) {
         this.semesterRepository = semesterRepository;
         this.offerRepository = offerRepository;
         this.schoolRepository = schoolRepository;
         this.careerRepository = careerRepository;
         this.typeRepository = typeRepository;
         this.statusRepository = statusRepository;
+        this.stateRepository = stateRepository;
     }
 
     //School
@@ -102,5 +97,11 @@ public class CatalogsService {
     public Status getStatus(String status) {
         return statusRepository.findByDescription(status)
                 .orElseThrow(() -> new ResourceNotFoundException("Estatus not found"));
+    }
+    //State
+    public List<StateDto> getStates() {
+        return stateRepository.findAll().stream()
+                .map(state -> new StateDto(state))
+                .toList();
     }
 }
