@@ -8,7 +8,6 @@ import com.itextpdf.text.pdf.PdfStamper;
 import com.upiicsa.ApiSIP.Model.Company;
 import com.upiicsa.ApiSIP.Model.Enum.CoordsEnum;
 import com.upiicsa.ApiSIP.Model.Student;
-import org.springframework.beans.factory.annotation.Value;
 import org.springframework.core.io.Resource;
 import org.springframework.core.io.UrlResource;
 import org.springframework.stereotype.Service;
@@ -20,13 +19,11 @@ import java.nio.file.Path;
 import java.nio.file.Paths;
 
 @Service
-public class PdfStampingService {
+public class PdfService {
 
-    @Value("${storage.certificate.pdf}")
-    private String SCR;
+    private static final String SCR = "C:/ApiSIP/Base_Doc/Cedula_registro.pdf";
 
-    @Value("${storage.save.certificate}")
-    private String DEST;
+    private static final String DEST = "C:/ApiSIP/Student_Doc/generates/";
 
     public void stampTextOnPdf(Student student, Company company) {
         String companyAddress = company.getAddress().getStreet() + " " + company.getAddress().getNumber() + " " +
@@ -115,9 +112,8 @@ public class PdfStampingService {
     }
 
     public Resource loadCedulaAsResource(String enrollment) {
-
         try {
-            Path filePath = Paths.get(DEST).resolve("cedula_" + enrollment).normalize();
+            Path filePath = Paths.get(DEST).resolve("cedula_" + enrollment + ".pdf").normalize();
             Resource resource = new UrlResource(filePath.toUri());
 
             if (resource.exists() || resource.isReadable()) {
@@ -185,12 +181,13 @@ public class PdfStampingService {
             coords[1] = CoordsEnum.PRACTICAS.getCoordsY();
         } else if ("ING_TRANSPORTE".equals(career) || "ING_FERROVIARIA".equals(career) ||
         "ING_INDUSTRIAL".equals(career) || "ADM_INDUSTRIAL".equals(career)) {
-            coords[0] = CoordsEnum.PASANTE.getCoordsX();
-            coords[1] = CoordsEnum.PASANTE.getCoordsY();
+            coords[0] = CoordsEnum.ESTANCIAS.getCoordsX();
+            coords[1] = CoordsEnum.ESTANCIAS.getCoordsY();
         } else {
             coords[0] = -1;
             coords[1] = -1;
         }
+        System.out.println("Coord 1: " + coords[0] + " Coord 2: " + coords[1]);
         return coords;
     }
 
