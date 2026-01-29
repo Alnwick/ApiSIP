@@ -12,6 +12,7 @@ import com.upiicsa.ApiSIP.Service.StudentProcessService;
 import com.upiicsa.ApiSIP.Service.StudentService;
 import com.upiicsa.ApiSIP.Utils.AuthHelper;
 import jakarta.validation.Valid;
+import org.springframework.core.io.Resource;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
@@ -84,5 +85,13 @@ public class StudentController {
         Integer studentId = AuthHelper.getAuthenticatedUserId();
 
         return ResponseEntity.ok(cedulaService.generateCedula(studentId, cedulaDto));
+    }
+
+    @GetMapping("/view-cedula-pdf")
+    @PreAuthorize("hasAnyRole('ALUMNO')")
+    public ResponseEntity<Resource>  viewCedulaPdf(){
+        Integer studentId = AuthHelper.getAuthenticatedUserId();
+
+        return cedulaService.getPdfResponseEntity(studentId);
     }
 }
