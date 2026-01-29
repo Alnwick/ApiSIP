@@ -7,185 +7,171 @@
     <link rel="stylesheet" href="css/documentosInicio.css">
 </head>
 <body>
+
 <header>
-    <img src="../Imagenes/ipn.png" alt="IPN Logo" class="logo">
-    <div class="title">Sistema de Prácticas Profesionales</div>
-    <img src="../Imagenes/logo blanco.png" alt="UPIICSA Logo" class="logo">
+    <div class="header-brand">
+        <div class="logo-group">
+            <img src="../Imagenes/ipn.png" alt="IPN" class="logo-img">
+            <img src="../Imagenes/logo blanco.png" alt="UPIICSA" class="logo-img">
+        </div>
+        <div class="title-box">
+            <h1>ApiSIP</h1>
+            <p>Panel Operativo de Revisión</p>
+        </div>
+    </div>
+    <div class="user-nav">
+        <span>Admin Operativo</span>
+        <div class="user-avatar">OP</div>
+    </div>
 </header>
 
-<div class="top-icons">
-    <a href="home2.html">
-        <img src="../Imagenes/icono_home.png" alt="Menú" class="icon">
+<nav class="nav-bar">
+    <a href="home.html" class="back-link">
+        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><line x1="19" y1="12" x2="5" y2="12"></line><polyline points="12 19 5 12 12 5"></polyline></svg>
+        Volver al Tablero Principal
     </a>
-    <img src="../Imagenes/icono_mensaje.png" alt="Mensaje" class="icon">
-    <img src="../Imagenes/icono_notificacion.png" alt="Notificaciones" class="icon">
-    <div class="current-datetime" id="currentDateTime"></div>
-    <div style="margin-left: auto;">
-        <img src="../Imagenes/icono_usuario.png" alt="Usuario" class="icon">
+</nav>
+
+<div class="container">
+
+    <!-- PANEL IZQUIERDO: EXPEDIENTE Y LISTA -->
+    <div class="review-panel">
+
+        <!-- Datos del Alumno -->
+        <section class="info-card">
+            <h3>Información del Alumno</h3>
+            <div class="student-grid">
+                <div class="data-item">
+                    <label>Nombre</label>
+                    <span id="st-name">Santiago Martínez Herrera</span>
+                </div>
+                <div class="data-item">
+                    <label>Boleta</label>
+                    <span id="st-enrollment">2022601234</span>
+                </div>
+                <div class="data-item">
+                    <label>Carrera</label>
+                    <span id="st-career">Ing. en Informática</span>
+                </div>
+                <div class="data-item">
+                    <label>Semestre</label>
+                    <span id="st-semester">7mo Semestre</span>
+                </div>
+                <div class="data-item">
+                    <label>Plan de Estudios</label>
+                    <span id="st-plan">2021</span>
+                </div>
+            </div>
+        </section>
+
+        <!-- Bloque de Documentos (5) -->
+        <div id="docs-review-container" style="display: flex; flex-direction: column; gap: 1rem;">
+
+            <!-- Documento 1 -->
+            <div class="doc-review-card">
+                <div class="doc-header">
+                    <div class="doc-title-box">
+                        <span class="doc-name">Cédula de Registro</span>
+                        <span class="doc-date"><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><circle cx="12" cy="12" r="10"></circle><polyline points="12 6 12 12 16 14"></polyline></svg> 28/01/2026 · 10:45 AM</span>
+                    </div>
+                    <button class="btn-view" onclick="viewPdf('cedula.pdf', 'Cédula de Registro')">Ver Archivo</button>
+                </div>
+                <div class="status-actions">
+                    <label class="action-label opt-ok"><input type="radio" name="st-1" value="OK"> Correcto</label>
+                    <label class="action-label opt-err"><input type="radio" name="st-1" value="ERR"> Incorrecto</label>
+                </div>
+                <textarea class="comment-area" placeholder="Observaciones para el alumno..."></textarea>
+            </div>
+
+            <!-- Documento 2 -->
+            <div class="doc-review-card">
+                <div class="doc-header">
+                    <div class="doc-title-box">
+                        <span class="doc-name">Constancia de Vigencia (IMSS)</span>
+                        <span class="doc-date"><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><circle cx="12" cy="12" r="10"></circle><polyline points="12 6 12 12 16 14"></polyline></svg> 28/01/2026 · 11:20 AM</span>
+                    </div>
+                    <button class="btn-view" onclick="viewPdf('imss.pdf', 'Constancia IMSS')">Ver Archivo</button>
+                </div>
+                <div class="status-actions">
+                    <label class="action-label opt-ok"><input type="radio" name="st-2" value="OK"> Correcto</label>
+                    <label class="action-label opt-err"><input type="radio" name="st-2" value="ERR"> Incorrecto</label>
+                </div>
+                <textarea class="comment-area" placeholder="Observaciones para el alumno..."></textarea>
+            </div>
+
+            <!-- Documento 3 -->
+            <div class="doc-review-card" style="opacity: 0.6; background: #f9fafb;">
+                <div class="doc-header">
+                    <div class="doc-title-box">
+                        <span class="doc-name">Captura Empresa (SISAE)</span>
+                        <span style="color: var(--error); font-size: 0.7rem; font-weight: 800; text-transform: uppercase;">Pendiente de Carga</span>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Documento 4 -->
+            <div class="doc-review-card">
+                <div class="doc-header">
+                    <div class="doc-title-box">
+                        <span class="doc-name">Captura Alumno (SISAE)</span>
+                        <span class="doc-date"><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><circle cx="12" cy="12" r="10"></circle><polyline points="12 6 12 12 16 14"></polyline></svg> 29/01/2026 · 09:15 AM</span>
+                    </div>
+                    <button class="btn-view" onclick="viewPdf('sisae_a.pdf', 'Captura Alumno')">Ver Archivo</button>
+                </div>
+                <div class="status-actions">
+                    <label class="action-label opt-ok"><input type="radio" name="st-4" value="OK"> Correcto</label>
+                    <label class="action-label opt-err"><input type="radio" name="st-4" value="ERR"> Incorrecto</label>
+                </div>
+                <textarea class="comment-area" placeholder="Observaciones para el alumno..."></textarea>
+            </div>
+
+            <!-- Documento 5 -->
+            <div class="doc-review-card">
+                <div class="doc-header">
+                    <div class="doc-title-box">
+                        <span class="doc-name">Copia de Horario (SAES)</span>
+                        <span class="doc-date"><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><circle cx="12" cy="12" r="10"></circle><polyline points="12 6 12 12 16 14"></polyline></svg> 29/01/2026 · 09:16 AM</span>
+                    </div>
+                    <button class="btn-view" onclick="viewPdf('horario.pdf', 'Horario SAES')">Ver Archivo</button>
+                </div>
+                <div class="status-actions">
+                    <label class="action-label opt-ok"><input type="radio" name="st-5" value="OK"> Correcto</label>
+                    <label class="action-label opt-err"><input type="radio" name="st-5" value="ERR"> Incorrecto</label>
+                </div>
+                <textarea class="comment-area" placeholder="Observaciones para el alumno..."></textarea>
+            </div>
+
+        </div>
+
+        <!-- Acciones Finales -->
+        <div class="bottom-actions">
+            <button class="btn-footer btn-blue" onclick="approveActa()">Aprobar Acta de Aceptación</button>
+            <button class="btn-footer btn-green" onclick="saveReview()">Finalizar Revisión</button>
+        </div>
+
     </div>
-</div>
 
-<div class="content-container">
-    <h1>Documentación Inicio de practicas</h1>
+    <!-- PANEL DERECHO: VISOR PDF -->
+    <aside class="preview-side">
+        <div class="viewer-header">
+            <span id="pdf-title">Visor de Documentación Inicial</span>
+            <span style="font-size: 0.7rem; opacity: 0.6; text-transform: uppercase;">Vista en Tiempo Real</span>
+        </div>
+        <div class="pdf-content" id="pdfContainer">
+            <div class="placeholder-box">
+                <svg width="64" height="64" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.2" style="opacity: 0.2; margin-bottom: 1rem;">
+                    <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"></path>
+                    <polyline points="14 2 14 8 20 8"></polyline>
+                </svg>
+                <p>Selecciona "Ver Archivo" para inspeccionar el documento.</p>
+            </div>
+        </div>
+    </aside>
 
-    <table class="info-table">
-        <tr>
-            <td class="green-text">Nombre</td>
-            <td>Santiago Hernandez Martinez</td>
-            <td class="green-text">Boleta</td>
-            <td>2021402087</td>
-            <td class="green-text">Estado</td>
-            <td>Revisado</td>
-        </tr>
-        <tr>
-            <td class="green-text">Fecha de recibo</td>
-            <td>08/06/2012</td>
-            <td class="green-text">Hora de recibo</td>
-            <td>16:44:00</td>
-            <td class="green-text">Fecha Y Hora</td>
-            <td id="tableDateTime">18/06/2021 17:55:00</td>
-        </tr>
-    </table>
-
-    <table class="document-table">
-        <tr class="document-header">
-            <td colspan="2">Cedula de registro</td>
-            <td>16/06/2021 17:55:00</td>
-        </tr>
-        <tr>
-            <td colspan="3">
-                <div class="validation-options">
-                    <div class="validation-option">
-                        <input type="checkbox" id="doc1-correcto" name="doc1-validation" onchange="toggleValidation('doc1', 'correcto')">
-                        <label for="doc1-correcto">Correcto</label>
-                    </div>
-                    <div class="validation-option">
-                        <input type="checkbox" id="doc1-incorrecto" name="doc1-validation" onchange="toggleValidation('doc1', 'incorrecto')">
-                        <label for="doc1-incorrecto">Incorrecto</label>
-                    </div>
-                </div>
-            </td>
-        </tr>
-        <tr>
-            <td colspan="3">
-                <input type="text" class="comment-input" placeholder="Agregar comentarios...">
-            </td>
-        </tr>
-    </table>
-
-    <table class="document-table">
-        <tr class="document-header">
-            <td colspan="2">Constancia de vigencia de derechos</td>
-            <td>16/06/2021 17:55:00</td>
-        </tr>
-        <tr>
-            <td colspan="3">
-                <div class="validation-options">
-                    <div class="validation-option">
-                        <input type="checkbox" id="doc2-correcto" name="doc2-validation" onchange="toggleValidation('doc2', 'correcto')">
-                        <label for="doc2-correcto">Correcto</label>
-                    </div>
-                    <div class="validation-option">
-                        <input type="checkbox" id="doc2-incorrecto" name="doc2-validation" onchange="toggleValidation('doc2', 'incorrecto')">
-                        <label for="doc2-incorrecto">Incorrecto</label>
-                    </div>
-                </div>
-            </td>
-        </tr>
-        <tr>
-            <td colspan="3">
-                <input type="text" class="comment-input" placeholder="Agregar comentarios...">
-            </td>
-        </tr>
-    </table>
-
-    <table class="document-table">
-        <tr class="document-header">
-            <td colspan="2">Captura de pantalla del registro de las empresas en la plataforma</td>
-            <td>16/06/2021 17:55:00</td>
-        </tr>
-        <tr>
-            <td colspan="3">
-                <div class="validation-options">
-                    <div class="validation-option">
-                        <input type="checkbox" id="doc3-correcto" name="doc3-validation" onchange="toggleValidation('doc3', 'correcto')">
-                        <label for="doc3-correcto">Correcto</label>
-                    </div>
-                    <div class="validation-option">
-                        <input type="checkbox" id="doc3-incorrecto" name="doc3-validation" onchange="toggleValidation('doc3', 'incorrecto')">
-                        <label for="doc3-incorrecto">Incorrecto</label>
-                    </div>
-                </div>
-            </td>
-        </tr>
-        <tr>
-            <td colspan="3">
-                <input type="text" class="comment-input" placeholder="Agregar comentarios...">
-            </td>
-        </tr>
-    </table>
-
-    <table class="document-table">
-        <tr class="document-header">
-            <td colspan="2">Impresión de captura de pantalla del registro en la plataforma del alumno</td>
-            <td>16/06/2021 17:55:00</td>
-        </tr>
-        <tr>
-            <td colspan="3">
-                <div class="validation-options">
-                    <div class="validation-option">
-                        <input type="checkbox" id="doc4-correcto" name="doc4-validation" onchange="toggleValidation('doc4', 'correcto')">
-                        <label for="doc4-correcto">Correcto</label>
-                    </div>
-                    <div class="validation-option">
-                        <input type="checkbox" id="doc4-incorrecto" name="doc4-validation" onchange="toggleValidation('doc4', 'incorrecto')">
-                        <label for="doc4-incorrecto">Incorrecto</label>
-                    </div>
-                </div>
-            </td>
-        </tr>
-        <tr>
-            <td colspan="3">
-                <input type="text" class="comment-input" placeholder="Agregar comentarios...">
-            </td>
-        </tr>
-    </table>
-
-    <table class="document-table">
-        <tr class="document-header">
-            <td colspan="2">Copia de horario</td>
-            <td>16/06/2021 17:55:00</td>
-        </tr>
-        <tr>
-            <td colspan="3">
-                <div class="validation-options">
-                    <div class="validation-option">
-                        <input type="checkbox" id="doc5-correcto" name="doc5-validation" onchange="toggleValidation('doc5', 'correcto')">
-                        <label for="doc5-correcto">Correcto</label>
-                    </div>
-                    <div class="validation-option">
-                        <input type="checkbox" id="doc5-incorrecto" name="doc5-validation" onchange="toggleValidation('doc5', 'incorrecto')">
-                        <label for="doc5-incorrecto">Incorrecto</label>
-                    </div>
-                </div>
-            </td>
-        </tr>
-        <tr>
-            <td colspan="3">
-                <input type="text" class="comment-input" placeholder="Agregar comentarios...">
-            </td>
-        </tr>
-    </table>
-
-    <hr style="margin: 30px 0; border: 0; border-top: 1px solid #ddd;">
-
-    <div class="button-container">
-        <button class="save-button">Guardar</button>
-    </div>
 </div>
 
 <footer>
-    <p>Instituto Politécnico Nacional - UPIICSA © 2025 | Sistema de Prácticas Profesionales</p>
+    Instituto Politécnico Nacional · Unidad Profesional Interdisciplinaria de Ingeniería y Ciencias Sociales y Administrativas · © 2026
 </footer>
 
 <script src="js/documentosInicio.js"></script>
