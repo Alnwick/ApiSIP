@@ -4,12 +4,15 @@ import com.upiicsa.ApiSIP.Dto.AddressDto;
 import com.upiicsa.ApiSIP.Dto.CedulaDto;
 import com.upiicsa.ApiSIP.Dto.CompanyDto;
 import com.upiicsa.ApiSIP.Model.Address;
-import com.upiicsa.ApiSIP.Model.Catalogs.State;
 import com.upiicsa.ApiSIP.Model.Company;
 import com.upiicsa.ApiSIP.Model.Student;
 import com.upiicsa.ApiSIP.Model.StudentProcess;
 import com.upiicsa.ApiSIP.Repository.*;
 import jakarta.persistence.EntityNotFoundException;
+import org.springframework.core.io.Resource;
+import org.springframework.http.HttpHeaders;
+import org.springframework.http.MediaType;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
 @Service
@@ -17,76 +20,94 @@ public class CedulaService {
 
     private StudentRepository studentRepository;
     private StudentProcessRepository processRepository;
-    private StateRepository stateRepository;
-    private AddressRepository addressRepository;
+    private AddressService addressService;
+    private CompanyService companyService;
+    private PdfService pdfService;
 
     public CedulaService(StudentRepository sRepository, StudentProcessRepository pRepository,
-                         StateRepository stateRepository, AddressRepository addressRepository) {
+                         AddressService addressService, CompanyService companyService, PdfService pdfService) {
         this.studentRepository = sRepository;
         this.processRepository = pRepository;
-        this.stateRepository = stateRepository;
-        this.addressRepository = addressRepository;
+        this.addressService = addressService;
+        this.companyService = companyService;
+        this.pdfService = pdfService;
     }
 
     public CedulaDto getAllData(Integer studentId){
         Student student =  studentRepository.findById(studentId)
                 .orElseThrow(() -> new EntityNotFoundException("Student not found"));
 
-        AddressDto studentAddress = new AddressDto(student.getAddress());
+        AddressDto studentAddress = null;
+        CompanyDto company = null;
+        AddressDto companyAddress = null;
+
+        if(student.getAddress()!=null){
+            studentAddress = new AddressDto(student.getAddress());
+        }
 
         StudentProcess studentProcess = processRepository.findByStudentId(student.getId())
                 .orElseThrow(() -> new EntityNotFoundException("StudentProcess not found"));
 
-        CompanyDto company = new CompanyDto(studentProcess.getCompany());
-        AddressDto companyAddress =  new AddressDto(studentProcess.getCompany().getAddress());
+        if(studentProcess.getCompany()!=null){
+            company = new CompanyDto(studentProcess.getCompany());
+            companyAddress =  new AddressDto(studentProcess.getCompany().getAddress());
+        }
 
         return new CedulaDto(studentAddress, company, companyAddress);
     }
 
     public String generateCedula(Integer studentId, CedulaDto cedulaDto) {
+
+        Address studentAddress;
+        Address companyAddress;
+        Company company;
+
         Student student = studentRepository.findById(studentId)
                 .orElseThrow(() -> new EntityNotFoundException("Student not found"));
 
-        if(student.getAddress() != null){
-            Address studentAddress = createAddress(cedulaDto.studentAddress());
+        if(student.getAddress() == null){
+            studentAddress = addressService.createAddress(cedulaDto.studentAddress());
 
             student.setAddress(studentAddress);
             studentRepository.save(student);
+        }else {
+            studentAddress = addressService.updateAddress(student.getAddress().getId(), cedulaDto.studentAddress());
         }
+
         StudentProcess studentProcess = processRepository.findByStudentId(student.getId())
                 .orElseThrow(() -> new EntityNotFoundException("StudentProcess not found"));
 
-        if(studentProcess.getCompany() != null){
-            Address companyAddress = createAddress(cedulaDto.companyAddress());
+        if(studentProcess.getCompany() == null){
 
-            Company company = Company.builder()
-                    .name(cedulaDto.companyInfo().name()).email(cedulaDto.companyInfo().email())
-                    .sector(cedulaDto.companyInfo().sector()).phone(cedulaDto.companyInfo().phone())
-                    .extension(cedulaDto.companyInfo().extension()).fax(cedulaDto.companyInfo().fax())
-                    .supervisor(cedulaDto.companyInfo().supervisor())
-                    .supervisorGrade(cedulaDto.companyInfo().supervisorGrade())
-                    .positionSupervisor(cedulaDto.companyInfo().positionSupervisor())
-                    .positionStudent(cedulaDto.companyInfo().positionStudent())
-                    .address(companyAddress)
-                    .build();
-            addressRepository.save(companyAddress);
+            companyAddress = addressService.createAddress(cedulaDto.companyAddress());
+            company = companyService.createCompany(cedulaDto.companyInfo(), companyAddress);
+            studentProcess.setCompany(company);
+            processRepository.save(studentProcess);
+
+        }else {
+
+            company = studentProcess.getCompany();
+            companyAddress = addressService.updateAddress(company.getAddress().getId(), cedulaDto.companyAddress());
+            company = companyService.updateCompany(company.getId(), cedulaDto.companyInfo(), companyAddress);
         }
+        pdfService.stampTextOnPdf(student, company);
+
         return "";
     }
 
-    public Address createAddress(AddressDto addressDto) {
 
-        State state = stateRepository.findById(addressDto.stateId())
-                .orElseThrow(() -> new EntityNotFoundException("State not found"));
+    public ResponseEntity<Resource> getPdfResponseEntity(Integer studentId) {
+        Student student = studentRepository.findById(studentId)
+                .orElseThrow(() -> new EntityNotFoundException("Student not found"));
+        Resource resource = pdfService.loadCedulaAsResource(student.getEnrollment());
 
-        Address newAddress = Address.builder()
-                .street(addressDto.street())
-                .number(addressDto.number())
-                .neighborhood(addressDto.neighborhood())
-                .zipCode(addressDto.zipCode())
-                .state(state)
-                .build();
-        addressRepository.save(newAddress);
-        return newAddress;
+        if (resource == null) {
+            return ResponseEntity.notFound().build();
+        }
+
+        return ResponseEntity.ok()
+                .contentType(MediaType.APPLICATION_PDF)
+                .header(HttpHeaders.CONTENT_DISPOSITION, "inline; filename=\"" + resource.getFilename() + "\"")
+                .body(resource);
     }
 }
