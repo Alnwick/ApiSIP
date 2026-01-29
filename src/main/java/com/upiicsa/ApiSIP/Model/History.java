@@ -1,6 +1,7 @@
 package com.upiicsa.ApiSIP.Model;
 
 import com.upiicsa.ApiSIP.Model.Catalogs.ProcessState;
+import com.upiicsa.ApiSIP.Model.Document_Process.StudentProcess;
 import jakarta.persistence.*;
 import lombok.*;
 

@@ -1,4 +1,4 @@
-package com.upiicsa.ApiSIP.Repository;
+package com.upiicsa.ApiSIP.Repository.Catalogs;
 
 import com.upiicsa.ApiSIP.Model.Catalogs.Semester;
 import org.springframework.data.jpa.repository.JpaRepository;

@@ -1,9 +1,9 @@
-package com.upiicsa.ApiSIP.Repository;
+package com.upiicsa.ApiSIP.Repository.Document_Process;
 
 import com.upiicsa.ApiSIP.Model.Catalogs.DocumentType;
 import com.upiicsa.ApiSIP.Model.Catalogs.ProcessState;
-import com.upiicsa.ApiSIP.Model.DocumentProcess;
-import com.upiicsa.ApiSIP.Model.Support.DocumentProcessId;
+import com.upiicsa.ApiSIP.Model.Document_Process.DocumentProcess;
+import com.upiicsa.ApiSIP.Model.Document_Process.DocumentProcessId;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;

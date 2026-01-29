@@ -1,4 +1,4 @@
-package com.upiicsa.ApiSIP.Service;
+package com.upiicsa.ApiSIP.Service.Document;
 
 import com.upiicsa.ApiSIP.Dto.AddressDto;
 import com.upiicsa.ApiSIP.Dto.CedulaDto;
@@ -6,8 +6,12 @@ import com.upiicsa.ApiSIP.Dto.CompanyDto;
 import com.upiicsa.ApiSIP.Model.Address;
 import com.upiicsa.ApiSIP.Model.Company;
 import com.upiicsa.ApiSIP.Model.Student;
-import com.upiicsa.ApiSIP.Model.StudentProcess;
+import com.upiicsa.ApiSIP.Model.Document_Process.StudentProcess;
 import com.upiicsa.ApiSIP.Repository.*;
+import com.upiicsa.ApiSIP.Repository.Document_Process.StudentProcessRepository;
+import com.upiicsa.ApiSIP.Service.AddressService;
+import com.upiicsa.ApiSIP.Service.CompanyService;
+import com.upiicsa.ApiSIP.Service.Infrastructure.PdfService;
 import jakarta.persistence.EntityNotFoundException;
 import org.springframework.core.io.Resource;
 import org.springframework.http.HttpHeaders;

@@ -2,8 +2,8 @@ package com.upiicsa.ApiSIP.Utils;
 
 import com.upiicsa.ApiSIP.Model.Catalogs.DocumentType;
 import com.upiicsa.ApiSIP.Model.Student;
-import com.upiicsa.ApiSIP.Model.StudentProcess;
-import com.upiicsa.ApiSIP.Repository.DocumentRepository;
+import com.upiicsa.ApiSIP.Model.Document_Process.StudentProcess;
+import com.upiicsa.ApiSIP.Repository.Document_Process.DocumentRepository;
 import org.springframework.stereotype.Component;
 
 @Component

@@ -4,7 +4,7 @@ import com.upiicsa.ApiSIP.Dto.AddressDto;
 import com.upiicsa.ApiSIP.Model.Address;
 import com.upiicsa.ApiSIP.Model.Catalogs.State;
 import com.upiicsa.ApiSIP.Repository.AddressRepository;
-import com.upiicsa.ApiSIP.Repository.StateRepository;
+import com.upiicsa.ApiSIP.Repository.Catalogs.StateRepository;
 import jakarta.persistence.EntityNotFoundException;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;

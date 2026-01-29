@@ -1,4 +1,4 @@
-package com.upiicsa.ApiSIP.Service;
+package com.upiicsa.ApiSIP.Service.Infrastructure;
 
 import jakarta.annotation.PostConstruct;
 import org.springframework.beans.factory.annotation.Value;

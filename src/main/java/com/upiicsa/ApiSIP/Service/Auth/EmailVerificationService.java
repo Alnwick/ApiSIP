@@ -1,4 +1,4 @@
-package com.upiicsa.ApiSIP.Service;
+package com.upiicsa.ApiSIP.Service.Auth;
 
 import com.upiicsa.ApiSIP.Dto.Email.EmailConfirmDto;
 import com.upiicsa.ApiSIP.Exception.ResourceNotFoundException;
@@ -7,6 +7,7 @@ import com.upiicsa.ApiSIP.Model.Token_Restore.ConfirmationCode;
 import com.upiicsa.ApiSIP.Model.UserSIP;
 import com.upiicsa.ApiSIP.Repository.Token_Restore.ConfirmationCodeRepository;
 import com.upiicsa.ApiSIP.Repository.UserRepository;
+import com.upiicsa.ApiSIP.Service.Infrastructure.EmailService;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 

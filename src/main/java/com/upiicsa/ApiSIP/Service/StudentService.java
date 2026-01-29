@@ -4,6 +4,7 @@ import com.upiicsa.ApiSIP.Dto.Student.StudentRegistrationDto;
 import com.upiicsa.ApiSIP.Exception.ValidationException;
 import com.upiicsa.ApiSIP.Model.Student;
 import com.upiicsa.ApiSIP.Repository.*;
+import com.upiicsa.ApiSIP.Service.Auth.EmailVerificationService;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.security.crypto.password.PasswordEncoder;

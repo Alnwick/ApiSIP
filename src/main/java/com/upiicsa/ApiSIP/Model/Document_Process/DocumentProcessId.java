@@ -1,4 +1,4 @@
-package com.upiicsa.ApiSIP.Model.Support;
+package com.upiicsa.ApiSIP.Model.Document_Process;
 
 import jakarta.persistence.Column;
 import lombok.AllArgsConstructor;

@@ -1,9 +1,9 @@
-package com.upiicsa.ApiSIP.Service;
+package com.upiicsa.ApiSIP.Service.Document;
 
 import com.upiicsa.ApiSIP.Model.Catalogs.DocumentType;
-import com.upiicsa.ApiSIP.Model.StudentProcess;
-import com.upiicsa.ApiSIP.Repository.DocumentProcessRepository;
-import com.upiicsa.ApiSIP.Repository.DocumentTypeRepository;
+import com.upiicsa.ApiSIP.Model.Document_Process.StudentProcess;
+import com.upiicsa.ApiSIP.Repository.Document_Process.DocumentProcessRepository;
+import com.upiicsa.ApiSIP.Repository.Catalogs.DocumentTypeRepository;
 import org.springframework.stereotype.Service;
 
 import java.util.List;

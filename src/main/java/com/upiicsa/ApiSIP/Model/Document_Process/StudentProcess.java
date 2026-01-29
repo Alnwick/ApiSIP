@@ -1,6 +1,8 @@
-package com.upiicsa.ApiSIP.Model;
+package com.upiicsa.ApiSIP.Model.Document_Process;
 
 import com.upiicsa.ApiSIP.Model.Catalogs.ProcessState;
+import com.upiicsa.ApiSIP.Model.Company;
+import com.upiicsa.ApiSIP.Model.Student;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Builder;

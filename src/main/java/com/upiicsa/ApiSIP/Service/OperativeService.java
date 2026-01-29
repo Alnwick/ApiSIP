@@ -2,7 +2,7 @@ package com.upiicsa.ApiSIP.Service;
 
 import com.upiicsa.ApiSIP.Dto.DashboardStatsDto;
 import com.upiicsa.ApiSIP.Model.Student;
-import com.upiicsa.ApiSIP.Repository.StudentProcessRepository;
+import com.upiicsa.ApiSIP.Repository.Document_Process.StudentProcessRepository;
 import com.upiicsa.ApiSIP.Repository.StudentRepository;
 import org.springframework.stereotype.Service;
 

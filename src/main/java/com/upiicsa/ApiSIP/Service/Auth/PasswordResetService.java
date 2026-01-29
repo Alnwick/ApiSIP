@@ -1,4 +1,4 @@
-package com.upiicsa.ApiSIP.Service;
+package com.upiicsa.ApiSIP.Service.Auth;
 
 import com.upiicsa.ApiSIP.Dto.Email.ForgotPasswordDto;
 import com.upiicsa.ApiSIP.Dto.Email.ResetPasswordDto;
@@ -6,6 +6,7 @@ import com.upiicsa.ApiSIP.Model.Token_Restore.TokenReset;
 import com.upiicsa.ApiSIP.Model.UserSIP;
 import com.upiicsa.ApiSIP.Repository.Token_Restore.TokenResetRepository;
 import com.upiicsa.ApiSIP.Repository.UserRepository;
+import com.upiicsa.ApiSIP.Service.Infrastructure.EmailService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;

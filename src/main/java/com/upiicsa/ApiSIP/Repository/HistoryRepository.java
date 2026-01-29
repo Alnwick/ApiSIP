@@ -1,7 +1,7 @@
 package com.upiicsa.ApiSIP.Repository;
 
 import com.upiicsa.ApiSIP.Model.History;
-import com.upiicsa.ApiSIP.Model.StudentProcess;
+import com.upiicsa.ApiSIP.Model.Document_Process.StudentProcess;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 

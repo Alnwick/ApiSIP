@@ -1,8 +1,7 @@
-package com.upiicsa.ApiSIP.Model;
+package com.upiicsa.ApiSIP.Model.Document_Process;
 
 import com.upiicsa.ApiSIP.Model.Catalogs.DocumentType;
 import com.upiicsa.ApiSIP.Model.Catalogs.ProcessState;
-import com.upiicsa.ApiSIP.Model.Support.DocumentProcessId;
 import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.Setter;

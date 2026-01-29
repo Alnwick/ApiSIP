@@ -1,7 +1,7 @@
-package com.upiicsa.ApiSIP.Model;
+package com.upiicsa.ApiSIP.Model.Document_Process;
 
 import com.upiicsa.ApiSIP.Model.Catalogs.DocumentStatus;
-import com.upiicsa.ApiSIP.Model.Support.ReviewDocumentId;
+import com.upiicsa.ApiSIP.Model.UserSIP;
 import jakarta.persistence.*;
 import lombok.*;
 

@@ -1,14 +1,16 @@
-package com.upiicsa.ApiSIP.Service;
+package com.upiicsa.ApiSIP.Service.Document;
 
 import com.upiicsa.ApiSIP.Dto.Document.DocumentStatusDto;
 import com.upiicsa.ApiSIP.Exception.ValidationException;
 import com.upiicsa.ApiSIP.Model.Catalogs.DocumentType;
-import com.upiicsa.ApiSIP.Model.Document;
+import com.upiicsa.ApiSIP.Model.Document_Process.Document;
 import com.upiicsa.ApiSIP.Model.Enum.StateProcessEnum;
-import com.upiicsa.ApiSIP.Model.ReviewDocument;
-import com.upiicsa.ApiSIP.Model.StudentProcess;
-import com.upiicsa.ApiSIP.Repository.DocumentRepository;
-import com.upiicsa.ApiSIP.Repository.ReviewDocumentRepository;
+import com.upiicsa.ApiSIP.Model.Document_Process.ReviewDocument;
+import com.upiicsa.ApiSIP.Model.Document_Process.StudentProcess;
+import com.upiicsa.ApiSIP.Repository.Document_Process.DocumentRepository;
+import com.upiicsa.ApiSIP.Repository.Document_Process.ReviewDocumentRepository;
+import com.upiicsa.ApiSIP.Service.Infrastructure.FileStorageService;
+import com.upiicsa.ApiSIP.Service.StudentProcessService;
 import com.upiicsa.ApiSIP.Utils.DocumentNamingUtils;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;

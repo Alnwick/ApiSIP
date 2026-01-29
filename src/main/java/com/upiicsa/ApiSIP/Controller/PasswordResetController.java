@@ -2,7 +2,7 @@ package com.upiicsa.ApiSIP.Controller;
 
 import com.upiicsa.ApiSIP.Dto.Email.ForgotPasswordDto;
 import com.upiicsa.ApiSIP.Dto.Email.ResetPasswordDto;
-import com.upiicsa.ApiSIP.Service.PasswordResetService;
+import com.upiicsa.ApiSIP.Service.Auth.PasswordResetService;
 import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;

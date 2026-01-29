@@ -10,6 +10,7 @@ import com.upiicsa.ApiSIP.Model.Catalogs.Status;
 import com.upiicsa.ApiSIP.Model.Offer;
 import com.upiicsa.ApiSIP.Model.UserType;
 import com.upiicsa.ApiSIP.Repository.*;
+import com.upiicsa.ApiSIP.Repository.Catalogs.*;
 import jakarta.persistence.EntityNotFoundException;
 import org.springframework.stereotype.Service;
 
