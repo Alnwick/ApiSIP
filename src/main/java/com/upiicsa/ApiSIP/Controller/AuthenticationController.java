@@ -2,8 +2,10 @@ package com.upiicsa.ApiSIP.Controller;
 
 import com.upiicsa.ApiSIP.Dto.Auth.AuthLoginDto;
 import com.upiicsa.ApiSIP.Dto.Auth.AuthResponseDto;
+import com.upiicsa.ApiSIP.Dto.Email.EmailConfirmDto;
 import com.upiicsa.ApiSIP.Model.UserType;
 import com.upiicsa.ApiSIP.Repository.UserRepository;
+import com.upiicsa.ApiSIP.Service.Auth.EmailVerificationService;
 import com.upiicsa.ApiSIP.Utils.JwtUtils;
 import jakarta.servlet.http.Cookie;
 import jakarta.servlet.http.HttpServletResponse;
@@ -12,10 +14,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 @RestController
 @RequestMapping("/auth")
@@ -24,12 +23,14 @@ public class AuthenticationController {
     private AuthenticationManager authenticationManager;
     private JwtUtils jwtUtils;
     private UserRepository userRepository;
+    private EmailVerificationService verificationService;
 
     public AuthenticationController(AuthenticationManager authenticationManager,  JwtUtils jwtUtils,
-                                    UserRepository userRepository) {
+                                    UserRepository userRepository, EmailVerificationService verificationService) {
         this.authenticationManager = authenticationManager;
         this.jwtUtils = jwtUtils;
         this.userRepository = userRepository;
+        this.verificationService = verificationService;
     }
 
 
@@ -55,6 +56,20 @@ public class AuthenticationController {
 
         assert type != null;
         return ResponseEntity.ok(new AuthResponseDto("Login OK", type.getDescription(), true));
+    }
+
+    @PostMapping("/confirm-email")
+    public ResponseEntity<Void> confirmEmail(@RequestBody @Valid EmailConfirmDto emailConfirmation) {
+        verificationService.confirmEmail(emailConfirmation);
+
+        return ResponseEntity.ok().build();
+    }
+
+    @PostMapping("/resend-code")
+    public ResponseEntity<String> resendCode(@RequestParam("email") String email) {
+
+        verificationService.resendConfirmationCode(email);
+        return ResponseEntity.ok("Código reenviado correctamente.");
     }
 
     @PostMapping("/logout")

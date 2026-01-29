@@ -1,7 +1,7 @@
 const API_STATES = '/catalogs/states';
-const API_CEDULA_DATA = '/student/cedula-data';
-const API_GENERATE_CEDULA = '/student/generate-cedula';
-const API_VIEW_PDF = '/student/view-cedula-pdf';
+const API_CEDULA_DATA = '/cedula/get-data';
+const API_GENERATE_CEDULA = '/cedula/generate';
+const API_VIEW_PDF = '/cedula/view-pdf';
 
 document.addEventListener('DOMContentLoaded', async () => {
     setupLogout();

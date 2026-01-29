@@ -17,7 +17,6 @@ import org.springframework.web.bind.annotation.RestController;
 public class OperativeController {
 
     private final StudentService studentService;
-
     private final OperativeService operativeService;
 
     public OperativeController(StudentService studentService, OperativeService operativeService) {

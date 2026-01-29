@@ -465,7 +465,7 @@ async function verificarCodigo() {
             code: codigo
         };
 
-        const response = await fetch(`${API_BASE_URL}/student/confirm-email`, {
+        const response = await fetch(`${API_BASE_URL}/auth/confirm-email`, {
             method: 'POST',
             headers: { 'Content-Type': 'application/json' },
             body: JSON.stringify(payload)
