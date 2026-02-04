@@ -10,7 +10,7 @@ import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
 @RestController()
-@RequestMapping("cedula/")
+@RequestMapping("/cedula")
 public class CedulaController {
 
     private CedulaService cedulaService;
@@ -37,7 +37,7 @@ public class CedulaController {
 
     @GetMapping("/view-pdf")
     @PreAuthorize("hasAnyRole('ALUMNO')")
-    public ResponseEntity<Resource>  viewCedulaPdf(){
+    public ResponseEntity<Resource> viewCedulaPdf(){
         Integer studentId = AuthHelper.getAuthenticatedUserId();
 
         return cedulaService.getPdfResponseEntity(studentId);
