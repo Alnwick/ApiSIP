@@ -1,6 +1,7 @@
 package com.upiicsa.ApiSIP.Controller;
 
 import com.upiicsa.ApiSIP.Dto.DashboardStatsDto;
+import com.upiicsa.ApiSIP.Dto.StudentReviewDto;
 import com.upiicsa.ApiSIP.Model.Student;
 import com.upiicsa.ApiSIP.Service.OperativeService;
 import com.upiicsa.ApiSIP.Service.StudentService;
@@ -16,8 +17,8 @@ import org.springframework.web.bind.annotation.RestController;
 @RequestMapping("/operatives")
 public class OperativeController {
 
-    private final StudentService studentService;
-    private final OperativeService operativeService;
+    private StudentService studentService;
+    private OperativeService operativeService;
 
     public OperativeController(StudentService studentService, OperativeService operativeService) {
         this.studentService = studentService;
@@ -25,7 +26,7 @@ public class OperativeController {
     }
 
     @RequestMapping("/get-allStudents")
-    @PreAuthorize("hasAnyRole('ADMIN', 'OPERATIVE')")
+    @PreAuthorize("hasAnyRole('ADMINISTRADOR', 'OPERADOR')")
     public ResponseEntity<Page<Student>> getAllStudents(Pageable pageable) {
         Page<Student> students = studentService.getStudents(pageable);
 
@@ -33,8 +34,16 @@ public class OperativeController {
     }
 
     @RequestMapping("/stats")
-    @PreAuthorize("hasAnyRole('ADMIN', 'OPERATIVE')")
+    @PreAuthorize("hasAnyRole('ADMINISTRADOR', 'OPERADOR')")
     public ResponseEntity<DashboardStatsDto> getStats(@RequestParam String careerAcronym) {
         return ResponseEntity.ok(operativeService.getStats(careerAcronym));
     }
+
+    @RequestMapping("/student-review")
+    @PreAuthorize("hasAnyRole('ADMINISTRADOR', 'OPERADOR')")
+    public ResponseEntity<StudentReviewDto> getStudentReview(@RequestParam String enrollment) {
+
+        return ResponseEntity.ok(operativeService.getReview(enrollment));
+    }
+
 }

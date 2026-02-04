@@ -1,6 +1,7 @@
 package com.upiicsa.ApiSIP.Service;
 
 import com.upiicsa.ApiSIP.Dto.DashboardStatsDto;
+import com.upiicsa.ApiSIP.Dto.StudentReviewDto;
 import com.upiicsa.ApiSIP.Model.Student;
 import com.upiicsa.ApiSIP.Repository.Document_Process.StudentProcessRepository;
 import com.upiicsa.ApiSIP.Repository.StudentRepository;
@@ -13,7 +14,6 @@ import java.util.stream.Collectors;
 public class OperativeService {
 
     private StudentRepository studentRepository;
-
     private StudentProcessRepository processRepository;
 
     public OperativeService(StudentRepository studentRepository, StudentProcessRepository processRepository) {
@@ -46,4 +46,8 @@ public class OperativeService {
         );
     }
 
+    public StudentReviewDto getReview(String enrollment){
+
+        return new StudentReviewDto("1", "1","1","1","1");
+    }
 }
