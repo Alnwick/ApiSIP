@@ -7,190 +7,202 @@
     <link rel="stylesheet" href="styles.css">
 </head>
 <body>
-<header>
-    <img src="Imagenes/ipn.png" alt="IPN" class="logo">
-    <div class="title">Sistema de Prácticas Profesionales</div>
-    <img src="Imagenes/logo blanco.png" alt="UPIICSA" class="logo">
-</header>
 
-<div class="main-container">
-    <div class="form-container">
-        <div class="tabs-wrapper">
-            <button id="btn-login" class="active" onclick="mostrarLogin()">Inicio Sesión</button>
-            <button id="btn-registro" class="inactive" onclick="mostrarRegistro()">Registrarse</button>
-        </div>
-
-        <div id="login-form">
-            <h3>Iniciar Sesión</h3>
-            <div class="form-group">
-                <label for="login-email" class="required">Correo electrónico</label>
-                <input type="email" id="login-email" placeholder="usuario@ejemplo.com">
-                <div class="error-message" id="login-email-error">Por favor ingresa un correo electrónico válido</div>
+<div class="split-layout">
+    <!-- LADO IZQUIERDO -->
+    <div class="brand-panel">
+        <div class="brand-overlay"></div>
+        <div class="brand-content">
+            <div class="logos-container">
+                <img src="Imagenes/ipn.png" alt="IPN" class="brand-logo">
+                <img src="Imagenes/logo blanco.png" alt="UPIICSA" class="brand-logo">
             </div>
-            <div class="form-group">
-                <label for="login-password" class="required">Contraseña</label>
-                <input type="password" id="login-password" placeholder="Ingresa tu contraseña">
-                <div class="error-message" id="login-password-error">La contraseña es requerida</div>
-            </div>
-            <button class="boton-form" id="login-button">Iniciar Sesión</button>
-            <div class="footer"><a href="#" id="olvido-contrasena-link">¿Olvidaste tu contraseña?</a></div>
+            <h1>Sistema de Prácticas Profesionales</h1>
+            <p>Unidad Profesional Interdisciplinaria de Ingeniería y Ciencias Sociales y Administrativas</p>
         </div>
+    </div>
 
-        <!-- Modal para recuperación de contraseña -->
-        <div id="recuperar-contrasena-modal" class="modal">
-            <div class="modal-content">
-                <div class="modal-header">
-                    <h3>Recuperar Contraseña</h3>
-                    <button class="close-modal" id="close-modal">&times;</button>
+    <!-- LADO DERECHO -->
+    <div class="form-panel">
+        <div class="form-wrapper">
+
+            <!-- LOGIN -->
+            <div id="login-view" class="auth-view active-view" style="max-width: 450px; margin: 0 auto;">
+                <div class="view-header">
+                    <h2>Bienvenido</h2>
+                    <p>Inicia sesión para continuar</p>
                 </div>
-                <div class="modal-body">
-                    <p>Ingresa tu correo electrónico y te enviaremos un enlace para restablecer tu contraseña.</p>
-                    <div class="form-group">
-                        <label for="recovery-email" class="required">Correo electrónico</label>
-                        <input type="email" id="recovery-email" placeholder="usuario@ejemplo.com">
-                        <div class="error-message" id="recovery-email-error">Por favor ingresa un correo electrónico válido</div>
+
+                <form id="login-form" onsubmit="event.preventDefault(); iniciarSesion();">
+                    <div class="input-group-modern">
+                        <label>Correo Electrónico</label>
+                        <input type="email" id="login-email" placeholder="usuario@correo.com" required>
                     </div>
-                    <div id="recovery-success" class="success-message" style="display: none;"></div>
-                </div>
-                <div class="modal-footer">
-                    <button class="boton-secundario" id="cancel-recovery">Cancelar</button>
-                    <button class="boton-form" id="send-recovery">Enviar enlace</button>
-                </div>
-            </div>
-        </div>
 
-        <!-- Modal para mensajes -->
-        <div id="recovery-message" class="modal">
-            <div class="modal-content">
-                <div class="modal-header">
-                    <h3 id="message-title">Mensaje</h3>
-                    <button class="close-modal" id="close-message">&times;</button>
-                </div>
-                <div class="modal-body">
-                    <p id="message-text"></p>
-                </div>
-                <div class="modal-footer">
-                    <button class="boton-form" id="accept-message">Aceptar</button>
-                </div>
-            </div>
-        </div>
-
-        <div id="registro-form">
-            <h3>Crear Cuenta</h3>
-            <div class="form-grid">
-                <div class="form-group">
-                    <label for="nombre" class="required">Nombre(s)</label>
-                    <input type="text" id="nombre" placeholder="Tu nombre">
-                    <div class="error-message" id="nombre-error">El nombre es requerido</div>
-                </div>
-                <div class="form-group">
-                    <label for="apellido-paterno" class="required">Apellido Paterno</label>
-                    <input type="text" id="apellido-paterno" placeholder="Apellido paterno">
-                    <div class="error-message" id="apellido-paterno-error">El apellido paterno es requerido</div>
-                </div>
-                <div class="form-group">
-                    <label for="apellido-materno" class="required">Apellido Materno</label>
-                    <input type="text" id="apellido-materno" placeholder="Apellido materno">
-                    <div class="error-message" id="apellido-materno-error">El apellido materno es requerido</div>
-                </div>
-                <div class="form-group">
-                    <label for="boleta" class="required">Boleta</label>
-                    <input type="text" id="boleta" placeholder="Número de boleta" maxlength="10">
-                    <div class="character-count" id="boleta-count">0/10 dígitos</div>
-                    <div class="error-message" id="boleta-error">La boleta debe contener exactamente 10 dígitos</div>
-                </div>
-                <div class="form-group">
-                    <label for="escuela" class="required">Escuela</label>
-                    <select id="escuela">
-                        <option value="">Selecciona una escuela</option>
-                    </select>
-                </div>
-
-                <div class="form-group">
-                    <label for="carrera" class="required">Carrera</label>
-                    <select id="carrera" disabled>
-                        <option value="">Primero selecciona una escuela</option>
-                    </select>
-                </div>
-
-                <div class="form-group">
-                    <label for="plan-estudios" class="required">Plan de Estudios</label>
-                    <select id="plan-estudios" disabled>
-                        <option value="">Primero selecciona una carrera</option>
-                    </select>
-                </div>
-                <div class="form-group">
-                    <label style="visibility: hidden;">Estatus</label>
-                    <label class="checkbox-wrapper" for="egresado-check">
-                        <input type="checkbox" id="egresado-check">
-                        <span class="custom-checkmark"></span>
-                        <span class="checkbox-label">Soy Egresado</span>
-                    </label>
-                </div>
-                <div class="form-group semester-group" id="semester-group">
-                    <label for="semestre" class="required">Semestre</label>
-                    <select id="semestre">
-                        <option value="">Selecciona un semestre</option>
-                    </select>
-                    <div class="error-message" id="semestre-error">Debes seleccionar un semestre</div>
-                </div>
-
-                <div class="form-group half-width">
-                    <label for="email" class="required">Correo electrónico</label>
-                    <input type="email" id="email" placeholder="usuario@ejemplo.com">
-                    <div class="error-message" id="email-error">Por favor ingresa un correo electrónico válido</div>
-                </div>
-                <div class="form-group small-width">
-                    <label for="phone" class="required">Teléfono</label>
-                    <input type="tel" id="phone" placeholder="Número de teléfono" maxlength="10">
-                    <div class="character-count" id="phone-count">0/10 dígitos</div>
-                    <div class="error-message" id="phone-error">El teléfono debe contener exactamente 10 dígitos</div>
-                </div>
-                <div class="form-group">
-                    <label for="password" class="required">Contraseña</label>
-                    <input type="password" id="password" placeholder="Crea una contraseña">
-                    <div class="error-message" id="password-error">La contraseña no cumple con los requisitos</div>
-                    <div class="password-rules">
-                        <strong>La contraseña debe contener:</strong>
-                        <ul>
-                            <li id="rule-length" class="rule-invalid">Al menos 6 caracteres</li>
-                            <li id="rule-uppercase" class="rule-invalid">Al menos una letra mayúscula</li>
-                            <li id="rule-number" class="rule-invalid">Al menos un número</li>
-                            <li id="rule-special" class="rule-invalid">Al menos un carácter especial</li>
-                        </ul>
+                    <div class="input-group-modern">
+                        <label>Contraseña</label>
+                        <input type="password" id="login-password" placeholder="••••••••" required>
                     </div>
-                </div>
-                <div class="form-group">
-                    <label for="confirm-password" class="required">Confirmar Contraseña</label>
-                    <input type="password" id="confirm-password" placeholder="Repite tu contraseña">
-                    <div class="error-message" id="confirm-password-error">Las contraseñas no coinciden</div>
-                </div>
-            </div>
-            <button class="boton-form" id="register-button">Registrarse</button>
-            <div class="footer">
-                Al registrarte, aceptas nuestros <a href="#">Términos de servicio</a> y <a href="#">Política de privacidad</a>
-            </div>
-        </div>
 
-        <div id="verificacion-form">
-            <h3>Verifica tu correo electrónico</h3>
-            <div class="verification-message">
-                <p>Hemos enviado un código de verificación a: <strong id="email-destino"></strong></p>
-                <p>Revisa tu bandeja de entrada y spam.</p>
-            </div>
-            <div class="form-group">
-                <label for="codigo-verificacion" class="required">Código de verificación</label>
-                <input type="text" id="codigo-verificacion" placeholder="Ingresa el código de 6 dígitos" maxlength="6">
-                <div class="error-message" id="codigo-error">El código es requerido</div>
-            </div>
-            <div class="timer-section">
-                <p id="timer-text">Puedes solicitar un nuevo código en: <span id="countdown">60</span> segundos</p>
-                <button type="button" id="resend-button" class="boton-secundario" disabled onclick="reenviarCodigo(); return false;">Reenviar código</button>
-            </div>
-            <button class="boton-form" id="verify-button" onclick="verificarCodigo(); return false;">Verificar y Completar Registro</button>
-            <button class="boton-secundario" onclick="volverAlRegistro(); return false;">← Volver al registro</button>
-        </div>
+                    <a href="#" class="forgot-link" onclick="mostrarRecuperacionModal()">¿Olvidaste tu contraseña?</a>
 
+                    <button type="submit" class="btn-primary-lg" id="login-button">Iniciar Sesión</button>
+                </form>
+
+                <div class="view-footer">
+                    ¿No tienes una cuenta? <a href="#" onclick="cambiarVista('registro')">Regístrate aquí</a>
+                </div>
+            </div>
+
+            <!-- REGISTRO COMPACTO (Sin Scroll) -->
+            <div id="registro-view" class="auth-view">
+                <div class="view-header">
+                    <h2>Registro</h2>
+                    <p>Completa tus datos académicos</p>
+                </div>
+
+                <form id="registro-form-el" onsubmit="event.preventDefault(); iniciarRegistro();">
+
+                    <!-- Fila 1: Nombre y Apellidos (3 cols) -->
+                    <div class="row-grid">
+                        <div class="input-group-modern col-1-3">
+                            <label>Nombre(s)</label>
+                            <input type="text" id="nombre" required>
+                        </div>
+                        <div class="input-group-modern col-1-3">
+                            <label>Apellido P.</label>
+                            <input type="text" id="apellido-paterno" required>
+                        </div>
+                        <div class="input-group-modern col-1-3">
+                            <label>Apellido M.</label>
+                            <input type="text" id="apellido-materno" required>
+                        </div>
+                    </div>
+
+                    <!-- Fila 2: Boleta y Teléfono (2 cols) -->
+                    <div class="row-grid">
+                        <div class="input-group-modern col-1-2">
+                            <label>Boleta</label>
+                            <input type="text" id="boleta" maxlength="10" placeholder="10 dígitos" required>
+                        </div>
+                        <div class="input-group-modern col-1-2">
+                            <label>Teléfono</label>
+                            <input type="tel" id="phone" maxlength="10" placeholder="10 dígitos" required>
+                        </div>
+                    </div>
+
+                    <!-- Fila 3: Escuela, Carrera, Plan (3 cols) -->
+                    <div class="row-grid">
+                        <div class="input-group-modern col-1-3">
+                            <label>Escuela</label>
+                            <select id="escuela" required>
+                                <option value="">Selecciona...</option>
+                            </select>
+                        </div>
+                        <div class="input-group-modern col-1-3">
+                            <label>Carrera</label>
+                            <select id="carrera" disabled required>
+                                <option value="">...</option>
+                            </select>
+                        </div>
+                        <div class="input-group-modern col-1-3">
+                            <label>Plan</label>
+                            <select id="plan-estudios" disabled required>
+                                <option value="">...</option>
+                            </select>
+                        </div>
+                    </div>
+
+                    <!-- Fila 4: Soy Egresado y Semestre (2 cols) -->
+                    <div class="row-grid" style="align-items: flex-end;">
+                        <div class="input-group-modern col-1-2">
+                            <!-- Toggle Soy Egresado -->
+                            <label class="toggle-container">
+                                <input type="checkbox" id="egresado-check">
+                                <div class="toggle-switch"></div>
+                                <span class="toggle-label">Soy Egresado</span>
+                            </label>
+                        </div>
+                        <div class="input-group-modern col-1-2" id="semester-group">
+                            <label>Semestre Actual</label>
+                            <select id="semestre">
+                                <option value="">Selecciona...</option>
+                            </select>
+                        </div>
+                    </div>
+
+                    <!-- Fila 5: Correo (1 col) -->
+                    <div class="input-group-modern">
+                        <label>Correo Electrónico</label>
+                        <input type="email" id="email" placeholder="usuario@correo.com" required>
+                    </div>
+
+                    <!-- Fila 6: Contraseñas (2 cols) -->
+                    <div class="row-grid">
+                        <div class="input-group-modern col-1-2">
+                            <label>Contraseña</label>
+                            <input type="password" id="password" placeholder="Mín. 6 caracteres" required>
+                        </div>
+                        <div class="input-group-modern col-1-2">
+                            <label>Confirmar</label>
+                            <input type="password" id="confirm-password" placeholder="Repetir contraseña" required>
+                        </div>
+                    </div>
+
+                    <button type="submit" class="btn-primary-lg" id="register-button">Crear Cuenta</button>
+                </form>
+
+                <div class="view-footer" style="margin-top: 0.8rem;">
+                    ¿Ya tienes cuenta? <a href="#" onclick="cambiarVista('login')">Inicia sesión</a>
+                </div>
+            </div>
+
+            <!-- VISTA VERIFICACIÓN -->
+            <div id="verificacion-view" class="auth-view" style="text-align: center; max-width: 450px; margin: 0 auto;">
+                <div class="view-header">
+                    <h2>Verifica tu Correo</h2>
+                    <p>Código enviado a: <strong id="email-destino" style="color:var(--primary)"></strong></p>
+                </div>
+
+                <input type="text" id="codigo-verificacion" placeholder="000000" maxlength="6"
+                       style="font-size: 2rem; letter-spacing: 0.5rem; text-align: center; width: 200px; height: 60px; border: 2px solid var(--border); border-radius: 0.5rem; font-weight: 800; margin: 1rem auto; display: block;">
+
+                <p style="font-size: 0.85rem; color: var(--text-muted); margin-bottom: 1rem;">
+                    Reenviar en <span id="countdown">60</span>s
+                </p>
+
+                <button type="button" id="resend-button" class="btn-secondary-lg" disabled onclick="reenviarCodigo()" style="border:none; background:none; text-decoration: underline; margin-bottom: 1rem;">Reenviar código</button>
+
+                <button class="btn-primary-lg" id="verify-button" onclick="verificarCodigo()">Verificar</button>
+                <button class="btn-secondary-lg" onclick="cambiarVista('registro')">Volver</button>
+            </div>
+
+        </div>
+    </div>
+</div>
+
+<!-- MODALES -->
+<div id="global-modal" class="modal-overlay">
+    <div class="modal-card">
+        <div class="modal-icon" id="modal-icon"></div>
+        <h3 id="modal-title">Título</h3>
+        <p id="modal-msg">Mensaje</p>
+        <button class="btn-primary-lg" id="modal-btn">Aceptar</button>
+    </div>
+</div>
+
+<div id="recuperar-contrasena-modal" class="modal-overlay">
+    <div class="modal-card">
+        <h3>Recuperar Contraseña</h3>
+        <p>Ingresa tu correo para recibir el enlace.</p>
+        <div class="input-group-modern" style="text-align: left; margin: 1rem 0;">
+            <label>Correo Electrónico</label>
+            <input type="email" id="recovery-email" placeholder="usuario@correo.com">
+        </div>
+        <div class="row-grid">
+            <button class="btn-secondary-lg col-1-2" onclick="cerrarRecuperacionModal()">Cancelar</button>
+            <button class="btn-primary-lg col-1-2" id="send-recovery" style="margin-top: 0.5rem;" onclick="enviarCodigoRecuperacion()">Enviar</button>
+        </div>
     </div>
 </div>
 
