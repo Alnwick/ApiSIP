@@ -16,32 +16,29 @@ document.addEventListener('DOMContentLoaded', () => {
     loadStatus();
 });
 
-/**
- * Renderiza los esqueletos de las tarjetas (Estado Gris Inicial)
- */
 function initUI() {
     const container = document.getElementById('docs-container');
     container.innerHTML = DOC_CONFIG.map(doc => `
-            <div class="doc-card status-none" id="card-${doc.id}">
-                <div class="doc-header">
-                    <span class="doc-title">${doc.label}</span>
-                    <span class="status-badge badge-none" id="badge-${doc.id}">Sin Cargar</span>
-                </div>
-                <div class="doc-body">
-                    <div class="upload-area">
-                        <div class="file-controls">
-                            <input type="file" id="file-${doc.id}" style="display:none" accept=".pdf">
-                            <label for="file-${doc.id}" class="btn-browse" id="btn-${doc.id}">Seleccionar PDF</label>
-                            <span class="file-display" id="name-${doc.id}">No se ha seleccionado archivo</span>
+                <div class="doc-card status-none" id="card-${doc.id}">
+                    <div class="doc-header">
+                        <span class="doc-title">${doc.label}</span>
+                        <span class="status-badge badge-none" id="badge-${doc.id}">Sin Cargar</span>
+                    </div>
+                    <div class="doc-body">
+                        <div class="upload-area">
+                            <div class="file-controls">
+                                <input type="file" id="file-${doc.id}" style="display:none" accept=".pdf">
+                                <label for="file-${doc.id}" class="btn-browse" id="btn-${doc.id}">Seleccionar PDF</label>
+                                <span class="file-display" id="name-${doc.id}">No se ha seleccionado archivo</span>
+                            </div>
+                        </div>
+                        <div class="comment-area">
+                            <span class="comment-label">Observaciones</span>
+                            <p class="comment-text" id="comment-${doc.id}">Pendiente de carga inicial.</p>
                         </div>
                     </div>
-                    <div class="comment-area">
-                        <span class="comment-label">Observaciones</span>
-                        <p class="comment-text" id="comment-${doc.id}">Pendiente de carga inicial.</p>
-                    </div>
                 </div>
-            </div>
-        `).join('');
+            `).join('');
 
     // Listeners para cambios de archivo local
     DOC_CONFIG.forEach(doc => {
@@ -55,9 +52,6 @@ function initUI() {
     document.getElementById('btn-global-save').addEventListener('click', handleGlobalUpload);
 }
 
-/**
- * Carga el estado real desde el API
- */
 async function loadStatus() {
     try {
         const resp = await fetch(API_GET_STATUS);
@@ -71,9 +65,6 @@ async function loadStatus() {
     } catch (e) { console.error("Error cargando estatus:", e); }
 }
 
-/**
- * Actualiza visualmente una tarjeta según el estado del servidor
- */
 function updateCard(id, data) {
     const card = document.getElementById(`card-${id}`);
     const badge = document.getElementById(`badge-${id}`);
@@ -133,11 +124,56 @@ async function handleGlobalUpload() {
     }
 
     if (filesSent > 0) {
-        alert("Documentos enviados correctamente.");
-        location.reload();
+        // Modal de Éxito
+        showModal(
+            '¡Envío Exitoso!',
+            'Tus documentos han sido enviados correctamente.',
+            'success',
+            () => location.reload()
+        );
     } else {
-        alert("No has seleccionado nuevos archivos para subir.");
+        // Modal de Error/Advertencia
+        showModal(
+            'Sin cambios',
+            'No has seleccionado nuevos archivos para subir.',
+            'error'
+        );
         btn.disabled = false;
-        btn.textContent = "Guardar Cambios y Enviar";
+        btn.textContent = "Guardar Cambios";
     }
+}
+
+function showModal(title, message, type, callback) {
+    const modal = document.getElementById('custom-modal');
+    const iconBox = document.getElementById('modal-icon-box');
+    const titleEl = document.getElementById('modal-title');
+    const msgEl = document.getElementById('modal-message');
+    const btn = document.getElementById('btn-modal-close');
+
+    titleEl.textContent = title;
+    msgEl.textContent = message;
+
+    // Configurar icono y color según tipo
+    if (type === 'success') {
+        iconBox.className = 'modal-icon-box icon-success';
+        iconBox.innerHTML = `
+                <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                    <path stroke-linecap="round" stroke-linejoin="round" d="M4.5 12.75l6 6 9-13.5" />
+                </svg>`;
+    } else {
+        iconBox.className = 'modal-icon-box icon-error';
+        iconBox.innerHTML = `
+                <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                    <path stroke-linecap="round" stroke-linejoin="round" d="M12 9v3.75m9-.75a9 9 0 11-18 0 9 9 0 0118 0zm-9 3.75h.008v.008H12v-.008z" />
+                </svg>`;
+    }
+
+    // Mostrar modal
+    modal.classList.add('active');
+
+    // Manejar cierre
+    btn.onclick = () => {
+        modal.classList.remove('active');
+        if (callback) callback();
+    };
 }
