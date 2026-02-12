@@ -12,33 +12,70 @@ const DOC_CONFIG = [
 ];
 
 document.addEventListener('DOMContentLoaded', () => {
+    loadUserProfile();
+    setupLogout();
     initUI();
     loadStatus();
 });
 
+async function loadUserProfile() {
+    try {
+        const resp = await fetch('/student/my-name');
+        if (resp.ok) {
+            const data = await resp.json();
+            const firstName = data.name.split(' ')[0];
+            const lastName = data.fLastName.split(' ')[0];
+
+            const nameEl = document.getElementById('user-pill-name');
+            const initialEl = document.getElementById('user-pill-initial');
+
+            if(nameEl) nameEl.textContent = `${firstName} ${lastName}`;
+            if(initialEl) initialEl.textContent = firstName.charAt(0).toUpperCase();
+        }
+    } catch (error) {
+        console.error("Error al cargar perfil:", error);
+    }
+}
+
+function setupLogout() {
+    const btnLogout = document.getElementById('logoutBtn');
+    if (!btnLogout) return;
+
+    btnLogout.addEventListener('click', async () => {
+        try {
+            const response = await fetch('/auth/logout', { method: 'POST' });
+            if (response.ok) {
+                window.location.href = '/index.html';
+            }
+        } catch (error) {
+            console.error("Error al intentar cerrar sesión:", error);
+        }
+    });
+}
+
 function initUI() {
     const container = document.getElementById('docs-container');
     container.innerHTML = DOC_CONFIG.map(doc => `
-                <div class="doc-card status-none" id="card-${doc.id}">
-                    <div class="doc-header">
-                        <span class="doc-title">${doc.label}</span>
-                        <span class="status-badge badge-none" id="badge-${doc.id}">Sin Cargar</span>
-                    </div>
-                    <div class="doc-body">
-                        <div class="upload-area">
-                            <div class="file-controls">
-                                <input type="file" id="file-${doc.id}" style="display:none" accept=".pdf">
-                                <label for="file-${doc.id}" class="btn-browse" id="btn-${doc.id}">Seleccionar PDF</label>
-                                <span class="file-display" id="name-${doc.id}">No se ha seleccionado archivo</span>
+                    <div class="doc-card status-none" id="card-${doc.id}">
+                        <div class="doc-header">
+                            <span class="doc-title">${doc.label}</span>
+                            <span class="status-badge badge-none" id="badge-${doc.id}">Sin Cargar</span>
+                        </div>
+                        <div class="doc-body">
+                            <div class="upload-area">
+                                <div class="file-controls">
+                                    <input type="file" id="file-${doc.id}" style="display:none" accept=".pdf">
+                                    <label for="file-${doc.id}" class="btn-browse" id="btn-${doc.id}">Seleccionar PDF</label>
+                                    <span class="file-display" id="name-${doc.id}">No se ha seleccionado archivo</span>
+                                </div>
+                            </div>
+                            <div class="comment-area">
+                                <span class="comment-label">Observaciones</span>
+                                <p class="comment-text" id="comment-${doc.id}">Pendiente de carga inicial.</p>
                             </div>
                         </div>
-                        <div class="comment-area">
-                            <span class="comment-label">Observaciones</span>
-                            <p class="comment-text" id="comment-${doc.id}">Pendiente de carga inicial.</p>
-                        </div>
                     </div>
-                </div>
-            `).join('');
+                `).join('');
 
     // Listeners para cambios de archivo local
     DOC_CONFIG.forEach(doc => {
@@ -157,15 +194,15 @@ function showModal(title, message, type, callback) {
     if (type === 'success') {
         iconBox.className = 'modal-icon-box icon-success';
         iconBox.innerHTML = `
-                <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                    <path stroke-linecap="round" stroke-linejoin="round" d="M4.5 12.75l6 6 9-13.5" />
-                </svg>`;
+                    <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                        <path stroke-linecap="round" stroke-linejoin="round" d="M4.5 12.75l6 6 9-13.5" />
+                    </svg>`;
     } else {
         iconBox.className = 'modal-icon-box icon-error';
         iconBox.innerHTML = `
-                <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                    <path stroke-linecap="round" stroke-linejoin="round" d="M12 9v3.75m9-.75a9 9 0 11-18 0 9 9 0 0118 0zm-9 3.75h.008v.008H12v-.008z" />
-                </svg>`;
+                    <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                        <path stroke-linecap="round" stroke-linejoin="round" d="M12 9v3.75m9-.75a9 9 0 11-18 0 9 9 0 0118 0zm-9 3.75h.008v.008H12v-.008z" />
+                    </svg>`;
     }
 
     // Mostrar modal

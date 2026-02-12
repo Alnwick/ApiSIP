@@ -15,8 +15,8 @@
             <img src="../Imagenes/logo blanco.png" alt="UPIICSA" class="logo-img">
         </div>
         <div class="title-box">
-            <h1>ApiSIP</h1>
-            <p>Portal del Estudiante</p>
+            <h1>Sistema para Practicas Profesionales</h1>
+            <p>Portal Estudiantil</p>
         </div>
     </div>
 
@@ -39,14 +39,13 @@
     <!-- LADO IZQUIERDO: IDENTIDAD Y CONTACTO -->
     <aside class="profile-side">
         <div class="card-identity">
-            <div class="initial-avatar" id="display-initial">S</div>
+            <div class="initial-avatar" id="display-initial">?</div>
             <div class="identity-info">
-                <h2 id="info-full-name">Santiago Martínez</h2>
-                <p id="info-boleta">2022601234</p>
+                <h2 id="info-full-name">Cargando...</h2>
+                <p id="info-boleta">Cargando...</p>
             </div>
         </div>
 
-        <!-- Información de Contacto (Movida aquí abajo) -->
         <section class="info-section" style="padding: 1.5rem;">
             <div class="section-title" style="margin-bottom: 1rem;">
                 <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"></path><polyline points="22,6 12,13 2,6"></polyline></svg>
@@ -55,11 +54,11 @@
             <div style="display: flex; flex-direction: column; gap: 1.2rem;">
                 <div class="data-item">
                     <label>Correo Electrónico</label>
-                    <div class="val-static" id="info-email">santiago.mtz@alumno.ipn.mx</div>
+                    <div class="val-static" id="info-email">--</div>
                 </div>
                 <div class="data-item">
                     <label>Teléfono / Móvil</label>
-                    <div class="val-static" id="info-phone">55 1234 5678</div>
+                    <div class="val-static" id="info-phone">--</div>
                 </div>
             </div>
         </section>
@@ -77,19 +76,19 @@
             <div class="data-grid">
                 <div class="data-item">
                     <label>Carrera</label>
-                    <div class="val-static" id="info-career">Ingeniería en Informática</div>
+                    <div class="val-static" id="info-career">--</div>
                 </div>
                 <div class="data-item">
                     <label>Plan de Estudios</label>
-                    <div class="val-static" id="info-plan">Plan 2021</div>
+                    <div class="val-static" id="info-plan">--</div>
                 </div>
                 <div class="data-item">
                     <label>Semestre</label>
-                    <div class="val-static" id="info-semester">7mo Semestre</div>
+                    <div class="val-static" id="info-semester">--</div>
                 </div>
                 <div class="data-item">
                     <label>Estado en Prácticas</label>
-                    <div class="val-static" style="color: var(--primary);" id="info-practice-status">Documentación en Validación</div>
+                    <div class="val-static" style="color: var(--primary);" id="info-practice-status">--</div>
                 </div>
                 <div class="data-item">
                     <label>Unidad Académica</label>
@@ -108,17 +107,29 @@
             <div class="data-grid">
                 <div class="data-item">
                     <label>Nueva Contraseña</label>
-                    <input type="password" class="input-field" placeholder="••••••••" id="new-password">
+                    <input type="password" class="input-field" placeholder="Mínimo 6 caracteres" id="new-password">
                 </div>
                 <div class="data-item">
                     <label>Confirmar Contraseña</label>
-                    <input type="password" class="input-field" placeholder="••••••••" id="confirm-password">
+                    <input type="password" class="input-field" placeholder="Repite la contraseña" id="confirm-password">
                 </div>
             </div>
-            <button class="btn-update">Actualizar Contraseña</button>
+            <button class="btn-update" id="btn-update-pwd">Actualizar Contraseña</button>
         </section>
 
     </main>
+</div>
+
+<!-- Modal Personalizado -->
+<div id="custom-modal" class="modal-overlay">
+    <div class="modal-content">
+        <div class="modal-icon-box" id="modal-icon-box">
+            <!-- Icono inyectado por JS -->
+        </div>
+        <h3 class="modal-title" id="modal-title">Título</h3>
+        <p class="modal-message" id="modal-message">Mensaje descriptivo aquí.</p>
+        <button class="btn-modal-action" id="btn-modal-close">Entendido</button>
+    </div>
 </div>
 
 <footer>

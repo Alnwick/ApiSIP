@@ -60,12 +60,14 @@ header {
     font-weight: 800;
     letter-spacing: 1px;
     text-shadow: 0 2px 4px rgba(0,0,0,0.2);
+    margin: 0;
 }
 
 .title-box p {
     font-size: 0.8rem;
     opacity: 0.9;
     font-weight: 500;
+    margin: 0;
 }
 
 .user-actions {

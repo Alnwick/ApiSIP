@@ -3,9 +3,29 @@ const API_LOGOUT = '/auth/logout';
 const PHASES = ["Registrado", "Doc Inicial", "Carta de Aceptación", "Finalización de informes", "Doc Término", "Liberación"];
 
 document.addEventListener('DOMContentLoaded', () => {
+    loadUserProfile();
     loadData();
     setupLogout();
 });
+
+async function loadUserProfile() {
+    try {
+        const resp = await fetch('/student/my-name');
+        if (resp.ok) {
+            const data = await resp.json();
+            const firstName = data.name.split(' ')[0];
+            const lastName = data.fLastName.split(' ')[0];
+
+            const nameEl = document.getElementById('user-pill-name');
+            const initialEl = document.getElementById('user-pill-initial');
+
+            if(nameEl) nameEl.textContent = `${firstName} ${lastName}`;
+            if(initialEl) initialEl.textContent = firstName.charAt(0).toUpperCase();
+        }
+    } catch (error) {
+        console.error("Error al cargar perfil:", error);
+    }
+}
 
 async function loadData() {
     let stagesData = [];
@@ -27,16 +47,16 @@ function renderProgress(apiData) {
         let statusClass = done && !current ? 'completed' : (current ? 'active' : '');
 
         return `
-                <div class="step ${statusClass}">
-                    <div class="dot">${(done && !current) ? '✓' : idx + 1}</div>
-                    <div class="step-info">
-                        <span class="label">${name}</span>
-                        <div class="date-container">
-                            <span class="date-badge">${done ? 'Inició: ' + fmt(data.date) : (current ? 'En progreso' : '—')}</span>
+                    <div class="step ${statusClass}">
+                        <div class="dot">${(done && !current) ? '✓' : idx + 1}</div>
+                        <div class="step-info">
+                            <span class="label">${name}</span>
+                            <div class="date-container">
+                                <span class="date-badge">${done ? 'Inició: ' + fmt(data.date) : (current ? 'En progreso' : '—')}</span>
+                            </div>
                         </div>
                     </div>
-                </div>
-            `;
+                `;
     }).join('');
 
     const docIniciado = apiData[1] && apiData[1].date && apiData[1].date !== "-";

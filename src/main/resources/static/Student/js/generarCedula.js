@@ -4,14 +4,34 @@ const API_GENERATE_CEDULA = '/cedula/generate';
 const API_VIEW_PDF = '/cedula/view-pdf';
 
 document.addEventListener('DOMContentLoaded', async () => {
+    loadUserProfile();
     setupLogout();
-    // 1. Cargamos estados (Debes actualizar el StateDto en Java para incluir el id)
+    // 1. Cargamos estados
     await loadStates();
     // 2. Cargamos datos previos si existen
     await loadExistingData();
     // 3. Activamos el listener del formulario
     setupForm();
 });
+
+async function loadUserProfile() {
+    try {
+        const resp = await fetch('/student/my-name');
+        if (resp.ok) {
+            const data = await resp.json();
+            const firstName = data.name.split(' ')[0];
+            const lastName = data.fLastName.split(' ')[0];
+
+            const nameEl = document.getElementById('user-pill-name');
+            const initialEl = document.getElementById('user-pill-initial');
+
+            if(nameEl) nameEl.textContent = `${firstName} ${lastName}`;
+            if(initialEl) initialEl.textContent = firstName.charAt(0).toUpperCase();
+        }
+    } catch (error) {
+        console.error("Error al cargar perfil:", error);
+    }
+}
 
 /**
  * Carga estados. Espera que StateDto tenga {id, name}
@@ -21,7 +41,6 @@ async function loadStates() {
         const resp = await fetch(API_STATES);
         if (resp.ok) {
             const states = await resp.json();
-            // Usamos s.id como value para que regrese un entero al backend
             const options = states.map(s => `<option value="${s.id}">${s.name}</option>`).join('');
             document.getElementById('studentStateId').innerHTML += options;
             document.getElementById('companyStateId').innerHTML += options;
@@ -84,7 +103,7 @@ function setupForm() {
     form.onsubmit = async (e) => {
         e.preventDefault();
 
-        // Validamos presencia de elementos para evitar el error 'Cannot read properties of null'
+        // Validamos presencia de elementos
         const requiredFields = [
             'studentStreet', 'studentNumber', 'studentZipCode', 'studentNeighborhood', 'studentStateId',
             'companyName', 'companyEmail', 'companyPhone', 'companyExtension', 'companyFax', 'companySector',
@@ -102,7 +121,7 @@ function setupForm() {
         btn.disabled = true;
         btn.textContent = "Generando...";
 
-        // Payload alineado exactamente con tus records Java
+        // Payload alineado con los records Java
         const payload = {
             studentAddress: {
                 street: document.getElementById('studentStreet').value,
@@ -164,7 +183,7 @@ async function loadPdfPreview() {
         const response = await fetch(API_VIEW_PDF);
         if (response.ok) {
             const blob = await response.blob();
-            if (blob.size < 500) return; // Filtro de seguridad para archivos vacíos
+            if (blob.size < 500) return; // Filtro de seguridad
             const url = URL.createObjectURL(blob);
             viewer.innerHTML = `<iframe src="${url}"></iframe>`;
             downloadBtn.href = url;
