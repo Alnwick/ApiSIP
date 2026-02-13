@@ -1,4 +1,7 @@
-package com.upiicsa.ApiSIP.Dto;
+package com.upiicsa.ApiSIP.Dto.Student;
 
-public record StudentNameDto() {
+public record StudentNameDto(
+        String name,
+        String fLastName
+) {
 }
