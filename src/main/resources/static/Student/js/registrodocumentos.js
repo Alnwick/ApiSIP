@@ -133,7 +133,7 @@ function updateCard(id, data) {
     comment.textContent = data.comment || "Sin observaciones.";
 
     if (data.fileName) {
-        display.innerHTML = `<a href="${DOC_PATH}${data.fileName}" target="_blank" class="file-link">Ver archivo actual: ${data.fileName}</a>`;
+        display.innerHTML = `<a href="${DOC_PATH}${data.fileName}" target="_blank" class="file-link">Ver archivo actual</a>`;
     }
 }
 

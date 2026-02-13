@@ -11,16 +11,8 @@ async function loadUserProfile() {
         if (resp.ok) {
             const data = await resp.json();
 
-            // Procesar nombres
-            const firstName = data.name.split(' ')[0];
-            const lastName = data.fLastName.split(' ')[0];
-
-            // Actualizar Píldora del Header
-            document.getElementById('user-pill-name').textContent = `${firstName} ${lastName}`;
-            document.getElementById('user-pill-initial').textContent = firstName.charAt(0).toUpperCase();
-
             // Actualizar Tarjeta de Identidad
-            document.getElementById('display-initial').textContent = firstName.charAt(0).toUpperCase();
+            document.getElementById('display-initial').textContent = data.name.charAt(0).toUpperCase();
             document.getElementById('info-full-name').textContent = `${data.name} ${data.fLastName} ${data.mLastName}`;
             document.getElementById('info-boleta').textContent = data.enrollment;
 
@@ -29,8 +21,8 @@ async function loadUserProfile() {
             document.getElementById('info-phone').textContent = data.phone;
 
             // Actualizar Información Institucional
-            document.getElementById('info-career').textContent = data.careerName;
-            document.getElementById('info-plan').textContent = data.syllabusCode;
+            document.getElementById('info-career').textContent = data.career;
+            document.getElementById('info-plan').textContent = data.syllabus;
             document.getElementById('info-semester').textContent = data.semester;
             document.getElementById('info-practice-status').textContent = data.processStatus;
         } else {
