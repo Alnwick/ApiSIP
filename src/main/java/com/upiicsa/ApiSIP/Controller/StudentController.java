@@ -2,6 +2,8 @@ package com.upiicsa.ApiSIP.Controller;
 
 import com.upiicsa.ApiSIP.Dto.ProcessProgressDto;
 import com.upiicsa.ApiSIP.Dto.Student.ResponseStudentDto;
+import com.upiicsa.ApiSIP.Dto.Student.StudentNameDto;
+import com.upiicsa.ApiSIP.Dto.Student.StudentProfileDto;
 import com.upiicsa.ApiSIP.Dto.Student.StudentRegistrationDto;
 import com.upiicsa.ApiSIP.Model.Student;
 import com.upiicsa.ApiSIP.Service.StudentProcessService;
@@ -47,4 +49,19 @@ public class StudentController {
                 getProcessHistory(AuthHelper.getAuthenticatedUserId()));
     }
 
+    @GetMapping("/my-name")
+    @PreAuthorize("hasAnyRole('ALUMNO')")
+    public ResponseEntity<StudentNameDto> getMyName(){
+        Integer studentId = AuthHelper.getAuthenticatedUserId();
+
+        return ResponseEntity.ok(studentService.getName(studentId));
+    }
+
+    @GetMapping("/profile")
+    @PreAuthorize("hasAnyRole('ALUMNO')")
+    public ResponseEntity<StudentProfileDto> getProfile(){
+        Integer studentId = AuthHelper.getAuthenticatedUserId();
+
+        return ResponseEntity.ok(studentService.getProfile(studentId));
+    }
 }
