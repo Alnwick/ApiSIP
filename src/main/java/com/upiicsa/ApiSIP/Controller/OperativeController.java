@@ -1,7 +1,7 @@
 package com.upiicsa.ApiSIP.Controller;
 
 import com.upiicsa.ApiSIP.Dto.DashboardStatsDto;
-import com.upiicsa.ApiSIP.Dto.StudentReviewDto;
+import com.upiicsa.ApiSIP.Dto.Student.StudentReviewDto;
 import com.upiicsa.ApiSIP.Model.Student;
 import com.upiicsa.ApiSIP.Service.OperativeService;
 import com.upiicsa.ApiSIP.Service.StudentService;
