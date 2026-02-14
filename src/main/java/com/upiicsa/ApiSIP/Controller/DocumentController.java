@@ -3,7 +3,6 @@ package com.upiicsa.ApiSIP.Controller;
 import com.upiicsa.ApiSIP.Dto.Document.DocumentStatusDto;
 import com.upiicsa.ApiSIP.Service.Document.DocumentService;
 import com.upiicsa.ApiSIP.Utils.AuthHelper;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
@@ -15,14 +14,17 @@ import java.util.List;
 @RequestMapping("/documents")
 public class DocumentController {
 
-    @Autowired
     private DocumentService documentService;
+
+    public DocumentController(DocumentService documentService) {
+        this.documentService = documentService;
+    }
 
     @GetMapping("/my-status")
     @PreAuthorize("hasAnyRole('ALUMNO')")
     public ResponseEntity<List<DocumentStatusDto>> getMyStatus(){
 
-        return ResponseEntity.ok(documentService.getStatus(getUserId()));
+        return ResponseEntity.ok(documentService.getDocuments(getUserId()));
     }
 
     @PostMapping("/upload")

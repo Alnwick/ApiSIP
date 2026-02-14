@@ -78,7 +78,7 @@ public class DocumentService {
     }
 
     @Transactional(readOnly = true)
-    public List<DocumentStatusDto> getStatus(Integer userId) {
+    public List<DocumentStatusDto> getDocuments(Integer userId) {
 
         StudentProcess process = processService.getByStudentId(userId);
 
