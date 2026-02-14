@@ -1,28 +1,20 @@
 const urlParams = new URLSearchParams(window.location.search);
-const enrollment = urlParams.get('enrollment');
+const enrollment = urlParams.get('enrollment'); // Obtenemos la boleta
 
-const API_REVIEW_DATA = `/api/operatives/student-review/${enrollment}`;
-const API_SAVE_DOC = `/api/operatives/review-document/${enrollment}`;
-const API_FINALIZE = `/api/operatives/finalize-review/${enrollment}`;
-const API_APPROVE_ACTA = `/api/operatives/approve-acceptance-act/${enrollment}`;
-const API_VIEW_PDF = `/view-documents/`;
+// Endpoints ajustados al Controller (sin /api/ si tu controller no lo tiene)
+const API_REVIEW_DATA = `/operatives/student-review?enrollment=${enrollment}`;
+// Endpoints de acción
+const API_SAVE_DOC = `/operatives/review-document`;
+const API_FINALIZE = `/operatives/finalize-review`;
+const API_APPROVE_ACTA = `/operatives/approve-acceptance-act`;
 
-const DOC_TYPES = [
-    { key: 'cedula', label: 'Cédula de Registro', typeCode: 'Cedula de Registro' },
-    { key: 'imss', label: 'Constancia de Vigencia (IMSS)', typeCode: 'Constancia de Vigencia' },
-    { key: 'sisae-empresa', label: 'Captura Empresa (SISAE)', typeCode: 'Captura de Empresa' },
-    { key: 'sisae-alumno', label: 'Captura Alumno (SISAE)', typeCode: 'Captura de Alumno' },
-    { key: 'horario', label: 'Copia de Horario (SAES)', typeCode: 'Copia de Horario' }
-];
-
-let initialDocsData = [];
+// Variable global para mantener el estado actual de los documentos cargados
+let currentDocuments = [];
 
 document.addEventListener('DOMContentLoaded', () => {
-    // Inicializar UI con estados vacíos antes del fetch
-    renderDocuments([]);
-
     if (!enrollment) {
-        console.error("Sin boleta");
+        alert("No se especificó la boleta del alumno.");
+        window.location.href = 'home.html';
         return;
     }
     loadStudentReview();
@@ -31,120 +23,186 @@ document.addEventListener('DOMContentLoaded', () => {
 
 async function loadStudentReview() {
     try {
+        console.log("Consultando:", API_REVIEW_DATA); // Debug
         const resp = await fetch(API_REVIEW_DATA);
-        if (!resp.ok) return;
+
+        // Verificación de tipo de contenido para evitar el error "<"
+        const contentType = resp.headers.get("content-type");
+        if (!contentType || !contentType.includes("application/json")) {
+            throw new Error(`Respuesta no válida del servidor (posible 404 o HTML de error). Status: ${resp.status}`);
+        }
+
+        if (!resp.ok) {
+            console.error("Error HTTP:", resp.status);
+            return;
+        }
+
+        // Mapeo directo del StudentReviewDto
         const data = await resp.json();
 
-        document.getElementById('st-name').textContent = data.student?.name || '--';
-        document.getElementById('st-enrollment').textContent = data.student?.enrollment || '--';
-        document.getElementById('st-career').textContent = data.student?.career || '--';
-        document.getElementById('st-semester').textContent = data.student?.semester || '--';
-        document.getElementById('st-syllabus').textContent = data.student?.syllabus || '--';
+        // 1. Llenar datos del encabezado
+        document.getElementById('st-name').textContent = data.name || '--';
+        document.getElementById('st-enrollment').textContent = data.enrollment || '--';
+        document.getElementById('st-career').textContent = data.career || '--';
+        document.getElementById('st-semester').textContent = data.semester || '--';
+        document.getElementById('st-syllabus').textContent = data.syllabus || '--';
 
-        initialDocsData = data.documents || [];
-        renderDocuments(initialDocsData);
-    } catch (e) { console.error("Error cargando datos:", e); }
+        // 2. Renderizar documentos desde la lista del DTO
+        currentDocuments = data.documents || [];
+        renderDocuments(currentDocuments);
+
+    } catch (e) {
+        console.error("Error cargando datos:", e);
+        // Opcional: Mostrar mensaje en UI
+        document.getElementById('docs-list').innerHTML = `<div style="color:red; text-align:center;">Error al cargar datos: ${e.message}</div>`;
+    }
 }
 
-function renderDocuments(apiDocs) {
+function renderDocuments(docs) {
     const container = document.getElementById('docs-list');
-    // Usamos DOC_TYPES como base para asegurar que siempre aparezcan los 5
-    container.innerHTML = DOC_TYPES.map(type => {
-        const doc = apiDocs.find(d => d.typeCode === type.typeCode) || { status: 'SIN_CARGAR' };
 
+    if (!docs || docs.length === 0) {
+        container.innerHTML = '<div style="padding:20px; text-align:center; color:#666;">No hay documentos requeridos para este estado del proceso.</div>';
+        return;
+    }
+
+    container.innerHTML = docs.map((doc, index) => {
+        // Lógica de estilos basada en el status del DocumentStatusDto
         const isRevisado = doc.status === 'REVISADO_CORRECTO';
-        const isSinDoc = doc.status === 'SIN_CARGAR' || !doc.status;
-        const isCargado = doc.status === 'CARGADO' || doc.status === 'REVISADO_INCORRECTO';
+        const isIncorrecto = doc.status === 'REVISADO_INCORRECTO';
+        const isSinDoc = !doc.fileName || doc.status === 'SIN_CARGAR';
 
-        let cardClass = isSinDoc ? 'card-sin-doc' : (isRevisado ? 'card-revisado' : 'card-cargado');
+        // isCargado: tiene archivo y aún no está aprobado definitivamente (o fue rechazado)
+        // NOTA: Si está 'REVISADO_INCORRECTO', se permite volver a revisar/comentar.
+        const isCargado = (doc.status === 'CARGADO' || doc.status === 'EN_REVISION' || isIncorrecto) && !isSinDoc;
+
+        let cardClass = '';
+        if (isSinDoc) cardClass = 'card-sin-doc';
+        else if (isRevisado) cardClass = 'card-revisado';
+        else if (isIncorrecto) cardClass = 'card-cargado'; // Estilo base cargado
+        else cardClass = 'card-cargado';
+
         let uploadDateStr = doc.uploadDate ? new Date(doc.uploadDate).toLocaleString('es-MX') : "Sin archivo cargado";
 
+        // Identificador único para inputs
+        const uniqueId = doc.typeCode.replace(/\s+/g, '_') + '_' + index;
+
         return `
-                <div class="doc-review-card ${cardClass}" data-typecode="${type.typeCode}">
-                    <div class="doc-header">
-                        <div class="doc-title-box">
-                            <span class="doc-name">${type.label}</span>
-                            <span class="doc-date">${uploadDateStr}</span>
-                        </div>
-                        <div style="display:flex; gap:0.8rem; align-items:center;">
-                            ${isRevisado ? '<span class="locked-badge">Revisado</span>' : ''}
-                            ${!isSinDoc ? `<button class="btn-view" onclick="viewPdf('${doc.fileName}', '${type.label}')">Ver Archivo</button>` : ''}
-                        </div>
+            <div class="doc-review-card ${cardClass}" data-typecode="${doc.typeCode}">
+                <div class="doc-header">
+                    <div class="doc-title-box">
+                        <span class="doc-name">${doc.typeCode}</span>
+                        <span class="doc-date">${uploadDateStr}</span>
                     </div>
-
-                    ${isCargado ? `
-                    <div class="status-actions">
-                        <label class="action-label opt-ok"><input type="radio" name="st-${type.key}" value="REVISADO_CORRECTO" ${doc.status === 'REVISADO_CORRECTO' ? 'checked' : ''}> Correcto</label>
-                        <label class="action-label opt-err"><input type="radio" name="st-${type.key}" value="REVISADO_INCORRECTO" ${doc.status === 'REVISADO_INCORRECTO' ? 'checked' : ''}> Incorrecto</label>
+                    <div style="display:flex; gap:0.8rem; align-items:center;">
+                        ${isRevisado ? '<span class="locked-badge">Revisado Correcto</span>' : ''}
+                        ${isIncorrecto ? '<span class="locked-badge" style="background:var(--error);">Corrección Solicitada</span>' : ''}
+                        
+                        ${!isSinDoc && doc.viewUrl ?
+            `<button class="btn-view" onclick="viewPdf('${doc.viewUrl}', '${doc.typeCode}')">Ver Archivo</button>` :
+            '<button class="btn-view" disabled style="opacity:0.5; cursor:not-allowed;">Sin Archivo</button>'
+        }
                     </div>
-                    <textarea class="comment-area" id="comm-${type.key}" placeholder="Observaciones de revisión...">${doc.comment || ''}</textarea>
-                    ` : ''}
-
-                    ${isRevisado ? `
-                    <div class="comment-area" style="background:#f0fdf4; color:#166534; font-size:0.85rem; padding:1rem; border-color:#bbf7d0">
-                        <strong>Dictamen finalizado:</strong><br>${doc.comment || 'Sin observaciones registradas.'}
-                    </div>
-                    ` : ''}
                 </div>
-            `;
+
+                <!-- Panel de Acciones -->
+                ${isCargado ? `
+                <div class="status-actions">
+                    <label class="action-label opt-ok">
+                        <input type="radio" name="st-${uniqueId}" value="REVISADO_CORRECTO" ${doc.status === 'REVISADO_CORRECTO' ? 'checked' : ''}> 
+                        Correcto
+                    </label>
+                    <label class="action-label opt-err">
+                        <input type="radio" name="st-${uniqueId}" value="REVISADO_INCORRECTO" ${doc.status === 'REVISADO_INCORRECTO' ? 'checked' : ''}> 
+                        Incorrecto
+                    </label>
+                </div>
+                <textarea class="comment-area" id="comm-${uniqueId}" placeholder="Observaciones de revisión...">${doc.comment || ''}</textarea>
+                ` : ''}
+                
+                ${isSinDoc ? `<div style="font-size:0.85rem; color:var(--text-muted); font-style:italic;">El alumno aún no ha cargado este documento.</div>` : ''}
+            </div>
+        `;
     }).join('');
 }
 
-function viewPdf(fileName, title) {
-    if(!fileName || fileName === 'undefined') return;
+function viewPdf(url, title) {
+    if (!url) return;
     document.getElementById('pdf-title').textContent = title;
-    document.getElementById('pdfContainer').innerHTML = `<iframe src="${API_VIEW_PDF}${fileName}"></iframe>`;
+    // iframe apuntando a la URL que viene del DTO
+    document.getElementById('pdfContainer').innerHTML = `<iframe src="${url}" style="width:100%; height:100%; border:none;"></iframe>`;
 }
 
 function setupActionButtons() {
-    document.getElementById('btn-finalize-review').onclick = async () => {
-        const btn = document.getElementById('btn-finalize-review');
-        btn.disabled = true;
-        btn.textContent = "Procesando...";
+    const btnFinalize = document.getElementById('btn-finalize-review');
+    if (btnFinalize) {
+        btnFinalize.onclick = async () => {
+            if (!enrollment) return;
 
-        try {
-            // Revisar los 5 tipos definidos
-            for (const type of DOC_TYPES) {
-                const radio = document.querySelector(`input[name="st-${type.key}"]:checked`);
-                const commentArea = document.getElementById(`comm-${type.key}`);
+            const reviews = [];
 
-                if (radio && commentArea) {
-                    const newStatus = radio.value;
-                    const newComment = commentArea.value;
-                    const original = initialDocsData.find(d => d.typeCode === type.typeCode) || {};
+            // Recopilar datos
+            currentDocuments.forEach((doc, index) => {
+                if (!doc.fileName) return;
 
-                    // Solo enviar actualización si cambió el radio o el texto
-                    if (newStatus !== original.status || newComment !== original.comment) {
-                        await fetch(API_SAVE_DOC, {
-                            method: 'POST',
-                            headers: { 'Content-Type': 'application/json' },
-                            body: JSON.stringify({
-                                typeCode: type.typeCode,
-                                status: newStatus,
-                                comment: newComment
-                            })
-                        });
-                    }
+                const uniqueId = doc.typeCode.replace(/\s+/g, '_') + '_' + index;
+                const radio = document.querySelector(`input[name="st-${uniqueId}"]:checked`);
+                const commentArea = document.getElementById(`comm-${uniqueId}`);
+
+                // Solo enviamos si se seleccionó una opción
+                if (radio) {
+                    reviews.push({
+                        typeCode: doc.typeCode,
+                        status: radio.value,
+                        comment: commentArea ? commentArea.value : ""
+                    });
                 }
+            });
+
+            if (reviews.length === 0) {
+                alert("No has seleccionado 'Correcto' o 'Incorrecto' para ningún documento.");
+                return;
             }
 
-            // Disparar acción global de finalización
-            const res = await fetch(API_FINALIZE, { method: 'POST' });
-            if (res.ok) {
-                alert("Se ha guardado la revisión y actualizado el trámite.");
-                window.location.href = 'home.html';
-            }
-        } catch (e) {
-            alert("Error de conexión al guardar la revisión.");
-        } finally {
-            btn.disabled = false;
-            btn.textContent = "Finalizar Revisión General";
-        }
-    };
+            btnFinalize.disabled = true;
+            btnFinalize.textContent = "Guardando...";
 
-    document.getElementById('btn-approve-acta').onclick = async () => {
-        if(!confirm("¿Aprobar el Acta de Aceptación para este alumno?")) return;
-        const res = await fetch(API_APPROVE_ACTA, { method: 'POST' });
-        if (res.ok) alert("Acta aprobada.");
-    };
+            try {
+                // Ajustar URL si es necesario
+                const res = await fetch(`${API_SAVE_DOC}?enrollment=${enrollment}`, {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify(reviews)
+                });
+
+                if (res.ok) {
+                    alert("Revisión guardada correctamente.");
+                    loadStudentReview();
+                } else {
+                    alert("Hubo un error al guardar la revisión.");
+                }
+            } catch (e) {
+                console.error(e);
+                alert("Error de conexión.");
+            } finally {
+                btnFinalize.disabled = false;
+                btnFinalize.textContent = "Finalizar Revisión General";
+            }
+        };
+    }
+
+    const btnApprove = document.getElementById('btn-approve-acta');
+    if (btnApprove) {
+        btnApprove.onclick = async () => {
+            if(!confirm("¿Confirmar la aprobación del Acta de Aceptación?")) return;
+
+            try {
+                const res = await fetch(`${API_APPROVE_ACTA}?enrollment=${enrollment}`, { method: 'POST' });
+                if (res.ok) alert("Acta aprobada con éxito.");
+                else alert("Error al aprobar el acta.");
+            } catch (e) {
+                alert("Error de conexión.");
+            }
+        };
+    }
 }
