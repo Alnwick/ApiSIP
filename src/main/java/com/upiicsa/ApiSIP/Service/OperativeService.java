@@ -48,6 +48,6 @@ public class OperativeService {
 
     public StudentReviewDto getReview(String enrollment){
 
-        return new StudentReviewDto("1", "1","1","1","1");
+        return new StudentReviewDto("1", "1","1","1","1", null);
     }
 }

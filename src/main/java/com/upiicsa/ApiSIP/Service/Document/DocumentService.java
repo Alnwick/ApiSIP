@@ -96,12 +96,15 @@ public class DocumentService {
                 if (review != null) {
                     return new DocumentStatusDto(type.getDescription(),
                             review.getStatus().getId() == 2 ? "REVISADO_CORRECTO" : "REVISADO_INCORRECTO",
-                            doc.getURL(), review.getComment(), "/view-document/" + doc.getURL()
+                            doc.getURL(), review.getComment(), "/view-document/" + doc.getURL(),
+                            doc.getUploadDate()
                     );
                 }
-                return new DocumentStatusDto(type.getDescription(), "EN_REVISION", doc.getURL(), "", "");
+                return new DocumentStatusDto(type.getDescription(), "EN_REVISION", doc.getURL(), "",
+                        "", doc.getUploadDate());
             }
-            return new DocumentStatusDto(type.getDescription(), "PENDING", null, "Pendiente de cargar", "");
+            return new DocumentStatusDto(type.getDescription(), "PENDING", null,
+                    "", "", null);
 
         }).collect(Collectors.toList());
     }
