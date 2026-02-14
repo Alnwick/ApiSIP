@@ -20,7 +20,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
 async function loadUserProfile() {
     try {
-        const resp = await fetch('/student/my-name');
+        const resp = await fetch('/student/profile');
         if (resp.ok) {
             const data = await resp.json();
             const firstName = data.name.split(' ')[0];
@@ -58,7 +58,10 @@ function initUI() {
     container.innerHTML = DOC_CONFIG.map(doc => `
                     <div class="doc-card status-none" id="card-${doc.id}">
                         <div class="doc-header">
-                            <span class="doc-title">${doc.label}</span>
+                            <div style="display: flex; align-items: baseline; gap: 10px;">
+                                <span class="doc-title">${doc.label}</span>
+                                <span id="date-${doc.id}" style="font-size: 0.85rem; color: #6b7280; font-weight: 500;">(--/--/---- --:--)</span>
+                            </div>
                             <span class="status-badge badge-none" id="badge-${doc.id}">Sin Cargar</span>
                         </div>
                         <div class="doc-body">
@@ -109,6 +112,7 @@ function updateCard(id, data) {
     const display = document.getElementById(`name-${id}`);
     const input = document.getElementById(`file-${id}`);
     const labelBtn = document.getElementById(`btn-${id}`);
+    const dateEl = document.getElementById(`date-${id}`);
 
     card.className = "doc-card"; // Reset
     let statusCls = "status-none", badgeCls = "badge-none", label = "Sin Cargar";
@@ -133,7 +137,23 @@ function updateCard(id, data) {
     comment.textContent = data.comment || "Sin observaciones.";
 
     if (data.fileName) {
-        display.innerHTML = `<a href="${DOC_PATH}${data.fileName}" target="_blank" class="file-link">Ver archivo actual</a>`;
+        // Lógica para la fecha
+        let dateStr = '(--/--/---- --:--)';
+        if (data.uploadDate) {
+            const dateObj = new Date(data.uploadDate);
+            dateStr = dateObj.toLocaleDateString('es-MX', {
+                day: '2-digit',
+                month: '2-digit',
+                year: 'numeric',
+                hour: '2-digit',
+                minute:'2-digit'
+            }).replace(',', '');
+        }
+        // Actualizar la fecha en el header
+        if(dateEl) dateEl.textContent = dateStr;
+
+        // Actualizar solo el nombre del archivo con su enlace
+        display.innerHTML = `<a href="${DOC_PATH}${data.fileName}" target="_blank" class="file-link">${data.fileName}</a>`;
     }
 }
 

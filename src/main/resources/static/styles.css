@@ -30,7 +30,7 @@ body {
 
 /* LADO IZQUIERDO: BRANDING (Más ancho) */
 .brand-panel {
-    flex: 0 0 50%; /* 55% del ancho */
+    flex: 0 0 55%; /* 55% del ancho */
     background: url('Imagenes/fondo.png') no-repeat center center/cover;
     position: relative;
     display: flex;

@@ -1,5 +1,5 @@
-const API_CATALOGS = window.location.origin + '/catalogs';
-const API_OPERATIVES = window.location.origin + '/operatives';
+const API_CATALOGS = '/catalogs';
+const API_OPERATIVES = '/operatives';
 const API_LOGOUT = '/auth/logout';
 
 let selectedCareer = 'all';
@@ -17,15 +17,11 @@ async function init() {
     await updateDashboard();
 }
 
-/**
- * Lógica de Cierre de Sesión
- */
 function setupLogout() {
     document.getElementById('logoutBtn').addEventListener('click', async () => {
         try {
             const response = await fetch(API_LOGOUT, { method: 'POST' });
             if (response.ok) {
-                // Redirige al login principal al limpiar la cookie
                 window.location.href = '/index.html';
             }
         } catch (error) {
@@ -111,8 +107,7 @@ window.filterByStat = function(key) {
 
 async function renderTable() {
     const container = document.getElementById('studentTableBody');
-    const search = document.getElementById('searchInput').value;
-
+    // Nota: Aquí podrías añadir filtros de paginación o búsqueda específicos si el backend lo soporta
     const response = await fetch(`${API_OPERATIVES}/get-allStudents?page=0&size=50`);
     const data = await response.json();
     const students = data.content || [];
@@ -122,8 +117,9 @@ async function renderTable() {
         return;
     }
 
+    /* CAMBIO CLAVE: Redirección usando s.enrollment (boleta) en lugar de ID */
     container.innerHTML = students.map(s => `
-            <tr onclick="window.location.href='documentosInicio.html?id=${s.id}'">
+            <tr onclick="window.location.href='documentosInicio.html?enrollment=${s.enrollment}'">
                 <td><strong>${s.offer?.syllabus?.code || 'N/A'}</strong></td>
                 <td>${s.name} ${s.fLastName} ${s.mLastName}</td>
                 <td>${s.enrollment}</td>
