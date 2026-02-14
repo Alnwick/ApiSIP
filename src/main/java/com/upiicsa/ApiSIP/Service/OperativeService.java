@@ -1,10 +1,13 @@
 package com.upiicsa.ApiSIP.Service;
 
 import com.upiicsa.ApiSIP.Dto.DashboardStatsDto;
+import com.upiicsa.ApiSIP.Dto.Document.DocumentStatusDto;
 import com.upiicsa.ApiSIP.Dto.Student.StudentReviewDto;
 import com.upiicsa.ApiSIP.Model.Student;
 import com.upiicsa.ApiSIP.Repository.Document_Process.StudentProcessRepository;
 import com.upiicsa.ApiSIP.Repository.StudentRepository;
+import com.upiicsa.ApiSIP.Service.Document.DocumentService;
+import jakarta.persistence.EntityNotFoundException;
 import org.springframework.stereotype.Service;
 
 import java.util.*;
@@ -15,10 +18,13 @@ public class OperativeService {
 
     private StudentRepository studentRepository;
     private StudentProcessRepository processRepository;
+    private DocumentService documentService;
 
-    public OperativeService(StudentRepository studentRepository, StudentProcessRepository processRepository) {
+    public OperativeService(StudentRepository studentRepository, StudentProcessRepository processRepository,
+                            DocumentService documentService) {
         this.studentRepository = studentRepository;
         this.processRepository = processRepository;
+        this.documentService = documentService;
     }
 
     public DashboardStatsDto getStats(String careerAcronym){
@@ -47,7 +53,20 @@ public class OperativeService {
     }
 
     public StudentReviewDto getReview(String enrollment){
+        Student student = studentRepository.findByEnrollment(enrollment)
+                .orElseThrow(() -> new EntityNotFoundException("Student not found"));
 
-        return new StudentReviewDto("1", "1","1","1","1", null);
+        String semester;
+        if(student.isGraduate()){
+            semester = "PASANTE";
+        }else {
+            semester =  student.getSemester().getDescription();
+        }
+
+        String fullName =  student.getName() + " " + student.getFLastName() + " " + student.getMLastName();
+        List<DocumentStatusDto> documents = documentService.getDocuments(student.getId());
+
+        return new StudentReviewDto(fullName, student.getEnrollment(), student.getOffer().getCareer().getName(),
+                semester, student.getOffer().getSyllabus().code, documents);
     }
 }

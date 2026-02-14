@@ -14,6 +14,8 @@ public interface StudentRepository extends JpaRepository<Student, Integer> {
 
     Optional<Student> findById(int id);
 
+    Optional<Student> findByEnrollment(String enrollment);
+
     @Query("SELECT s FROM Student s JOIN s.offer o JOIN o.career c WHERE c.acronym = :acronym")
     List<Student> findAllByCareerAcronym(@Param("acronym") String acronym);
 }
