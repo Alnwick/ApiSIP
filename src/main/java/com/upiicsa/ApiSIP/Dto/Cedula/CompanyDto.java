@@ -1,4 +1,4 @@
-package com.upiicsa.ApiSIP.Dto;
+package com.upiicsa.ApiSIP.Dto.Cedula;
 
 import com.upiicsa.ApiSIP.Model.Company;
 
