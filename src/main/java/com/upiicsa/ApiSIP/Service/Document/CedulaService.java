@@ -1,8 +1,8 @@
 package com.upiicsa.ApiSIP.Service.Document;
 
-import com.upiicsa.ApiSIP.Dto.AddressDto;
-import com.upiicsa.ApiSIP.Dto.CedulaDto;
-import com.upiicsa.ApiSIP.Dto.CompanyDto;
+import com.upiicsa.ApiSIP.Dto.Cedula.AddressDto;
+import com.upiicsa.ApiSIP.Dto.Cedula.CedulaDto;
+import com.upiicsa.ApiSIP.Dto.Cedula.CompanyDto;
 import com.upiicsa.ApiSIP.Model.Address;
 import com.upiicsa.ApiSIP.Model.Company;
 import com.upiicsa.ApiSIP.Model.Student;

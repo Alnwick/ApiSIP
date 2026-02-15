@@ -1,6 +1,6 @@
 package com.upiicsa.ApiSIP.Service;
 
-import com.upiicsa.ApiSIP.Dto.AddressDto;
+import com.upiicsa.ApiSIP.Dto.Cedula.AddressDto;
 import com.upiicsa.ApiSIP.Model.Address;
 import com.upiicsa.ApiSIP.Model.Catalogs.State;
 import com.upiicsa.ApiSIP.Repository.AddressRepository;

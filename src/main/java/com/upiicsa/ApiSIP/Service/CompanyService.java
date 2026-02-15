@@ -1,6 +1,6 @@
 package com.upiicsa.ApiSIP.Service;
 
-import com.upiicsa.ApiSIP.Dto.CompanyDto;
+import com.upiicsa.ApiSIP.Dto.Cedula.CompanyDto;
 import com.upiicsa.ApiSIP.Model.Address;
 import com.upiicsa.ApiSIP.Model.Company;
 import com.upiicsa.ApiSIP.Repository.CompanyRepository;
