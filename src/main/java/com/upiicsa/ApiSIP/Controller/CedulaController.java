@@ -1,6 +1,6 @@
 package com.upiicsa.ApiSIP.Controller;
 
-import com.upiicsa.ApiSIP.Dto.CedulaDto;
+import com.upiicsa.ApiSIP.Dto.Cedula.CedulaDto;
 import com.upiicsa.ApiSIP.Service.Document.CedulaService;
 import com.upiicsa.ApiSIP.Utils.AuthHelper;
 import jakarta.validation.Valid;
