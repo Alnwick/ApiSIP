@@ -40,25 +40,27 @@
                 <div class="data-item"><label>Alumno</label><span id="st-name">--</span></div>
                 <div class="data-item"><label>Boleta</label><span id="st-enrollment">--</span></div>
                 <div class="data-item"><label>Carrera</label><span id="st-career">--</span></div>
-                <div class="data-item"><label>Syllabus</label><span id="st-syllabus">--</span></div>
+                <div class="data-item"><label>Plan de Estudios</label><span id="st-syllabus">--</span></div>
                 <div class="data-item" style="grid-column: span 2;"><label>Semestre</label><span id="st-semester">--</span></div>
             </div>
         </section>
 
         <div id="docs-list" style="display: flex; flex-direction: column; gap: 1.2rem;">
-            <!-- Renderizado Dinámico siempre mostrará los 5 -->
+            <!-- Renderizado Dinámico -->
         </div>
 
         <div class="bottom-actions">
             <button class="btn-footer btn-blue" id="btn-approve-acta">Aprobar Acta</button>
-            <button class="btn-footer btn-green" id="btn-finalize-review">Finalizar Revisión</button>
+            <button class="btn-footer btn-green" id="btn-finalize-review">Finalizar Revisión General</button>
         </div>
     </div>
 
     <aside class="preview-side">
+        <div class="viewer-header">
+            <span id="pdf-title">Vista Previa</span>
+        </div>
         <div class="pdf-content" id="pdfContainer">
             <div style="text-align:center; color:var(--text-muted)">
-
                 <p>Selecciona un archivo para visualizarlo aquí.</p>
             </div>
         </div>

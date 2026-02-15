@@ -1,12 +1,16 @@
 const urlParams = new URLSearchParams(window.location.search);
 const enrollment = urlParams.get('enrollment'); // Obtenemos la boleta
 
-// Endpoints ajustados al Controller (sin /api/ si tu controller no lo tiene)
+// Endpoints ajustados al Controller
 const API_REVIEW_DATA = `/operatives/student-review?enrollment=${enrollment}`;
 // Endpoints de acción
 const API_SAVE_DOC = `/operatives/review-document`;
 const API_FINALIZE = `/operatives/finalize-review`;
 const API_APPROVE_ACTA = `/operatives/approve-acceptance-act`;
+
+// RUTA BASE PARA VER DOCUMENTOS (IMPORTANTE: Esto corrige el error del backend)
+// El backend tiene configurado /view-documents/**, así que debemos usar esa base
+const DOC_PATH = '/view-documents/';
 
 // Variable global para mantener el estado actual de los documentos cargados
 let currentDocuments = [];
@@ -23,13 +27,12 @@ document.addEventListener('DOMContentLoaded', () => {
 
 async function loadStudentReview() {
     try {
-        console.log("Consultando:", API_REVIEW_DATA); // Debug
+        console.log("Consultando:", API_REVIEW_DATA);
         const resp = await fetch(API_REVIEW_DATA);
 
-        // Verificación de tipo de contenido para evitar el error "<"
         const contentType = resp.headers.get("content-type");
         if (!contentType || !contentType.includes("application/json")) {
-            throw new Error(`Respuesta no válida del servidor (posible 404 o HTML de error). Status: ${resp.status}`);
+            throw new Error(`Respuesta no válida del servidor. Status: ${resp.status}`);
         }
 
         if (!resp.ok) {
@@ -37,7 +40,6 @@ async function loadStudentReview() {
             return;
         }
 
-        // Mapeo directo del StudentReviewDto
         const data = await resp.json();
 
         // 1. Llenar datos del encabezado
@@ -47,14 +49,14 @@ async function loadStudentReview() {
         document.getElementById('st-semester').textContent = data.semester || '--';
         document.getElementById('st-syllabus').textContent = data.syllabus || '--';
 
-        // 2. Renderizar documentos desde la lista del DTO
+        // 2. Renderizar documentos
         currentDocuments = data.documents || [];
         renderDocuments(currentDocuments);
 
     } catch (e) {
         console.error("Error cargando datos:", e);
-        // Opcional: Mostrar mensaje en UI
-        document.getElementById('docs-list').innerHTML = `<div style="color:red; text-align:center;">Error al cargar datos: ${e.message}</div>`;
+        const list = document.getElementById('docs-list');
+        if(list) list.innerHTML = `<div style="color:red; text-align:center;">Error al cargar datos: ${e.message}</div>`;
     }
 }
 
@@ -67,70 +69,76 @@ function renderDocuments(docs) {
     }
 
     container.innerHTML = docs.map((doc, index) => {
-        // Lógica de estilos basada en el status del DocumentStatusDto
         const isRevisado = doc.status === 'REVISADO_CORRECTO';
         const isIncorrecto = doc.status === 'REVISADO_INCORRECTO';
-        const isSinDoc = !doc.fileName || doc.status === 'SIN_CARGAR';
+        // Verificar si hay nombre de archivo real
+        const hasFile = doc.fileName && doc.fileName.trim() !== '';
+        const isSinDoc = !hasFile || doc.status === 'SIN_CARGAR';
 
-        // isCargado: tiene archivo y aún no está aprobado definitivamente (o fue rechazado)
-        // NOTA: Si está 'REVISADO_INCORRECTO', se permite volver a revisar/comentar.
-        const isCargado = (doc.status === 'CARGADO' || doc.status === 'EN_REVISION' || isIncorrecto) && !isSinDoc;
+        // CORRECCIÓN CLAVE: Construir la URL en el frontend
+        // Ignoramos doc.viewUrl que viene mal del backend y usamos DOC_PATH + fileName
+        const fileUrl = hasFile ? `${DOC_PATH}${doc.fileName}` : '';
+
+        const isCargado = (doc.status === 'CARGADO' || doc.status === 'EN_REVISION' || isIncorrecto) && hasFile;
 
         let cardClass = '';
         if (isSinDoc) cardClass = 'card-sin-doc';
         else if (isRevisado) cardClass = 'card-revisado';
-        else if (isIncorrecto) cardClass = 'card-cargado'; // Estilo base cargado
+        else if (isIncorrecto) cardClass = 'card-cargado';
         else cardClass = 'card-cargado';
 
         let uploadDateStr = doc.uploadDate ? new Date(doc.uploadDate).toLocaleString('es-MX') : "Sin archivo cargado";
-
-        // Identificador único para inputs
         const uniqueId = doc.typeCode.replace(/\s+/g, '_') + '_' + index;
 
         return `
-            <div class="doc-review-card ${cardClass}" data-typecode="${doc.typeCode}">
-                <div class="doc-header">
-                    <div class="doc-title-box">
-                        <span class="doc-name">${doc.typeCode}</span>
-                        <span class="doc-date">${uploadDateStr}</span>
-                    </div>
-                    <div style="display:flex; gap:0.8rem; align-items:center;">
-                        ${isRevisado ? '<span class="locked-badge">Revisado Correcto</span>' : ''}
-                        ${isIncorrecto ? '<span class="locked-badge" style="background:var(--error);">Corrección Solicitada</span>' : ''}
-                        
-                        ${!isSinDoc && doc.viewUrl ?
-            `<button class="btn-view" onclick="viewPdf('${doc.viewUrl}', '${doc.typeCode}')">Ver Archivo</button>` :
+                <div class="doc-review-card ${cardClass}" data-typecode="${doc.typeCode}">
+                    <div class="doc-header">
+                        <div class="doc-title-box">
+                            <span class="doc-name">${doc.typeCode}</span>
+                            <span class="doc-date">${uploadDateStr}</span>
+                        </div>
+                        <div style="display:flex; gap:0.8rem; align-items:center;">
+                            ${isRevisado ? '<span class="locked-badge">Revisado Correcto</span>' : ''}
+                            ${isIncorrecto ? '<span class="locked-badge" style="background:var(--error);">Corrección Solicitada</span>' : ''}
+                            
+                            ${!isSinDoc && fileUrl ?
+            `<button class="btn-view" onclick="viewPdf('${fileUrl}', '${doc.typeCode}')">Ver Archivo</button>` :
             '<button class="btn-view" disabled style="opacity:0.5; cursor:not-allowed;">Sin Archivo</button>'
         }
+                        </div>
                     </div>
-                </div>
 
-                <!-- Panel de Acciones -->
-                ${isCargado ? `
-                <div class="status-actions">
-                    <label class="action-label opt-ok">
-                        <input type="radio" name="st-${uniqueId}" value="REVISADO_CORRECTO" ${doc.status === 'REVISADO_CORRECTO' ? 'checked' : ''}> 
-                        Correcto
-                    </label>
-                    <label class="action-label opt-err">
-                        <input type="radio" name="st-${uniqueId}" value="REVISADO_INCORRECTO" ${doc.status === 'REVISADO_INCORRECTO' ? 'checked' : ''}> 
-                        Incorrecto
-                    </label>
+                    <!-- Panel de Acciones -->
+                    ${isCargado ? `
+                    <div class="status-actions">
+                        <label class="action-label opt-ok">
+                            <input type="radio" name="st-${uniqueId}" value="REVISADO_CORRECTO" ${doc.status === 'REVISADO_CORRECTO' ? 'checked' : ''}> 
+                            Correcto
+                        </label>
+                        <label class="action-label opt-err">
+                            <input type="radio" name="st-${uniqueId}" value="REVISADO_INCORRECTO" ${doc.status === 'REVISADO_INCORRECTO' ? 'checked' : ''}> 
+                            Incorrecto
+                        </label>
+                    </div>
+                    <textarea class="comment-area" id="comm-${uniqueId}" placeholder="Observaciones de revisión...">${doc.comment || ''}</textarea>
+                    ` : ''}
+                    
+                    ${isSinDoc ? `<div style="font-size:0.85rem; color:var(--text-muted); font-style:italic;">El alumno aún no ha cargado este documento.</div>` : ''}
                 </div>
-                <textarea class="comment-area" id="comm-${uniqueId}" placeholder="Observaciones de revisión...">${doc.comment || ''}</textarea>
-                ` : ''}
-                
-                ${isSinDoc ? `<div style="font-size:0.85rem; color:var(--text-muted); font-style:italic;">El alumno aún no ha cargado este documento.</div>` : ''}
-            </div>
-        `;
+            `;
     }).join('');
 }
 
 function viewPdf(url, title) {
     if (!url) return;
-    document.getElementById('pdf-title').textContent = title;
-    // iframe apuntando a la URL que viene del DTO
-    document.getElementById('pdfContainer').innerHTML = `<iframe src="${url}" style="width:100%; height:100%; border:none;"></iframe>`;
+
+    const titleEl = document.getElementById('pdf-title');
+    if (titleEl) titleEl.textContent = title;
+
+    const container = document.getElementById('pdfContainer');
+    if (container) {
+        container.innerHTML = `<iframe src="${url}" style="width:100%; height:100%; border:none;"></iframe>`;
+    }
 }
 
 function setupActionButtons() {
@@ -141,7 +149,6 @@ function setupActionButtons() {
 
             const reviews = [];
 
-            // Recopilar datos
             currentDocuments.forEach((doc, index) => {
                 if (!doc.fileName) return;
 
@@ -149,7 +156,6 @@ function setupActionButtons() {
                 const radio = document.querySelector(`input[name="st-${uniqueId}"]:checked`);
                 const commentArea = document.getElementById(`comm-${uniqueId}`);
 
-                // Solo enviamos si se seleccionó una opción
                 if (radio) {
                     reviews.push({
                         typeCode: doc.typeCode,
@@ -168,7 +174,6 @@ function setupActionButtons() {
             btnFinalize.textContent = "Guardando...";
 
             try {
-                // Ajustar URL si es necesario
                 const res = await fetch(`${API_SAVE_DOC}?enrollment=${enrollment}`, {
                     method: 'POST',
                     headers: { 'Content-Type': 'application/json' },
