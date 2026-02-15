@@ -7,7 +7,7 @@ document.addEventListener('DOMContentLoaded', () => {
 // Cargar datos desde la API
 async function loadUserProfile() {
     try {
-        const resp = await fetch('/student/profile');
+        const resp = await fetch('/users/profile');
         if (resp.ok) {
             const data = await resp.json();
 

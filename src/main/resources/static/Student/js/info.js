@@ -5,7 +5,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
 async function loadUserProfile() {
     try {
-        const resp = await fetch('/student/my-name');
+        const resp = await fetch('/users/my-name');
         if (resp.ok) {
             const data = await resp.json();
             const firstName = data.name.split(' ')[0];
