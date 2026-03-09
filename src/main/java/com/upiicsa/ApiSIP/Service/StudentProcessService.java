@@ -22,9 +22,7 @@ import java.util.Optional;
 public class StudentProcessService {
 
     private StudentProcessRepository processRepository;
-
     private ProcessStateRepository processStateRepository;
-
     private HistoryService historyService;
 
     public StudentProcessService(StudentProcessRepository processRepository, ProcessStateRepository processStateRepository,
