@@ -3,7 +3,6 @@ package com.upiicsa.ApiSIP.Security.Config;
 import com.upiicsa.ApiSIP.Repository.UserRepository;
 import com.upiicsa.ApiSIP.Security.Filter.JwtTokenValidator;
 import com.upiicsa.ApiSIP.Utils.JwtUtils;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.http.HttpMethod;
@@ -25,11 +24,13 @@ import org.springframework.security.web.authentication.UsernamePasswordAuthentic
 @EnableMethodSecurity
 public class SecurityConfig {
 
-    @Autowired
-    private JwtUtils jwtUtils;
+    private final JwtUtils jwtUtils;
+    private final UserRepository userRepository;
 
-    @Autowired
-    private UserRepository userRepository;
+    public  SecurityConfig(JwtUtils jwtUtils, UserRepository userRepository) {
+        this.jwtUtils = jwtUtils;
+        this.userRepository = userRepository;
+    }
 
     @Bean
     public SecurityFilterChain securityFilterChain(HttpSecurity httpSecurity) throws Exception {
@@ -45,7 +46,7 @@ public class SecurityConfig {
                                 "/Imagenes/**", "/Recursos/**", "/view-documents/**")
                         .permitAll()
                         .requestMatchers("/auth/login", "/api/forgot-password", "/api/reset-password/**",
-                                "/student/register", "/student/confirm-email", "/student/resend-code", "/reset-password.html",
+                                "/auth/confirm-email", "auth/resend-code", "/student/register", "/reset-password.html",
                                 "/catalogs/**")
                         .permitAll()
                         .requestMatchers("/v3/api-docs/**", "/swagger-ui/**", "/swagger-ui.html")
