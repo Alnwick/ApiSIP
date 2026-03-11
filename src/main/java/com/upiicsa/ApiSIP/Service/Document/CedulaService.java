@@ -49,7 +49,7 @@ public class CedulaService {
             studentAddress = new AddressDto(student.getAddress());
         }
 
-        StudentProcess studentProcess = processRepository.findByStudentId(student.getId())
+        StudentProcess studentProcess = processRepository.findByActiveIsTrueAndStudentId(student.getId())
                 .orElseThrow(() -> new EntityNotFoundException("StudentProcess not found"));
 
         if(studentProcess.getCompany()!=null){
@@ -78,7 +78,7 @@ public class CedulaService {
             studentAddress = addressService.updateAddress(student.getAddress().getId(), cedulaDto.studentAddress());
         }
 
-        StudentProcess studentProcess = processRepository.findByStudentId(student.getId())
+        StudentProcess studentProcess = processRepository.findByActiveIsTrueAndStudentId(student.getId())
                 .orElseThrow(() -> new EntityNotFoundException("StudentProcess not found"));
 
         if(studentProcess.getCompany() == null){

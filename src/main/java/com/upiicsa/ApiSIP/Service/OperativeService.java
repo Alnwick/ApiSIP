@@ -36,7 +36,7 @@ public class OperativeService {
         students = studentRepository.findAllByCareerAcronym(careerAcronym);
 
         Map<String, Long> counts = students.stream()
-                .map(student -> processRepository.findByStudentId(student.getId()).orElse(null))
+                .map(student -> processRepository.findByActiveIsTrueAndStudentId(student.getId()).orElse(null))
                 .filter(Objects::nonNull)
                 .collect(Collectors.groupingBy(
                         process -> process.getProcessState().getDescription(),
