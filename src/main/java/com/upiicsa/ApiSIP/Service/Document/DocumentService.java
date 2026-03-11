@@ -25,15 +25,10 @@ import java.util.stream.Collectors;
 public class DocumentService {
 
     private DocumentRepository documentRepository;
-
     private ReviewDocumentRepository reviewRepository;
-
     private DocumentTypeService docTypeService;
-
     private StudentProcessService processService;
-
     private DocumentNamingUtils documentNaming;
-
     private FileStorageService fileStorage;
 
     public DocumentService(DocumentRepository documentRepository, ReviewDocumentRepository reviewRepository,
@@ -73,7 +68,7 @@ public class DocumentService {
             createNewDocument(process, type, file);
         }
         if(process.getProcessState().getId() != 2){
-            processService.updateProcessStatus(process.getId(), StateProcessEnum.INITIAL_DOC);
+            processService.updateProcessStatus(process, StateProcessEnum.INITIAL_DOC);
         }
     }
 
