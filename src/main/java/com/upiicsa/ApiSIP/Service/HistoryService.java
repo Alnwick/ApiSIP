@@ -21,11 +21,8 @@ public class HistoryService {
 
     @Value("${default.user}")
     private Integer defaultUser;
-
     private HistoryRepository historyRepository;
-
     private UserRepository userRepository;
-
     private ProcessStateRepository stateRepository;
 
     public HistoryService(HistoryRepository historyRepository, UserRepository userRepository,
@@ -60,8 +57,7 @@ public class HistoryService {
 
     private UserSIP getDefaultUser(){
         UserSIP user = userRepository.findById(defaultUser)
-                .orElseThrow(() -> new EntityNotFoundException("User not found"));
-
+                .orElse(null);
         return user;
     }
 }
