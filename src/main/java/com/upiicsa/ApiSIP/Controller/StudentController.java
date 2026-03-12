@@ -1,7 +1,6 @@
 package com.upiicsa.ApiSIP.Controller;
 
 import com.upiicsa.ApiSIP.Dto.ProcessProgressDto;
-import com.upiicsa.ApiSIP.Dto.Student.ResponseStudentDto;
 import com.upiicsa.ApiSIP.Dto.Student.StudentRegistrationDto;
 import com.upiicsa.ApiSIP.Model.Student;
 import com.upiicsa.ApiSIP.Service.StudentProcessService;
@@ -29,7 +28,7 @@ public class StudentController {
     }
 
     @PostMapping("/register")
-    public ResponseEntity<ResponseStudentDto> registerUser(@RequestBody @Valid StudentRegistrationDto registrationDto) {
+    public ResponseEntity<Void> registerUser(@RequestBody @Valid StudentRegistrationDto registrationDto) {
 
         Student student = studentService.registerStudent(registrationDto);
 
@@ -37,7 +36,7 @@ public class StudentController {
                 .path("/{id}")
                 .buildAndExpand(student.getId()).toUri();
 
-        return ResponseEntity.created(location).body(new ResponseStudentDto(student));
+        return ResponseEntity.ok().build();
     }
 
     @GetMapping("/process-status")
