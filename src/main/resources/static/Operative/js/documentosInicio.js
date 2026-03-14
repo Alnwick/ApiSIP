@@ -7,7 +7,7 @@ const API_REVIEW_DATA = `/operatives/student-review?enrollment=${enrollment}`;
 const API_SAVE_DOC = `/operatives/review-document`;
 const API_FINALIZE = `/operatives/finalize-review`;
 const API_APPROVE_ACTA = `/operatives/approve-acceptance-act`;
-
+//console.log("desde documentosInicio");
 // RUTA BASE PARA VER DOCUMENTOS (IMPORTANTE: Esto corrige el error del backend)
 // El backend tiene configurado /view-documents/**, así que debemos usar esa base
 const DOC_PATH = '/view-documents/';
@@ -154,8 +154,11 @@ function setupActionButtons() {
 
                 const uniqueId = doc.typeCode.replace(/\s+/g, '_') + '_' + index;
                 const radio = document.querySelector(`input[name="st-${uniqueId}"]:checked`);
+                //console.log("Buscando input con name: st-" + uniqueId);
                 const commentArea = document.getElementById(`comm-${uniqueId}`);
 
+                //ver que esta madando el script
+                //console.log("Revisando ID:", uniqueId, "Radio encontrado:", !!radio, "Comentario:", commentArea ? commentArea.value : "No existe");
                 if (radio) {
                     reviews.push({
                         typeCode: doc.typeCode,
@@ -165,8 +168,17 @@ function setupActionButtons() {
                 }
             });
 
+            //ver que est amandando el json
+            console.log("JSON FINAL QUE VOY A ENVIAR AL SERVIDOR:");
+            console.log(JSON.stringify(reviews, null, 2));
+
             if (reviews.length === 0) {
-                alert("No has seleccionado 'Correcto' o 'Incorrecto' para ningún documento.");
+                showModal(
+                    "Advertencia",
+                    "Debes seleccionar al menos un estatus de un documento",
+                    "info"
+                )
+                //alert("No has seleccionado 'Correcto' o 'Incorrecto' para ningún documento.");
                 return;
             }
 
@@ -181,14 +193,28 @@ function setupActionButtons() {
                 });
 
                 if (res.ok) {
-                    alert("Revisión guardada correctamente.");
+                    showModal(
+                        "Guardado",
+                        "Revisión general guardada correctamente.",
+                        "success"
+                    );
+                    //alert("Revisión guardada correctamente.");
                     loadStudentReview();
                 } else {
-                    alert("Hubo un error al guardar la revisión.");
+                    showModal(
+                        "Error",
+                        "Hubo un error al guardar la revisión, favor de actualizar la pagina",
+                        "error"
+                    );
+                    //alert("Hubo un error al guardar la revisión.");
                 }
             } catch (e) {
-                console.error(e);
-                alert("Error de conexión.");
+                showModal(
+                    "Uppss ...",
+                    "Error de coneccion, favor de pedir ayuda al ingeniero de software",
+                    "error"
+                );
+                console.log("Error de conexión." + e);
             } finally {
                 btnFinalize.disabled = false;
                 btnFinalize.textContent = "Finalizar Revisión General";
@@ -211,3 +237,4 @@ function setupActionButtons() {
         };
     }
 }
+

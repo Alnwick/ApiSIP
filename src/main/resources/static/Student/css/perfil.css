@@ -192,6 +192,8 @@ header {
 .btn-update:disabled { background: #cbd5e1; cursor: not-allowed; transform: none; box-shadow: none; }
 
 /* --- MODAL PERSONALIZADO --- */
+
+/*
 .modal-overlay {
     position: fixed; top: 0; left: 0; width: 100%; height: 100%;
     background: rgba(0, 0, 0, 0.5); backdrop-filter: blur(4px);
@@ -229,7 +231,7 @@ header {
 }
 
 .btn-modal-action:hover { transform: translateY(-2px); background-color: #000; }
-
+*/
 /* --- FOOTER CENTRADO --- */
 footer {
     background-color: var(--primary-dark);

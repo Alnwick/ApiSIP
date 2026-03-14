@@ -1,0 +1,73 @@
+#global-modal {
+    display: none;
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(0, 0, 0, 0.5);
+    align-items: center;
+    justify-content: center;
+    z-index: 9999;
+}
+
+.modal-content {
+    background: var(--white);
+    padding: 10px;
+    border-radius: 12px;
+    text-align: center;
+    width: 500px;
+    height:250px;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+}
+/*#modal-icon{
+}*/
+/* Animacion del icono */
+@keyframes scaleIn {
+    from { transform: scale(0); opacity: 0; }
+    to { transform: scale(1); opacity: 1; }
+}
+
+.modal-svg {
+    display: block;
+    margin: 0 auto;
+    width:80px;
+    height:80px;
+    transition: transform 0.3s ease;
+    animation: scaleIn 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+}
+
+.modal-svg:hover {
+    transform: scale(1.1);
+}
+
+.icon-error {
+    color: var(--error);
+}
+
+.icon-success {
+    color: var(--success);
+}
+
+.icon-info {
+    color: var(--infoA);
+}
+
+#modal-title{
+    padding: 10px;
+    text-transform: uppercase;
+}
+
+#modal-msg{
+    padding: 20px;
+}
+.modal-btn {
+    width: 75%;
+    padding: 10px;
+    margin-bottom:10px;
+    border: none;
+    border-radius: 6px;
+    background: var(--primary);
+    color: white;
+    cursor: pointer;
+}

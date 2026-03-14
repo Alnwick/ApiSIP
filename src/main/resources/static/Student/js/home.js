@@ -1,6 +1,6 @@
 const API_STATUS = '/student/process-status';
 const API_LOGOUT = '/auth/logout';
-const PHASES = ["Registrado", "Doc Inicial", "Carta de Aceptación", "Finalización de informes", "Doc Término", "Liberación"];
+const PHASES = ["Registrado", "Doc Inicial", "Cartas", "Doc Término", "Liberación" ];// , "Finalización de informes"
 
 document.addEventListener('DOMContentLoaded', () => {
     loadUserProfile();

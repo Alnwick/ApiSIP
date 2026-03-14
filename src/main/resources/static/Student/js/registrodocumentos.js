@@ -199,6 +199,7 @@ async function handleGlobalUpload() {
         btn.textContent = "Guardar Cambios";
     }
 }
+/*
 
 function showModal(title, message, type, callback) {
     const modal = document.getElementById('custom-modal');
@@ -234,3 +235,4 @@ function showModal(title, message, type, callback) {
         if (callback) callback();
     };
 }
+*/
