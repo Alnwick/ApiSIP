@@ -105,6 +105,9 @@ function setupPasswordUpdate() {
 }
 
 // Controlador del Modal
+
+/*
+
 function showModal(title, message, type, callback) {
     const modal = document.getElementById('custom-modal');
     const iconBox = document.getElementById('modal-icon-box');
@@ -139,3 +142,4 @@ function showModal(title, message, type, callback) {
         if (callback) callback();
     };
 }
+*/

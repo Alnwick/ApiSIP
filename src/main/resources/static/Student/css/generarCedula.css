@@ -135,6 +135,8 @@ header {
 .input-group { display: flex; flex-direction: column; gap: 0.4rem; margin-bottom: 1rem; }
 .input-group.full { grid-column: span 2; }
 
+
+
 .double-group {
     display: grid;
     grid-template-columns: 100px 1fr;
@@ -154,6 +156,21 @@ input, select {
     width: 100%;
 }
 input:focus, select:focus { border-color: var(--primary); background: white; box-shadow: 0 0 0 3px var(--primary-light); }
+
+.input-error{
+    border:1px solid red;
+}
+.error-text{
+    font-weight:bold;
+    color:red;
+}
+.error-text svg {
+    width: 16px;
+    height: 16px;
+    vertical-align: middle;
+    margin-right: 5px;
+    color:red;
+}
 
 .btn-generate {
     background: linear-gradient(135deg, var(--primary) 0%, var(--primary-dark) 100%);
@@ -201,9 +218,6 @@ input:focus, select:focus { border-color: var(--primary); background: white; box
     padding: 2rem;
 }
 
-.error-text{
-    color: red;
-}
 
 .btn-download {
     background: var(--text-main);

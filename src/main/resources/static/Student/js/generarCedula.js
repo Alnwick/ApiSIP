@@ -97,12 +97,13 @@ function fillFormData(data) {
 function setupForm() {
     const form = document.getElementById('cedulaForm');
     const btn = document.getElementById('submitBtn');
-    let esValido = true;
+
 
     if(!form) return;
 
     form.onsubmit = async (e) => {
         e.preventDefault();
+        let esValido = true;
 
         // Validamos presencia de elementos
         const requiredFields = [
@@ -129,12 +130,17 @@ function setupForm() {
         }
 
         if (!esValido) {
-            Swal.fire({
+            /*Swal.fire({
                 title: "Error",
                 text: "Uno o varios campos incorrectos, favor de revisar",
                 icon: "error",
                 confirmButtoText: "Continuar"
-            })
+            });*/
+            showModal(
+                "Error",
+                "Uno o varios campos incorrectos, favor de revisar",
+                "error"
+            );
             //alert("Por favor, corrige los errores antes de continuar.");
             return;
         }
@@ -181,37 +187,35 @@ function setupForm() {
 
             if (response.ok) {
                 await loadPdfPreview();
-                Swal.fire({
-                    title: "Error",
-                    text: "Uno o varios campos incorrectos, favor de revisar",
-                    icon: "error",
-                    confirmButtoText: "Continuar"
-                })
+                showModal(
+                    "Error",
+                    "Uno o varios campos incorrectos, favor de revisar",
+                    "error"
+                );
                 let timerInterval;
-                Swal.fire(
+                showModal(
                     "Exito",
-                    "Tus cédula fue generada correctamente",
+                    "Tu cedula fue creada correctamente",
                     "success"
-                )
+                );
                 //alert("Cédula generada correctamente.");
             } else {
                 const errText = await response.text();
-                Swal.fire({
-                    title: "Error",
-                    text: "Error al procesar: " + errText,
-                    icon: "error",
-                    confirmButtoText: "Continuar"
-                })
+                showModal(
+                    "Error",
+                    "Error al procesar: " + errText,
+                    "error"
+                );
                 //alert("Error al procesar: " + errText);
             }
         } catch (error) {
+            showModal(
+                "Error",
+                "Sin conexión al servidor ",
+                "error"
+            );
             console.error("Error:", error);
-            Swal.fire({
-                title: "Error",
-                text: "Sin conexión al servidor ",
-                icon: "error",
-                confirmButtoText: "Continuar"
-            })
+
             //alert("Sin conexión al servidor.");
         } finally {
             btn.disabled = false;
@@ -249,7 +253,16 @@ function setupLogout() {
 }
 
 //Valida que los campos no esten vacios
+const CAMPOS_OPCIONALES = ['companyFax', 'companyExtension'];
 function validarCampo(inputElement) {
+
+    if (CAMPOS_OPCIONALES.includes(inputElement.id)) {
+        // Limpiamos errores previos por si acaso y marcamos como válido
+        const errorElement = document.getElementById(`error-${inputElement.id}`);
+        if (errorElement) errorElement.remove();
+        inputElement.classList.remove('input-error');
+        return true;
+    }
     const errorId = `error-${inputElement.id}`;
     let errorElement = document.getElementById(errorId);
 
@@ -258,14 +271,17 @@ function validarCampo(inputElement) {
             errorElement = document.createElement('small');
             errorElement.id = errorId;
             errorElement.className = 'error-text';
-            errorElement.textContent = 'Este campo no puede ir vacío';
+
+            const svgIcon = `
+        <svg style="width:16px; height:16px; vertical-align:middle; margin-right:4px;" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
+            <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 11h2v5m-2 0h4m-2.592-8.5h.01M21 12a9 9 0 1 1-18 0 9 9 0 0 1 18 0Z"/>
+        </svg>`;
+
+            errorElement.innerHTML = `${svgIcon} Este campo no puede ir vacío`;
+
             inputElement.parentNode.insertBefore(errorElement, inputElement.nextSibling);
         }
         inputElement.classList.add('input-error');
         return false;
-    } else {
-        if (errorElement) errorElement.remove();
-        inputElement.classList.remove('input-error');
-        return true;
     }
 }

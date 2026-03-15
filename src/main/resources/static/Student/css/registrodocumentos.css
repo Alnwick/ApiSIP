@@ -269,6 +269,7 @@ footer {
 footer p { margin: 2px 0; opacity: 0.9; font-weight: 500; }
 
 /* === MODAL PERSONALIZADO === */
+/*
 .modal-overlay {
     position: fixed;
     top: 0;
@@ -318,6 +319,7 @@ footer p { margin: 2px 0; opacity: 0.9; font-weight: 500; }
 }
 
 /* Variantes de Icono */
+/*
 .icon-success {
     background-color: var(--primary-light);
     color: var(--primary);
@@ -365,6 +367,7 @@ footer p { margin: 2px 0; opacity: 0.9; font-weight: 500; }
     transform: translateY(-2px);
     background-color: #000;
 }
+*/
 
 @media (max-width: 850px) {
     .doc-body { grid-template-columns: 1fr; gap: 1.5rem; }
