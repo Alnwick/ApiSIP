@@ -1,7 +1,6 @@
 package com.upiicsa.ApiSIP.Service;
 
 import com.upiicsa.ApiSIP.Dto.Catalogs.*;
-import com.upiicsa.ApiSIP.Dto.Student.StudentRegistrationDto;
 import com.upiicsa.ApiSIP.Exception.ResourceNotFoundException;
 import com.upiicsa.ApiSIP.Model.Catalogs.Career;
 import com.upiicsa.ApiSIP.Model.Catalogs.School;
@@ -70,20 +69,15 @@ public class CatalogsService {
                 .toList();
     }
     //Offer
-    public Offer getOffer(StudentRegistrationDto  registrationDto) {
-        return offerRepository.findByCompositeKeys(
-                        registrationDto.schoolName(), registrationDto.acronymCareer(), registrationDto.syllabusCode())
+    public Offer getOffer(String schoolAcronym, String careerAcronym, String syllabusCode) {
+        return offerRepository.findByCompositeKeys(schoolAcronym, careerAcronym, syllabusCode)
                 .orElseThrow(() -> new ResourceNotFoundException("Offer not found"));
     }
     //Semester
-    public Semester getSemester(StudentRegistrationDto registrationDto) {
-        Semester semester = null;
-
-        if(!registrationDto.graduated()) {
-            semester = semesterRepository.findByDescription(registrationDto.semester())
-                    .orElseThrow(() -> new ResourceNotFoundException("Semester not found"));
-        }
-        return semester;
+    public Semester getSemester(String semester, boolean isGraduate) {
+        if(isGraduate) return null;
+        return semesterRepository.findByDescription(semester)
+                .orElseThrow(() -> new ResourceNotFoundException("Semester not found"));
     }
 
     public List<SemesterDto> getSemesters() {

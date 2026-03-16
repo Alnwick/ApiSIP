@@ -7,8 +7,8 @@ import com.upiicsa.ApiSIP.Model.UserSIP;
 import com.upiicsa.ApiSIP.Repository.Token_Restore.TokenResetRepository;
 import com.upiicsa.ApiSIP.Repository.UserRepository;
 import com.upiicsa.ApiSIP.Service.Infrastructure.EmailService;
+import com.upiicsa.ApiSIP.Service.UserService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
-import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -19,17 +19,17 @@ import java.util.UUID;
 @Service
 public class PasswordResetService {
 
+    private final UserService userService;
     private UserRepository userRepository;
     private TokenResetRepository tokenResetRepository;
-    private PasswordEncoder passwordEncoder;
     private EmailService emailService;
 
     public PasswordResetService(UserRepository userRepository, TokenResetRepository tokenResetRepository,
-                                PasswordEncoder passwordEncoder,  EmailService emailService) {
+                                EmailService emailService, UserService userService) {
         this.userRepository = userRepository;
         this.tokenResetRepository = tokenResetRepository;
-        this.passwordEncoder = passwordEncoder;
         this.emailService = emailService;
+        this.userService = userService;
     }
 
     @Transactional
@@ -45,11 +45,8 @@ public class PasswordResetService {
 
         emailService.sendResetEmail(user.getEmail(), resetUrl);
 
-        System.out.println("\n------------------------------------------------------");
         System.out.println(">>> TOKEN DE RECUPERACIÓN GENERADO: " + token);
         System.out.println(">>> ENLACE DE VALIDACIÓN ENVIADO A: " + user.getEmail());
-        System.out.println(">>> URL DE VALIDACIÓN (GET): " + resetUrl);
-        System.out.println("------------------------------------------------------\n");
     }
 
     @Transactional(readOnly = true)
@@ -74,9 +71,10 @@ public class PasswordResetService {
         }
 
         UserSIP user = tokenReset.getUser();
-        user.setPassword(passwordEncoder.encode(request.newPassword()));
-        userRepository.save(user);
+
+        userService.updatePassword(user, request.newPassword());
 
         tokenReset.setUseDate(LocalDateTime.now());
+        tokenResetRepository.save(tokenReset);
     }
 }

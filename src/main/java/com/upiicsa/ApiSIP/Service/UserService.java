@@ -10,8 +10,11 @@ import com.upiicsa.ApiSIP.Repository.Document_Process.StudentProcessRepository;
 import com.upiicsa.ApiSIP.Repository.StudentRepository;
 import com.upiicsa.ApiSIP.Repository.UserRepository;
 import jakarta.persistence.EntityNotFoundException;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+
+import java.util.Optional;
 
 @Service
 public class UserService {
@@ -19,12 +22,31 @@ public class UserService {
     private UserRepository userRepository;
     private StudentRepository studentRepository;
     private StudentProcessRepository processRepository;
+    private final PasswordEncoder passwordEncoder;
 
-    public  UserService(UserRepository userRepository, StudentRepository studentRepository,
-                        StudentProcessRepository processRepository) {
+    public UserService(UserRepository userRepository, StudentRepository studentRepository,
+                        StudentProcessRepository processRepository,  PasswordEncoder passwordEncoder) {
         this.userRepository = userRepository;
         this.studentRepository = studentRepository;
         this.processRepository = processRepository;
+        this.passwordEncoder = passwordEncoder;
+    }
+
+    @Transactional(readOnly = true)
+    public Optional<UserSIP> getUserByEmail(String email) {
+        return userRepository.findByEmail(email);
+    }
+
+    @Transactional
+    public void enableUser(UserSIP user) {
+        user.setEnabled(true);
+        userRepository.save(user);
+    }
+
+    @Transactional
+    public void updatePassword(UserSIP user, String password) {
+        user.setPassword(passwordEncoder.encode(password));
+        userRepository.save(user);
     }
 
     @Transactional(readOnly = true)

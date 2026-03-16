@@ -6,8 +6,8 @@ import com.upiicsa.ApiSIP.Exception.ValidationException;
 import com.upiicsa.ApiSIP.Model.Token_Restore.ConfirmationCode;
 import com.upiicsa.ApiSIP.Model.UserSIP;
 import com.upiicsa.ApiSIP.Repository.Token_Restore.ConfirmationCodeRepository;
-import com.upiicsa.ApiSIP.Repository.UserRepository;
 import com.upiicsa.ApiSIP.Service.Infrastructure.EmailService;
+import com.upiicsa.ApiSIP.Service.UserService;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -17,13 +17,13 @@ import java.util.Random;
 @Service
 public class EmailVerificationService {
 
-    private UserRepository userRepository;
+    private UserService userService;
     private EmailService emailService;
     private ConfirmationCodeRepository confirmationCodeRepository;
 
-    public EmailVerificationService (UserRepository userRepository, EmailService emailService,
+    public EmailVerificationService (UserService userService, EmailService emailService,
                                      ConfirmationCodeRepository confirmationCodeRepository) {
-        this.userRepository = userRepository;
+        this.userService = userService;
         this.emailService = emailService;
         this.confirmationCodeRepository = confirmationCodeRepository;
     }
@@ -61,8 +61,7 @@ public class EmailVerificationService {
             throw new IllegalArgumentException("El codigo no corresponde al email del usuario");
         }
 
-        user.setEnabled(true);
-        userRepository.save(user);
+        userService.enableUser(user);
 
         token.setUseDate(LocalDateTime.now());
         confirmationCodeRepository.save(token);
@@ -70,7 +69,7 @@ public class EmailVerificationService {
 
     @Transactional
     public void resendConfirmationCode(String email) {
-        UserSIP user = userRepository.findByEmail(email)
+        UserSIP user = userService.getUserByEmail(email)
                 .orElseThrow(() -> new ResourceNotFoundException("Usuario no encontrado con el correo: " + email));
 
         if (user.getEnabled()) {
