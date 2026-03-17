@@ -9,19 +9,27 @@ import com.upiicsa.ApiSIP.Repository.Document_Process.DocumentProcessRepository;
 import com.upiicsa.ApiSIP.Repository.Catalogs.DocumentTypeRepository;
 import com.upiicsa.ApiSIP.Repository.Document_Process.DocumentReviewRepository;
 import com.upiicsa.ApiSIP.Repository.Document_Process.DocumentStatusRepository;
-import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
 
 @Service
-@RequiredArgsConstructor
 public class DocumentUtilsService {
 
     private DocumentTypeRepository typeRepository;
     private DocumentProcessRepository docProcessRepository;
     private DocumentStatusRepository statusRepository;
     private DocumentReviewRepository reviewRepository;
+
+    public DocumentUtilsService(DocumentTypeRepository typeRepository, DocumentProcessRepository docProcessRepository,
+                                DocumentStatusRepository statusRepository,
+                                DocumentReviewRepository reviewRepository) {
+        this.typeRepository = typeRepository;
+        this.docProcessRepository = docProcessRepository;
+        this.statusRepository = statusRepository;
+        this.reviewRepository = reviewRepository;
+
+    }
 
     public List<DocumentType> getRequiredTypesByProcess(StudentProcess process){
         return docProcessRepository.findDocumentTypesByProcessState(process.getProcessStatus());

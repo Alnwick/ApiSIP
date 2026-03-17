@@ -24,16 +24,27 @@ import java.util.Optional;
 import java.util.stream.Collectors;
 
 @Service
-@RequiredArgsConstructor
 public class DocumentService {
 
-    private DocumentRepository documentRepository;
-    private UserRepository userRepository;
-    private DocumentUtilsService utilsService;
-    private StudentProcessService processService;
-    private DocumentNamingUtils documentNaming;
-    private FileStorageService fileStorage;
-    
+    private final DocumentRepository documentRepository;
+    private final UserRepository userRepository;
+    private final DocumentUtilsService utilsService;
+    private final StudentProcessService processService;
+    private final DocumentNamingUtils documentNaming;
+    private final FileStorageService fileStorage;
+
+    public DocumentService(DocumentRepository documentRepository,UserRepository userRepository,
+                           DocumentUtilsService utilsService, StudentProcessService processService,
+                           DocumentNamingUtils documentNaming, FileStorageService fileStorage) {
+
+        this.documentRepository = documentRepository;
+        this.userRepository = userRepository;
+        this.utilsService = utilsService;
+        this.processService = processService;
+        this.documentNaming = documentNaming;
+        this.fileStorage = fileStorage;
+    }
+
     public Optional<Document> getDocByProcessAndDocumentType(StudentProcess process, String typeName){
         DocumentType type = utilsService.getTypeByDescription(typeName);
 
