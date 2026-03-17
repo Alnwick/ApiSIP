@@ -16,21 +16,18 @@ import java.util.Optional;
 public interface OfferRepository extends JpaRepository<Offer, Integer> {
 
     @Query("SELECT o FROM Offer o " +
-            "WHERE o.school.name = :nameSchool " +
-            "AND o.career.acronym = :acronymCareer " +
-            "AND o.syllabus.code = :codeSyllabus")
+            "WHERE o.school.acronym = :schoolAcronym " +
+            "AND o.career.acronym = :careerAcronym " +
+            "AND o.syllabus.code = :syllabusCode")
     Optional<Offer> findByCompositeKeys(
-            @Param("nameSchool") String school,
-            @Param("acronymCareer") String career,
-            @Param("codeSyllabus") String syllabus
+            @Param("schoolAcronym") String school,
+            @Param("careerAcronym") String career,
+            @Param("syllabusCode") String syllabus
     );
 
-    @Query("SELECT DISTINCT o.school FROM Offer o")
-    List<School> findAllSchools();
+    @Query("SELECT DISTINCT o.career FROM Offer o WHERE o.school = :school")
+    List<Career> findBySchool(@Param("school") School school);
 
-    @Query("SELECT DISTINCT o.career FROM Offer o WHERE o.school.id = :idSchool")
-    List<Career> findCareersBySchool(@Param("idSchool") Integer idSchool);
-
-    @Query("SELECT DISTINCT o.syllabus FROM Offer o WHERE o.school.id = :idSchool AND o.career.id = :idCareer")
-    List<Syllabus> findSyllabusBySchoolAndCareer(@Param("idSchool") Integer idSchool, @Param("idCareer") Integer idCareer);
+    @Query("SELECT DISTINCT o.syllabus FROM Offer o WHERE o.school = :school AND o.career = :career")
+    List<Syllabus> findBySchoolAndCareer(@Param("school") School school, @Param("career") Career career);
 }

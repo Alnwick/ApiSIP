@@ -3,9 +3,11 @@ package com.upiicsa.ApiSIP.Service;
 import com.upiicsa.ApiSIP.Dto.Student.ResponseStudentDto;
 import com.upiicsa.ApiSIP.Dto.Student.StudentRegistrationDto;
 import com.upiicsa.ApiSIP.Exception.ValidationException;
+import com.upiicsa.ApiSIP.Model.Address;
 import com.upiicsa.ApiSIP.Model.Student;
 import com.upiicsa.ApiSIP.Repository.*;
 import com.upiicsa.ApiSIP.Service.Auth.EmailVerificationService;
+import com.upiicsa.ApiSIP.Service.Document.StudentProcessService;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.security.crypto.password.PasswordEncoder;
@@ -13,6 +15,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.time.LocalDateTime;
+import java.util.Optional;
 
 @Service
 public class StudentService {
@@ -31,6 +34,15 @@ public class StudentService {
         this.verificationService = verificationService;
         this.catalogsService = catalogsService;
         this.processService = processService;
+    }
+
+    public Optional<Student> getStudentById(Integer id) {
+        return studentRepository.findById(id);
+    }
+
+    public void setAddress(Student student, Address address) {
+        student.setAddress(address);
+        studentRepository.save(student);
     }
 
     public Page<ResponseStudentDto> getStudents(Pageable pageable) {
@@ -56,10 +68,10 @@ public class StudentService {
                 .userType(catalogsService.getType("ALUMNO"))
                 .status(catalogsService.getStatus("ACTIVO"))
                 .enrollment(registrationDto.enrollment()).phone(registrationDto.phone())
-                .semester(catalogsService.getSemester(registrationDto))
+                .semester(catalogsService.getSemester(registrationDto.semester(), registrationDto.graduated()))
                 .graduate(registrationDto.graduated())
-                .offer(catalogsService.getOffer(registrationDto))
-                .build();
+                .offer(catalogsService.getOffer(registrationDto.schoolName(), registrationDto.acronymCareer(),
+                        registrationDto.syllabusCode())).build();
 
         studentRepository.save(newStudent);
         verificationService.createAndSendConfirmationCode(newStudent);

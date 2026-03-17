@@ -1,14 +1,15 @@
-package com.upiicsa.ApiSIP.Service;
+package com.upiicsa.ApiSIP.Service.Document;
 
 import com.upiicsa.ApiSIP.Dto.ProcessProgressDto;
 import com.upiicsa.ApiSIP.Exception.ResourceNotFoundException;
-import com.upiicsa.ApiSIP.Model.Catalogs.ProcessState;
+import com.upiicsa.ApiSIP.Model.Catalogs.ProcessStatus;
 import com.upiicsa.ApiSIP.Model.Enum.StateProcessEnum;
 import com.upiicsa.ApiSIP.Model.History;
 import com.upiicsa.ApiSIP.Model.Student;
 import com.upiicsa.ApiSIP.Model.Document_Process.StudentProcess;
-import com.upiicsa.ApiSIP.Repository.Catalogs.ProcessStateRepository;
+import com.upiicsa.ApiSIP.Repository.Catalogs.ProcessStatusRepository;
 import com.upiicsa.ApiSIP.Repository.Document_Process.StudentProcessRepository;
+import com.upiicsa.ApiSIP.Service.HistoryService;
 import jakarta.transaction.Transactional;
 import org.springframework.stereotype.Service;
 
@@ -20,27 +21,26 @@ import java.util.List;
 public class StudentProcessService {
 
     private StudentProcessRepository processRepository;
-    private ProcessStateRepository processStateRepository;
+    private ProcessStatusRepository processStatusRepository;
     private HistoryService historyService;
 
-    public StudentProcessService(StudentProcessRepository processRepository, ProcessStateRepository processStateRepository,
+    public StudentProcessService(StudentProcessRepository processRepository, ProcessStatusRepository processStatusRepository,
                                  HistoryService historyService) {
         this.processRepository = processRepository;
-        this.processStateRepository = processStateRepository;
+        this.processStatusRepository = processStatusRepository;
         this.historyService = historyService;
     }
 
     @Transactional
     public void setFirstState(Student student) {
-        var state = processStateRepository.findByDescription(StateProcessEnum.REGISTERED.getName())
+        var state = processStatusRepository.findByDescription(StateProcessEnum.REGISTERED.getName())
                         .orElseThrow(()-> new ResourceNotFoundException("State not found"));
 
         StudentProcess firstProcess = StudentProcess.builder()
                 .startDate(LocalDateTime.now())
-                .active(true)
                 .student(student)
-                .processState(state)
-                .observations("")
+                .processStatus(state)
+                .reasonLeaving(null)
                 .build();
 
         processRepository.save(firstProcess);
@@ -49,13 +49,13 @@ public class StudentProcessService {
     @Transactional
     public void updateProcessStatus(StudentProcess process, StateProcessEnum nextProcess) {
 
-        StateProcessEnum currentState = StateProcessEnum.fromId(process.getProcessState().getId());
+        StateProcessEnum currentState = StateProcessEnum.fromId(process.getProcessStatus().getId());
 
         if (currentState.getNextId() == nextProcess.getId() ||
                 nextProcess == StateProcessEnum.CANCELLATION) {
-            ProcessState newState = processStateRepository.findByDescription(nextProcess.getName())
+            ProcessStatus newState = processStatusRepository.findByDescription(nextProcess.getName())
                             .orElseThrow(() -> new ResourceNotFoundException("State not found"));
-            process.setProcessState(newState);
+            process.setProcessStatus(newState);
 
             historyService.saveHistory(process, currentState, nextProcess);
             processRepository.save(process);
@@ -66,37 +66,34 @@ public class StudentProcessService {
 
     public List<ProcessProgressDto> getProcessHistory(Integer userId) {
         StudentProcess process = getByStudentId(userId);
-        int currentStageId = process.getProcessState().getId();
-        List<History> history = historyService.getHistoriesByProcess(process);
-
-        String[] stages = {
-                "Registrado", "Documentación de inicio", "Carta de aceptación",
-                "Finalización de informes", "Documentación de término", "Liberación"
-        };
+        int currentStageId = process.getProcessStatus().getId();
+        List<History> historyList = historyService.getHistoriesByProcess(process);
 
         List<ProcessProgressDto> progress = new ArrayList<>();
 
-        for (int i = 0; i < stages.length; i++) {
-            int stageId = i + 1;
+        for(StateProcessEnum state : StateProcessEnum.values()) {
+            if(state == StateProcessEnum.CANCELLATION) continue;
+
+            int stageId = state.getId();
+            String stageName = state.getName();
             String date = "-";
 
-            if (stageId == 1 && currentStageId > 1) {
+            if(stageId == 1 && currentStageId == 1) {
                 date = process.getStartDate().toLocalDate().toString();
-            } else if (stageId > 1 && stageId < currentStageId) {
-                date = history.stream()
-                        .filter(h -> h.getProcess().getId().equals(stageId))
+            } else if (stageId > 1 && stageId <= currentStageId) {
+                date = historyList.stream()
+                        .filter(h -> h.getNewState().getId().equals(stageId))
                         .findFirst()
                         .map(h -> h.getUpdateDate().toLocalDate().toString())
                         .orElse("-");
             }
-
-            progress.add(new ProcessProgressDto(stages[i], date, stageId == currentStageId));
+            progress.add(new ProcessProgressDto(stageName, date, stageId == currentStageId));
         }
         return progress;
     }
 
     public StudentProcess getByStudentId(Integer userId) {
-        return processRepository.findByActiveIsTrueAndStudentId(userId)
+        return processRepository.findByStudentIdAndReasonLeavingIsNull(userId)
                 .orElseThrow(()->new IllegalArgumentException("Process not found"));
     }
 }
