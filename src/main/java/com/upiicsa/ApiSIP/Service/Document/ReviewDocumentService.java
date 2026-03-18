@@ -20,15 +20,26 @@ public class ReviewDocumentService {
 
     @Transactional
     public void save(Document document, UserSIP user, Boolean approved, String comment) {
+    
+        String statusDescription = approved ? "CORRECTO" : "INCORRECTO";
+        DocumentStatus newStatus = documentStatusService.findByDescription(statusDescription)
+                .orElseThrow(() -> new EntityNotFoundException("Estado no encontrado: " + statusDescription));
 
-        DocumentReview review = DocumentReview.builder()
-                .idDocument(document.getId())
-                .document(document)
-                .user(user)
-                .reviewDate(LocalDateTime.now())
-                .approved(approved)
-                .comment(comment).build();
+        document.setDocumentStatus(newStatus);
+        documentRepository.save(document);
 
-        documentReviewRepository.save(review);
+        boolean alreadyExists = documentReviewRepository.existsById(document.getId());
+
+        if (!alreadyExists) {
+            DocumentReview newReview = DocumentReview.builder()
+                    .document(document) 
+                    .user(user)
+                    .approved(approved)
+                    .comment(comment)
+                    .reviewDate(LocalDateTime.now())
+                    .build();
+        
+            documentReviewRepository.save(newReview);
+        } 
     }
 }
