@@ -15,6 +15,7 @@ import com.upiicsa.ApiSIP.Service.Document.DocumentService;
 import com.upiicsa.ApiSIP.Service.Document.ReviewDocumentService;
 import jakarta.persistence.EntityNotFoundException;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.*;
 import java.util.stream.Collectors;
@@ -83,13 +84,18 @@ public class OperativeService {
                 semester, student.getOffer().getSyllabus().code, documents);
     }
 
-    public void performReview(String enrollment, ReviewDto reviewDto, Integer userId){
-        StudentProcess process = processRepository.findByStudentEnrollmentAndReasonLeavingIsNull(
-                enrollment).orElse(null);
-        Document doc = documentService.getDocByProcessAndDocumentType(process, reviewDto.typeName())
-                .orElseThrow(() -> new EntityNotFoundException("Document not found"));
-        UserSIP user = userRepository.findById(userId).orElseThrow(() -> new EntityNotFoundException("User not found"));
+    @Transactional
+    public void performReview(String enrollment, List<ReviewDto> reviewsDto, Integer userId) {
+        StudentProcess process = processRepository.findByStudentEnrollmentAndReasonLeavingIsNull(enrollment)
+                .orElseThrow(() -> new EntityNotFoundException("Proceso no encontrado"));
+        UserSIP user = userRepository.findById(userId)
+                .orElseThrow(() -> new EntityNotFoundException("Usuario no encontrado"));
 
-        reviewService.save(doc, user, reviewDto.approved(), reviewDto.comment());
+        for (ReviewDto dto : reviewsDto) {
+            Document doc = documentService.getDocByProcessAndDocumentType(process, dto.typeName())
+                    .orElseThrow(() -> new EntityNotFoundException("Documento no encontrado: " + dto.typeName()));
+
+            reviewService.save(doc, user, dto.approved(), dto.comment());
+        }
     }
 }

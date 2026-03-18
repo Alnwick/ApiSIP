@@ -1,8 +1,10 @@
 package com.upiicsa.ApiSIP.Service.Document;
 
+import com.upiicsa.ApiSIP.Model.Catalogs.DocumentStatus;
 import com.upiicsa.ApiSIP.Model.Document_Process.Document;
 import com.upiicsa.ApiSIP.Model.Document_Process.DocumentReview;
 import com.upiicsa.ApiSIP.Model.UserSIP;
+import com.upiicsa.ApiSIP.Repository.Document_Process.DocumentRepository;
 import com.upiicsa.ApiSIP.Repository.Document_Process.DocumentReviewRepository;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -13,22 +15,38 @@ import java.time.LocalDateTime;
 public class ReviewDocumentService {
 
     public final DocumentReviewRepository documentReviewRepository;
+    public final DocumentRepository documentRepository;
+    public final DocumentUtilsService documentUtilsService;
 
-    public ReviewDocumentService(DocumentReviewRepository documentReviewRepository) {
+    public ReviewDocumentService(DocumentReviewRepository documentReviewRepository,
+                                 DocumentRepository documentRepository, DocumentUtilsService documentUtilsService) {
         this.documentReviewRepository = documentReviewRepository;
+        this.documentRepository = documentRepository;
+        this.documentUtilsService = documentUtilsService;
     }
 
     @Transactional
     public void save(Document document, UserSIP user, Boolean approved, String comment) {
 
-        DocumentReview review = DocumentReview.builder()
-                .idDocument(document.getId())
-                .document(document)
-                .user(user)
-                .reviewDate(LocalDateTime.now())
-                .approved(approved)
-                .comment(comment).build();
+        String statusDescription = approved ? "CORRECTO" : "INCORRECTO";
 
-        documentReviewRepository.save(review);
+        DocumentStatus newStatus = documentUtilsService.getStatusByDescription(statusDescription);
+
+        document.setDocumentStatus(newStatus);
+        documentRepository.save(document);
+
+        boolean alreadyExists = documentReviewRepository.existsById(document.getId());
+
+        if (!alreadyExists) {
+            DocumentReview newReview = DocumentReview.builder()
+                    .document(document)
+                    .user(user)
+                    .approved(approved)
+                    .comment(comment)
+                    .reviewDate(LocalDateTime.now())
+                    .build();
+
+            documentReviewRepository.save(newReview);
+        }
     }
 }

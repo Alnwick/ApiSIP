@@ -13,6 +13,8 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.List;
+
 @RestController
 @RequestMapping("/operatives")
 public class OperativeController {
@@ -46,11 +48,12 @@ public class OperativeController {
         return ResponseEntity.ok(operativeService.getReview(enrollment));
     }
 
-    @PostMapping("/reviewDocument")
+    @PostMapping("/review-document")
     @PreAuthorize("hasAnyRole('ADMINISTRADOR', 'OPERADOR')")
-    public ResponseEntity<Boolean> reviewedDocument(@RequestParam String enrollment, @RequestBody ReviewDto reviewDto) {
+    public ResponseEntity<Boolean> reviewedDocument(@RequestParam String enrollment,
+                                                    @RequestBody List<ReviewDto> reviewsDto) {
         Integer userId = AuthHelper.getAuthenticatedUserId();
-        operativeService.performReview(enrollment, reviewDto, userId);
+        operativeService.performReview(enrollment, reviewsDto, userId);
 
         return ResponseEntity.ok(true);
     }
