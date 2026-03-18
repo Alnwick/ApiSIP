@@ -1,6 +1,6 @@
-const API_GET_STATUS = '/documents/my-status';
-const API_POST_UPLOAD = '/documents/upload';
-const DOC_PATH = '/view-documents/';
+const API_GET_STATUS = '/documents/my-status'; //get
+const API_POST_UPLOAD = '/documents/upload';//post
+const DOC_PATH = '/view-documents/'; //post
 
 // Mapeo exacto según tu catálogo de backend
 const DOC_CONFIG = [
@@ -53,7 +53,7 @@ function setupLogout() {
     });
 }
 
-function initUI() {
+    function initUI() {
     const container = document.getElementById('docs-container');
     container.innerHTML = DOC_CONFIG.map(doc => `
                     <div class="doc-card status-none" id="card-${doc.id}">
