@@ -98,7 +98,7 @@ function renderDocuments(docs) {
                         <div style="display:flex; gap:0.8rem; align-items:center;">
                             ${isRevisado ? '<span class="locked-badge">Revisado Correcto</span>' : ''}
                             ${isIncorrecto ? '<span class="locked-badge" style="background:var(--error);">Corrección Solicitada</span>' : ''}
-                            
+
                             ${!isSinDoc && fileUrl ?
             `<button class="btn-view" onclick="viewPdf('${fileUrl}', '${doc.typeCode}')">Ver Archivo</button>` :
             '<button class="btn-view" disabled style="opacity:0.5; cursor:not-allowed;">Sin Archivo</button>'
@@ -106,21 +106,20 @@ function renderDocuments(docs) {
                         </div>
                     </div>
 
-                    <!-- Panel de Acciones -->
                     ${isCargado ? `
                     <div class="status-actions">
                         <label class="action-label opt-ok">
-                            <input type="radio" name="st-${uniqueId}" value="REVISADO_CORRECTO" ${doc.status === 'REVISADO_CORRECTO' ? 'checked' : ''}> 
+                            <input type="radio" name="st-${uniqueId}" value="REVISADO_CORRECTO" ${doc.status === 'REVISADO_CORRECTO' ? 'checked' : ''}>
                             Correcto
                         </label>
                         <label class="action-label opt-err">
-                            <input type="radio" name="st-${uniqueId}" value="REVISADO_INCORRECTO" ${doc.status === 'REVISADO_INCORRECTO' ? 'checked' : ''}> 
+                            <input type="radio" name="st-${uniqueId}" value="REVISADO_INCORRECTO" ${doc.status === 'REVISADO_INCORRECTO' ? 'checked' : ''}>
                             Incorrecto
                         </label>
                     </div>
                     <textarea class="comment-area" id="comm-${uniqueId}" placeholder="Observaciones de revisión...">${doc.comment || ''}</textarea>
                     ` : ''}
-                    
+
                     ${isSinDoc ? `<div style="font-size:0.85rem; color:var(--text-muted); font-style:italic;">El alumno aún no ha cargado este documento.</div>` : ''}
                 </div>
             `;
@@ -168,16 +167,19 @@ function setupActionButtons() {
                 }*/
                 if (radio) {
                     reviews.push({
+                        // Cambiamos typeCode por typeName
                         typeName: doc.typeCode,
-                        approved: radio.value === 'CORRECTO',
+                        // Convertimos el string 'REVISADO_CORRECTO' a true, y cualquier otro a false
+                        approved: radio.value === 'REVISADO_CORRECTO',
+                        // Mantenemos el comentario
                         comment: commentArea ? commentArea.value : ""
                     });
                 }
             });
 
             //ver que est amandando el json
-            //console.log("JSON FINAL QUE VOY A ENVIAR AL SERVIDOR (COLECCIÓN COMPLETA):");
-            //console.log(JSON.stringify(reviews, null, 2));
+            console.log("JSON FINAL QUE VOY A ENVIAR AL SERVIDOR:");
+            console.log(JSON.stringify(reviews, null, 2));
 
             if (reviews.length === 0) {
                 showModal(
@@ -209,9 +211,12 @@ function setupActionButtons() {
                     //alert("Revisión guardada correctamente.");
                     loadStudentReview();
                 } else {
-                    throw new Error("Error en la respuesta del servidor");
+                    showModal(
+                        "Error",
+                        "Hubo un error al guardar la revisión, favor de actualizar la pagina",
+                        "error"
+                    );
                 }
-
             } catch (e) {
                 showModal(
                     "Uppss ...",
