@@ -27,8 +27,8 @@ public class ReviewDocumentService {
 
     @Transactional
     public void save(Document document, UserSIP user, Boolean approved, String comment) {
-    
         String statusDescription = approved ? "CORRECTO" : "INCORRECTO";
+
         DocumentStatus newStatus = utilsService.getStatusByDescription(statusDescription);
 
         document.setDocumentStatus(newStatus);
@@ -38,14 +38,14 @@ public class ReviewDocumentService {
 
         if (!alreadyExists) {
             DocumentReview newReview = DocumentReview.builder()
-                    .document(document) 
+                    .document(document)
                     .user(user)
                     .approved(approved)
                     .comment(comment)
                     .reviewDate(LocalDateTime.now())
                     .build();
-        
+
             documentReviewRepository.save(newReview);
-        } 
+        }
     }
 }

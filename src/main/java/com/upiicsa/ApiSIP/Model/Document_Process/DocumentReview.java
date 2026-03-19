@@ -11,7 +11,7 @@ import java.time.LocalDateTime;
 @NoArgsConstructor
 @Builder
 @Entity
-@Table(name = "SIP_REVISIONDOC")
+@Table(name = "SIP_REVISION_DOC")
 public class DocumentReview {
 
     @Id

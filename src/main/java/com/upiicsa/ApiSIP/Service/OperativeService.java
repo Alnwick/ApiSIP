@@ -14,9 +14,9 @@ import com.upiicsa.ApiSIP.Repository.UserRepository;
 import com.upiicsa.ApiSIP.Service.Document.DocumentService;
 import com.upiicsa.ApiSIP.Service.Document.ReviewDocumentService;
 import jakarta.persistence.EntityNotFoundException;
-import jakarta.transaction.Transactional;
 
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.*;
 import java.util.stream.Collectors;
