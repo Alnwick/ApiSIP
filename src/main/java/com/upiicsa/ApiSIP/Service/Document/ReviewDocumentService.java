@@ -30,13 +30,12 @@ public class ReviewDocumentService {
         String statusDescription = approved ? "CORRECTO" : "INCORRECTO";
 
         DocumentStatus newStatus = utilsService.getStatusByDescription(statusDescription);
-
-        document.setDocumentStatus(newStatus);
-        documentRepository.save(document);
-
         boolean alreadyExists = documentReviewRepository.existsById(document.getId());
 
         if (!alreadyExists) {
+            document.setDocumentStatus(newStatus);
+            documentRepository.save(document);
+
             DocumentReview newReview = DocumentReview.builder()
                     .document(document)
                     .user(user)
