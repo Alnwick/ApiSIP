@@ -4,7 +4,6 @@ import com.upiicsa.ApiSIP.Model.Document_Process.Document;
 import com.upiicsa.ApiSIP.Model.Document_Process.DocumentReview;
 import com.upiicsa.ApiSIP.Model.UserSIP;
 import com.upiicsa.ApiSIP.Model.Catalogs.DocumentStatus;
-import com.upiicsa.ApiSIP.Repository.Document_Process.DocumentRepository;
 import com.upiicsa.ApiSIP.Repository.Document_Process.DocumentReviewRepository;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -15,13 +14,13 @@ import java.time.LocalDateTime;
 public class ReviewDocumentService {
 
     public final DocumentReviewRepository documentReviewRepository;
-    public final DocumentRepository documentRepository;
+    public final DocumentService documentService;
     public final DocumentUtilsService utilsService;
 
     public ReviewDocumentService(DocumentReviewRepository documentReviewRepository,
-                DocumentRepository documentRepository, DocumentUtilsService utilsService) {
+                DocumentService documentService, DocumentUtilsService utilsService) {
         this.documentReviewRepository = documentReviewRepository;
-        this.documentRepository = documentRepository;
+        this.documentService = documentService;
         this.utilsService = utilsService;
     }
 
@@ -33,8 +32,7 @@ public class ReviewDocumentService {
         boolean alreadyExists = documentReviewRepository.existsById(document.getId());
 
         if (!alreadyExists) {
-            document.setDocumentStatus(newStatus);
-            documentRepository.save(document);
+            documentService.changeStatus(newStatus, document);
 
             DocumentReview newReview = DocumentReview.builder()
                     .document(document)
