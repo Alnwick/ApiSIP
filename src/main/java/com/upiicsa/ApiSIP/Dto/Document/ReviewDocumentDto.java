@@ -1,6 +1,6 @@
-package com.upiicsa.ApiSIP.Dto;
+package com.upiicsa.ApiSIP.Dto.Document;
 
-public record ReviewDto(
+public record ReviewDocumentDto(
         String typeName,
         Boolean approved,
         String comment

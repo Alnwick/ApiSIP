@@ -1,13 +1,12 @@
-package com.upiicsa.ApiSIP.Dto;
+package com.upiicsa.ApiSIP.Dto.User;
 
 import com.upiicsa.ApiSIP.Dto.Student.InfoInstitutionalDto;
 
-public record ProfileDto(
+public record DataDto(
         String name,
         String fLastName,
         String mLastName,
         String email,
-        String phone,
         InfoInstitutionalDto infoInstitutional
 ) {
 }

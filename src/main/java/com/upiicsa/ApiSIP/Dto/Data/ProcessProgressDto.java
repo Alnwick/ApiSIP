@@ -1,4 +1,4 @@
-package com.upiicsa.ApiSIP.Dto;
+package com.upiicsa.ApiSIP.Dto.Data;
 
 public record ProcessProgressDto(
         String stageName,

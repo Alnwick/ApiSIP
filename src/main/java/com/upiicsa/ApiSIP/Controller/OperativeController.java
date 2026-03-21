@@ -1,7 +1,7 @@
 package com.upiicsa.ApiSIP.Controller;
 
-import com.upiicsa.ApiSIP.Dto.DashboardStatsDto;
-import com.upiicsa.ApiSIP.Dto.ReviewDto;
+import com.upiicsa.ApiSIP.Dto.Data.DashboardStatsDto;
+import com.upiicsa.ApiSIP.Dto.Document.ReviewDocumentDto;
 import com.upiicsa.ApiSIP.Dto.Student.ResponseStudentDto;
 import com.upiicsa.ApiSIP.Dto.Student.StudentReviewDto;
 import com.upiicsa.ApiSIP.Service.OperativeService;
@@ -79,7 +79,7 @@ public class OperativeController {
     @PostMapping("/review-document")
     @PreAuthorize("hasAnyRole('ADMINISTRADOR', 'OPERADOR')")
     public ResponseEntity<Boolean> reviewedDocument(@RequestParam String enrollment,
-                                                    @RequestBody List<ReviewDto> reviewsDto) {
+                                                    @RequestBody List<ReviewDocumentDto> reviewsDto) {
         Integer userId = AuthHelper.getAuthenticatedUserId();
         operativeService.performReview(enrollment, reviewsDto, userId);
 
