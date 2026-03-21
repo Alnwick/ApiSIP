@@ -102,7 +102,7 @@ async function iniciarRegistro() {
     };
 
     try {
-        const resp = await fetch(`${API_BASE_URL}/student/register`, {
+        const resp = await fetch(`${API_BASE_URL}/students/register`, {
             method: 'POST',
             headers: { 'Content-Type': 'application/json' },
             body: JSON.stringify(payload)
