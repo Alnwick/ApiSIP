@@ -1,7 +1,6 @@
 package com.upiicsa.ApiSIP.Controller;
 
-import com.upiicsa.ApiSIP.Dto.ProfileDto;
-import com.upiicsa.ApiSIP.Dto.UserNameDto;
+import com.upiicsa.ApiSIP.Dto.User.DataDto;
 import com.upiicsa.ApiSIP.Service.UserService;
 import com.upiicsa.ApiSIP.Utils.AuthHelper;
 import org.springframework.http.ResponseEntity;
@@ -20,19 +19,11 @@ public class UserController {
         this.userService = userService;
     }
 
-    @GetMapping("/my-name")
-    @PreAuthorize("hasAnyRole('ALUMNO', 'OPERATIVO', 'ADMINISTRADOR')")
-    public ResponseEntity<UserNameDto> getMyName(){
+    @GetMapping("/data")
+    @PreAuthorize("hasAnyRole('OPERATIVO', 'ADMINISTRADOR')")
+    public ResponseEntity<DataDto> data(){
         Integer userId = AuthHelper.getAuthenticatedUserId();
 
-        return ResponseEntity.ok(userService.getName(userId));
-    }
-
-    @GetMapping("/profile")
-    @PreAuthorize("hasAnyRole('ALUMNO', 'OPERATIVO', 'ADMINISTRADOR')")
-    public ResponseEntity<ProfileDto> getProfile(){
-        Integer userId = AuthHelper.getAuthenticatedUserId();
-
-        return ResponseEntity.ok(userService.getProfile(userId));
+        return ResponseEntity.ok(userService.getData(userId));
     }
 }
