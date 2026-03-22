@@ -1,10 +1,12 @@
 package com.upiicsa.ApiSIP.Service;
 
-import com.upiicsa.ApiSIP.Dto.DashboardStatsDto;
+import com.upiicsa.ApiSIP.Dto.Student.InfoInstitutionalDto;
 import com.upiicsa.ApiSIP.Dto.Student.ResponseStudentDto;
 import com.upiicsa.ApiSIP.Dto.Student.StudentRegistrationDto;
+import com.upiicsa.ApiSIP.Dto.User.DataDto;
 import com.upiicsa.ApiSIP.Exception.ValidationException;
 import com.upiicsa.ApiSIP.Model.Address;
+import com.upiicsa.ApiSIP.Model.Document_Process.StudentProcess;
 import com.upiicsa.ApiSIP.Model.Student;
 import com.upiicsa.ApiSIP.Repository.*;
 import com.upiicsa.ApiSIP.Service.Auth.EmailVerificationService;
@@ -27,7 +29,6 @@ public class StudentService {
     private CatalogsService catalogsService;
     private StudentProcessService processService;
 
-
     public StudentService (StudentRepository studentRepository, PasswordEncoder passwordEncoder,
                            EmailVerificationService verificationService, CatalogsService catalogsService,
                            StudentProcessService processService) {
@@ -38,15 +39,12 @@ public class StudentService {
         this.processService = processService;
     }
 
+    @Transactional(readOnly = true)
     public Optional<Student> getStudentById(Integer id) {
         return studentRepository.findById(id);
     }
 
-    public void setAddress(Student student, Address address) {
-        student.setAddress(address);
-        studentRepository.save(student);
-    }
-
+    @Transactional(readOnly = true)
     public Page<ResponseStudentDto> getStudents(Pageable pageable) {
         Page<Student> studentPage = studentRepository.findAll(pageable);
 
@@ -54,6 +52,21 @@ public class StudentService {
                 student.getName(), student.getFLastName(), student.getMLastName(),
                 student.getEnrollment(), student.getOffer()
         ));
+    }
+
+    @Transactional(readOnly = true)
+    public DataDto getDataForStudent(Integer id) {
+        Student student = studentRepository.findById(id).orElse(null);
+        StudentProcess process = processService.getByStudentId(student.getId());
+
+        return new DataDto(student.getName(), student.getFLastName(), student.getMLastName(),
+                student.getEmail(),new InfoInstitutionalDto(student, process));
+    }
+
+    @Transactional
+    public void setAddress(Student student, Address address) {
+        student.setAddress(address);
+        studentRepository.save(student);
     }
 
     @Transactional
@@ -82,29 +95,7 @@ public class StudentService {
         return newStudent;
     }
 
-    // lo hizo daaaam, es para buscar en la bd, aver si jala
-    /*public Page<ResponseStudentDto> getAllStudents(String search, Pageable pageable) {
-        Page<Student> students;
-
-        // LÓGICA: Si el buscador trae texto, filtramos. Si no, traemos todo.
-        if (search != null && !search.trim().isEmpty()) {
-            students = studentRepository.findAllWithSearch(search, pageable);
-        } else {
-            students = studentRepository.findAll(pageable);
-        }
-
-        // Usamos la misma lógica de conversión que ya tienes arriba
-        return students.map(student -> new ResponseStudentDto(
-                student.getName(),
-                student.getFLastName(),
-                student.getMLastName(),
-                student.getEnrollment(),
-                student.getOffer()
-        ));
-    }*/
-
     public Page<ResponseStudentDto> getAllStudents(String search, String career, String plan, Pageable pageable) {
-        // IMPORTANTE: Que el nombre y los parámetros coincidan con el Controller
         Page<Student> students = studentRepository.findFiltered(search, career, plan, pageable);
 
         return students.map(student -> new ResponseStudentDto(
