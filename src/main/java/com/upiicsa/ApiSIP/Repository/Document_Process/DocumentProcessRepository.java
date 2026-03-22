@@ -14,6 +14,8 @@ import java.util.List;
 @Repository
 public interface DocumentProcessRepository extends JpaRepository<DocumentProcess, DocumentProcessId> {
 
-    @Query("SELECT dp.documentType FROM DocumentProcess dp WHERE dp.processStatus = :state")
-    List<DocumentType> findDocumentTypesByProcessState(@Param("state") ProcessStatus state);
+    @Query("SELECT dp.documentType FROM DocumentProcess dp WHERE dp.processStatus = :status")
+    List<DocumentType> findDocumentTypesByProcessStatus(@Param("status") ProcessStatus status);
+
+    Integer countByProcessStatus(ProcessStatus processStatus);
 }

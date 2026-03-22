@@ -22,9 +22,9 @@ public class DocumentController {
 
     @GetMapping("/my-status")
     @PreAuthorize("hasAnyRole('ALUMNO')")
-    public ResponseEntity<List<DocumentStatusDto>> getMyStatus(){
+    public ResponseEntity<List<DocumentStatusDto>> getMyStatus(@RequestParam String processStatus) {
 
-        return ResponseEntity.ok(documentService.getDocuments(getUserId()));
+        return ResponseEntity.ok(documentService.getDocuments(getUserId(), processStatus));
     }
 
     @PostMapping("/upload")

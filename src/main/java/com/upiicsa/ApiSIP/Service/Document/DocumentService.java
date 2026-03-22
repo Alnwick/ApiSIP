@@ -4,10 +4,10 @@ import com.upiicsa.ApiSIP.Dto.Document.DocumentStatusDto;
 import com.upiicsa.ApiSIP.Exception.ValidationException;
 import com.upiicsa.ApiSIP.Model.Catalogs.DocumentStatus;
 import com.upiicsa.ApiSIP.Model.Catalogs.DocumentType;
+import com.upiicsa.ApiSIP.Model.Catalogs.ProcessStatus;
 import com.upiicsa.ApiSIP.Model.Document_Process.Document;
 import com.upiicsa.ApiSIP.Model.Document_Process.DocumentReview;
 import com.upiicsa.ApiSIP.Model.Document_Process.StudentProcess;
-import com.upiicsa.ApiSIP.Model.Enum.StateProcessEnum;
 import com.upiicsa.ApiSIP.Model.UserSIP;
 import com.upiicsa.ApiSIP.Repository.Document_Process.DocumentRepository;
 import com.upiicsa.ApiSIP.Repository.UserRepository;
@@ -44,11 +44,17 @@ public class DocumentService {
         this.fileStorage = fileStorage;
     }
 
+    @Transactional(readOnly = true)
     public Optional<Document> getDocByProcessAndDocumentType(StudentProcess process, String typeName){
         DocumentType type = utilsService.getTypeByDescription(typeName);
 
-        return documentRepository.findByStudentProcessAndDocumentTypeAndCancellationDateIsNull(process,
+        return documentRepository.findByStudentProcessAndDocumentTypeAndDateIsNull(process,
                 type);
+    }
+
+    @Transactional(readOnly = true)
+    public List<Document> findByProcessAndStatus(ProcessStatus status){
+        return documentRepository.findByProcessAndCancelDateIsNull(status);
     }
 
     @Transactional
@@ -62,29 +68,30 @@ public class DocumentService {
             Document currentDoc = document.get();
 
             switch (currentDoc.getDocumentStatus().getDescription()) {
-                case "APROBADO": throw new ValidationException("Este documento ya fue aprobado y no puede modificarse.");
-                case "CANCELADO": cancelledAndCreated(currentDoc, type, file, userId);
+                case "CORRECTO": throw new ValidationException("Este documento ya fue aprobado y no puede modificarse.");
+                case "INCORRECTO": cancelledAndCreated(currentDoc, type, file, userId);
                     break;
                 case "PENDIENTE": updateDoc(currentDoc, typeName, file);
                     break;
+                default: throw new ValidationException("Estado de documento invalido.");
             }
         } else {
             createNewDocument(userId, type, file);
         }
         if(process.getProcessStatus().getId() != 2){
-            processService.updateProcessStatus(process, StateProcessEnum.INITIAL_DOC);
+            processService.updateStatus(process);
         }
     }
 
     @Transactional(readOnly = true)
-    public List<DocumentStatusDto> getDocuments(Integer userId) {
+    public List<DocumentStatusDto> getDocuments(Integer userId, String processStatus) {
         StudentProcess process = processService.getByStudentId(userId);
-        List<DocumentType> requiredTypes = utilsService.getRequiredTypesByProcess(process);
+        List<DocumentType> requiredTypes = utilsService.getRequiredTypesStatus(processStatus);
 
         return requiredTypes.stream().map(type -> {
 
             Optional<Document> docOpt = documentRepository
-                    .findByStudentProcessAndDocumentTypeAndCancellationDateIsNull(process, type);
+                    .findByStudentProcessAndDocumentTypeAndDateIsNull(process, type);
 
             if (docOpt.isPresent()) {
                 Document doc = docOpt.get();
@@ -100,7 +107,7 @@ public class DocumentService {
                 return new DocumentStatusDto(type.getDescription(), doc.getDocumentStatus().getDescription(),
                         doc.getURL(), "", "", doc.getUploadDate());
             }
-            return new DocumentStatusDto(type.getDescription(), "PENDIENTE", null,
+            return new DocumentStatusDto(type.getDescription(), "SIN_CARGA", null,
                     "", "", null);
 
         }).collect(Collectors.toList());
@@ -125,6 +132,15 @@ public class DocumentService {
 
         documentRepository.save(newDocument);
         fileStorage.store(file, finalName);
+    }
+
+    @Transactional
+    public void changeStatus(DocumentStatus docStatus, Document doc){
+        if(docStatus.getDescription().equals("INCORRECTO")){
+            doc.setCancellationDate(LocalDateTime.now());
+        }
+        doc.setDocumentStatus(docStatus);
+        documentRepository.save(doc);
     }
 
     @Transactional

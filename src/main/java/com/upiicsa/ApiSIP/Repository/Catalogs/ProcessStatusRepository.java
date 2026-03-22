@@ -8,5 +8,6 @@ import java.util.Optional;
 
 @Repository
 public interface ProcessStatusRepository extends JpaRepository<ProcessStatus, Integer> {
+
     Optional<ProcessStatus> findByDescription(String description);
 }

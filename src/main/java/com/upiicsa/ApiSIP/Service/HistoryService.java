@@ -37,8 +37,8 @@ public class HistoryService {
                 .process(process)
                 .user(getDefaultUser())
                 .updateDate(LocalDateTime.now())
-                .newState(oldStatus)
-                .oldState(newStatus)
+                .newState(newStatus)
+                .oldState(oldStatus)
                 .build();
 
         historyRepository.save(newHistory);

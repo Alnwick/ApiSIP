@@ -2,9 +2,10 @@ package com.upiicsa.ApiSIP.Service.Document;
 
 import com.upiicsa.ApiSIP.Model.Catalogs.DocumentStatus;
 import com.upiicsa.ApiSIP.Model.Catalogs.DocumentType;
+import com.upiicsa.ApiSIP.Model.Catalogs.ProcessStatus;
 import com.upiicsa.ApiSIP.Model.Document_Process.Document;
 import com.upiicsa.ApiSIP.Model.Document_Process.DocumentReview;
-import com.upiicsa.ApiSIP.Model.Document_Process.StudentProcess;
+import com.upiicsa.ApiSIP.Repository.Catalogs.ProcessStatusRepository;
 import com.upiicsa.ApiSIP.Repository.Document_Process.DocumentProcessRepository;
 import com.upiicsa.ApiSIP.Repository.Catalogs.DocumentTypeRepository;
 import com.upiicsa.ApiSIP.Repository.Document_Process.DocumentReviewRepository;
@@ -18,21 +19,26 @@ public class DocumentUtilsService {
 
     private DocumentTypeRepository typeRepository;
     private DocumentProcessRepository docProcessRepository;
+    private ProcessStatusRepository processStatusRepository;
     private DocumentStatusRepository statusRepository;
     private DocumentReviewRepository reviewRepository;
 
     public DocumentUtilsService(DocumentTypeRepository typeRepository, DocumentProcessRepository docProcessRepository,
-                                DocumentStatusRepository statusRepository,
+                                ProcessStatusRepository processStatusRepository, DocumentStatusRepository statusRepository,
                                 DocumentReviewRepository reviewRepository) {
         this.typeRepository = typeRepository;
         this.docProcessRepository = docProcessRepository;
+        this.processStatusRepository = processStatusRepository;
         this.statusRepository = statusRepository;
         this.reviewRepository = reviewRepository;
 
     }
 
-    public List<DocumentType> getRequiredTypesByProcess(StudentProcess process){
-        return docProcessRepository.findDocumentTypesByProcessState(process.getProcessStatus());
+    public List<DocumentType> getRequiredTypesStatus(String processStatus) {
+        ProcessStatus status = processStatusRepository.findByDescription(processStatus)
+                .orElseThrow(() -> new RuntimeException("Process Status Not Found"));
+
+        return docProcessRepository.findDocumentTypesByProcessStatus(status);
     }
 
     public DocumentType getTypeByDescription(String typeName){
