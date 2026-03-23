@@ -1,6 +1,7 @@
-const API_STATUS = '/students/process-status';
-const API_LOGOUT = '/auth/logout';
-const PHASES = ["Registrado", "Doc Inicial", "Cartas", "Doc Término", "Liberación" ];// , "Finalización de informes"
+const API_STATUS = '/students/process-status';//get
+const API_LOGOUT = '/auth/logout';//post
+const API_DOCS_STATUS = '/documents/my-status';//get
+const PHASES = ["Registrado", "Doc Inicial", "Cartas", "Doc Término", "Liberación" ];// solo para vista
 
 document.addEventListener('DOMContentLoaded', () => {
     loadUserProfile();
@@ -29,43 +30,90 @@ async function loadUserProfile() {
 
 async function loadData() {
     let stagesData = [];
-    try {
-        const resp = await fetch(API_STATUS);
-        if (resp.ok) stagesData = await resp.json();
-    } catch (e) { console.warn("Modo Offline"); }
+    let docsData = [];
 
-    renderProgress(stagesData);
+    try {
+        // Usamos credentials: 'include' para que Spring Security nos deje pasar
+        const [respStatus, respDocs] = await Promise.all([
+            fetch(API_STATUS, { credentials: 'include' }),
+            fetch(API_DOCS_STATUS, { credentials: 'include' })
+        ]);
+
+        if (respStatus.ok) stagesData = await respStatus.json();
+        if (respDocs.ok) docsData = await respDocs.json();
+
+        console.log("Docs recibidos:", docsData); // Revisa esto en tu consola, amiga
+    } catch (e) {
+        console.warn("Error cargando datos", e);
+    }
+
+    // MANDAMOS AMBOS
+    renderProgress(stagesData, docsData);
 }
 
-function renderProgress(apiData) {
+function renderProgress(apiData, docsData) {
     const stepper = document.getElementById('main-stepper');
-    const faseDocInicial = apiData[1] || {};
-    const docsAprobados = faseDocInicial.status === 'ACEPTADO' && faseDocInicial.date !== "-";
+    if (!stepper) return;
+
+    const docsObligatorios = ["CEDULA_REGISTRO", "CONSTANCIA_IMSS", "CAPTURA_EMPRESA", "CAPTURA_ALUMNO", "HORARIO"];
+
+    // 1. ¿Está TODO en CORRECTO? (Paso a la fase 3)
+    const todoAprobadoReal = docsObligatorios.every(type => {
+        const doc = docsData.find(d => d.typeCode === type);
+        return doc && doc.status === 'CORRECTO';
+    });
+
+    // 2. ¿Falta subir algo? (Estado SIN_CARGA o no existe el doc)
+    const faltaSubirArchivo = docsObligatorios.some(type => {
+        const doc = docsData.find(d => d.typeCode === type);
+        return !doc || doc.status === 'SIN_CARGA' || !doc.fileName;
+    });
+
+    // 3. ¿Ya subió todo pero hay cosas en PENDIENTE?
+    // Si no falta subir nada, pero tampoco está todo aprobado, es que están revisando.
+    const estaEnRevision = !faltaSubirArchivo && !todoAprobadoReal;
 
     stepper.innerHTML = PHASES.map((name, idx) => {
         const data = apiData[idx] || {};
         let done = data.date && data.date !== "" && data.date !== "-";
         let current = data.isCurrent || false;
         let displayDate = data.date;
+        let customStatus = "";
 
-        // --- LÓGICA DE ESPEJO PARA PASO 3 (CARTAS) ---
-        // Si estamos en el índice 2 (Cartas) y los docs iniciales ya están aceptados:
-        if (idx === 2 && docsAprobados) {
-            done = false;   // Para que se vea verde 'active' y no con palomita todavía
-            current = true; // Forzamos a que brille como fase actual
-            displayDate = faseDocInicial.date; // Le "robamos" la fecha a Doc Inicial
+        // --- LÓGICA PARA FASE 2 (Doc Inicial) ---
+        if (idx === 1) {
+            if (todoAprobadoReal) {
+                done = true;      // Palomita verde
+                current = false;
+            } else {
+                done = false;     // Se queda el número 2
+                current = true;   // Círculo verde activo
+
+                if (faltaSubirArchivo) {
+                    customStatus = "Documentación incompleta";
+                } else if (estaEnRevision) {
+                    customStatus = "Revisando..."; // Este es el que querías, amiga
+                }
+            }
         }
 
-        let statusClass = done && !current ? 'completed' : (current ? 'active' : '');
+        // --- FASE 3 Y 4 ---
+        if ((idx === 2 || idx === 3) && todoAprobadoReal) {
+            done = false;
+            current = true;
+        }
+
+        let statusClass = done ? 'completed' : (current ? 'active' : '');
 
         return `
             <div class="step ${statusClass}">
-                <div class="dot">${(done && !current) ? '✓' : idx + 1}</div>
+                <div class="dot">${done ? '✓' : idx + 1}</div>
                 <div class="step-info">
                     <span class="label">${name}</span>
                     <div class="date-container">
                         <span class="date-badge">
-                            ${done ? 'Terminó: ' + fmt(displayDate) : (current ? 'En progreso' : '—')}
+                            ${done ? 'Terminó: ' + fmt(displayDate) :
+                             (current ? (customStatus || 'En progreso') : '—')}
                         </span>
                     </div>
                 </div>
@@ -73,29 +121,31 @@ function renderProgress(apiData) {
         `;
     }).join('');
 
-    const cardsParaActivar = ['card-cartas', 'card-seguimiento'];
-    const tagSeguimiento = document.getElementById('lock-tag-seguimiento');
-    const tagCartas = document.getElementById('lock-tag-cartas');
+    actualizarTarjetas(todoAprobadoReal);
+}
 
-    cardsParaActivar.forEach(id => {
-        const card = document.getElementById(id);
+// Función auxiliar para no amontonar código
+function actualizarTarjetas(habilitar) {
+    const configuracion = [
+        { id: 'card-cartas', link: 'registroCartas.html', tag: 'lock-tag-cartas' },
+        { id: 'card-seguimiento', link: 'registroseguimiento.html', tag: 'lock-tag-seguimiento' }
+    ];
+
+    configuracion.forEach(item => {
+        const card = document.getElementById(item.id);
+        const lock = document.getElementById(item.tag);
         if (!card) return;
 
-        if (docsAprobados) {
+        if (habilitar) {
             card.classList.remove('locked');
-            card.onclick = null;
-            // Ocultamos candados
-            if (id === 'card-cartas' && tagCartas) tagCartas.style.display = 'none';
-            if (id === 'card-seguimiento' && tagSeguimiento) tagSeguimiento.style.display = 'none';
+            if (lock) lock.style.display = 'none';
+            card.onclick = () => window.location.href = item.link;
+            card.style.cursor = "pointer";
         } else {
             card.classList.add('locked');
             card.onclick = (e) => {
                 e.preventDefault();
-                showModal(
-                    "Upsss...",
-                    "Primero deben aceptar todos tus Documentos Iniciales.",
-                    "info"
-                );
+                showModal("Aviso", "Aún faltan documentos por aprobar.", "info");
             };
         }
     });

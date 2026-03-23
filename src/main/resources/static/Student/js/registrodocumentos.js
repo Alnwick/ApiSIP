@@ -20,7 +20,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
 async function loadUserProfile() {
     try {
-        const resp = await fetch('/users/my-name');
+        const resp = await fetch('/students/data');
         if (resp.ok) {
             const data = await resp.json();
             const firstName = data.name.split(' ')[0];
@@ -53,7 +53,7 @@ function setupLogout() {
     });
 }
 
-    function initUI() {
+function initUI() {
     const container = document.getElementById('docs-container');
     container.innerHTML = DOC_CONFIG.map(doc => `
                     <div class="doc-card status-none" id="card-${doc.id}">
@@ -102,7 +102,9 @@ async function loadStatus() {
             const config = DOC_CONFIG.find(c => c.typeCode === item.typeCode);
             if (config) updateCard(config.id, item);
         });
-    } catch (e) { console.error("Error cargando estatus:", e); }
+    } catch (e) {
+        console.error("Error cargando estatus:", e);
+    }
 }
 
 function updateCard(id, data) {

@@ -43,10 +43,10 @@ public class SecurityConfig {
                 .addFilterBefore(new JwtTokenValidator(jwtUtils, userRepository), UsernamePasswordAuthenticationFilter.class)
                 .authorizeHttpRequests(auth -> auth
                         .requestMatchers("/", "/index.html", "/styles.css", "/script.js",
-                                "/Imagenes/**", "/Recursos/**", "/view-documents/**")
+                                "/Imagenes/**", "/Recursos/**", "/view-documents/**", "/Student/**", "/Templates/**")
                         .permitAll()
                         .requestMatchers("/auth/login", "/api/forgot-password", "/api/reset-password/**",
-                                "/auth/confirm-email", "auth/resend-code", "/students/register", "/reset-password.html",
+                                "/auth/confirm-email", "auth/resend-code"   , "/students/register", "/reset-password.html",
                                 "/catalogs/**")
                         .permitAll()
                         .requestMatchers("/v3/api-docs/**", "/swagger-ui/**", "/swagger-ui.html")
@@ -58,7 +58,6 @@ public class SecurityConfig {
                                 -> response.sendRedirect("/index.html")))
                 .build();
     }
-
     @Bean
     public AuthenticationManager authenticationManager(AuthenticationConfiguration authenticationConfiguration)
             throws Exception {
