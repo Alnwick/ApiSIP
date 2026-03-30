@@ -1,5 +1,5 @@
 const API_CATALOGS = '/catalogs';
-const API_OPERATIVES = '/operatives';
+const API_STUDENTS = '/students';
 const API_LOGOUT = '/auth/logout';
 
 let selectedCareer = 'all';
@@ -17,7 +17,7 @@ async function init() {
     await fetchSyllabus();
     await updateDashboard();
 }
-//cesar sesion================================================
+
 function setupLogout() {
     document.getElementById('logoutBtn').addEventListener('click', async () => {
         try {
@@ -30,6 +30,7 @@ function setupLogout() {
         }
     });
 }
+
 //buscador solo parte visual, logica mas abajo==============================
 function setupListeners() {
     document.getElementById('searchInput').addEventListener('input', debounce(() => renderTable(), 300));
@@ -92,7 +93,7 @@ async function updateDashboard() {
 }
 
 async function fetchStats() {
-    const url = `${API_OPERATIVES}/stats?careerAcronym=${selectedCareer}&planCode=${selectedPlan}`;
+    const url = `${API_STUDENTS}/stats?careerAcronym=${selectedCareer}&planCode=${selectedPlan}`;
 
     const stats = await apiRequest(url);
     const grid = document.getElementById('statsGrid');
@@ -123,7 +124,7 @@ async function renderTable() {
     const searchTerm = document.getElementById('searchInput').value.trim();
 
 
-    let url = `${API_OPERATIVES}/get-allStudents?page=0&size=50&career=${selectedCareer}&plan=${selectedPlan}`;
+    let url = `${API_STUDENTS}/filtered?page=0&size=50&career=${selectedCareer}&plan=${selectedPlan}`;
 
     if (searchTerm) {
         url += `&search=${encodeURIComponent(searchTerm)}`;

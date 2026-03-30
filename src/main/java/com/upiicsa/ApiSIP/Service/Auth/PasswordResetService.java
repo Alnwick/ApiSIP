@@ -57,7 +57,7 @@ public class PasswordResetService {
     @Transactional
     public void resetPassword(ResetPasswordDto request) {
         TokenReset tokenReset = tokenResetRepository.findByToken(request.token())
-                .orElseThrow(() -> new BusinessException(ErrorCode.RESOURCE_NOT_FOUND));
+                .orElseThrow(() -> new BusinessException(ErrorCode.INVALID_RESET_TOKEN));
 
         if (tokenReset.getExpirationDate().isBefore(LocalDateTime.now())) {
             throw new BusinessException(ErrorCode.TOKEN_EXPIRED);

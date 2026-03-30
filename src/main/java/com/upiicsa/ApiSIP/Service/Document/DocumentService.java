@@ -21,7 +21,6 @@ import org.springframework.web.multipart.MultipartFile;
 import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Map;
-import java.util.Optional;
 import java.util.stream.Collectors;
 
 @Service
@@ -47,11 +46,12 @@ public class DocumentService {
     }
 
     @Transactional(readOnly = true)
-    public Optional<Document> findDocByProcessAndType(StudentProcess process, String typeName){
-        DocumentType type = utilsService.getTypeByDescription(typeName);
+    public Document findDocByProcessAndType(StudentProcess process, String typeName){
+        DocumentType type = utilsService.findTypeByDescription(typeName);
 
         return documentRepository.findByStudentProcessAndDocumentTypeAndCancellationDateIsNull
-                (process, type);
+                (process, type).orElseThrow(() -> new BusinessException(ErrorCode.RESOURCE_NOT_FOUND,
+                "Recurso: Documento"));
     }
 
     @Transactional(readOnly = true)
@@ -61,19 +61,18 @@ public class DocumentService {
 
     @Transactional
     public void saveDoc(MultipartFile file, String typeName, Integer userId) {
-        StudentProcess process = processService.getByStudentId(userId);
-        DocumentType type = utilsService.getTypeByDescription(typeName);
+        StudentProcess process = processService.findByStudentId(userId);
+        DocumentType type = utilsService.findTypeByDescription(typeName);
 
-        Optional<Document> document = findDocByProcessAndType(process, typeName);
+        Document doc = findDocByProcessAndType(process, typeName);
 
-        if(document.isPresent()){
-            Document currentDoc = document.get();
+        if(doc != null){
 
-            switch (currentDoc.getDocumentStatus().getDescription()) {
+            switch (doc.getDocumentStatus().getDescription()) {
                 case "CORRECTO": throw new BusinessException(ErrorCode.DOCUMENT_ALREADY_APPROVED);
-                case "INCORRECTO": cancelledAndCreated(currentDoc, type, file, userId);
+                case "INCORRECTO": cancelledAndCreated(doc, type, file, userId);
                     break;
-                case "PENDIENTE": updateDoc(currentDoc, typeName, file);
+                case "PENDIENTE": updateDoc(doc, typeName, file);
                     break;
                 default: throw new BusinessException(ErrorCode.INTERNAL_ERROR);
             }
@@ -87,8 +86,8 @@ public class DocumentService {
 
     @Transactional(readOnly = true)
     public List<DocumentStatusDto> getDocuments(Integer userId, String processStatus) {
-        StudentProcess process = processService.getByStudentId(userId);
-        List<DocumentType> requiredTypes = utilsService.getRequiredTypesStatus(processStatus);
+        StudentProcess process = processService.findByStudentId(userId);
+        List<DocumentType> requiredTypes = utilsService.findRequiredTypesStatus(processStatus);
 
         List<Document> activeDocuments = documentRepository.findActiveDocumentsOrdered(process);
 
@@ -133,10 +132,10 @@ public class DocumentService {
     @Transactional
     public void createNewDocument(Integer userId, DocumentType type, MultipartFile file){
         UserSIP user = userRepository.findById(userId).orElse(null);
-        StudentProcess process = processService.getByStudentId(userId);
+        StudentProcess process = processService.findByStudentId(userId);
 
         String finalName = documentNaming.generateVersionedName(process, type);
-        DocumentStatus docStatus = utilsService.getStatusByDescription("PENDIENTE");
+        DocumentStatus docStatus = utilsService.findStatusByDescription("PENDIENTE");
 
         Document newDocument = Document.builder()
                 .studentProcess(process)
@@ -153,13 +152,13 @@ public class DocumentService {
 
     @Transactional
     public void changeStatus(DocumentStatus docStatus, Document doc){
-
         doc.setDocumentStatus(docStatus);
         documentRepository.save(doc);
     }
 
     @Transactional
     public void updateDoc(Document currentDoc, String typeName, MultipartFile file) {
+
         if(!currentDoc.getDocumentType().getDescription().equals(typeName)){
             throw new BusinessException(ErrorCode.INTERNAL_ERROR);
         }

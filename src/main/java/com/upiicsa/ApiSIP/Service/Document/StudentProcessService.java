@@ -1,5 +1,6 @@
 package com.upiicsa.ApiSIP.Service.Document;
 
+import com.upiicsa.ApiSIP.Dto.Data.DashboardStatsDto;
 import com.upiicsa.ApiSIP.Dto.Data.ProcessProgressDto;
 import com.upiicsa.ApiSIP.Exception.BusinessException;
 import com.upiicsa.ApiSIP.Model.Catalogs.ProcessStatus;
@@ -12,13 +13,18 @@ import com.upiicsa.ApiSIP.Model.Document_Process.StudentProcess;
 import com.upiicsa.ApiSIP.Repository.Catalogs.ProcessStatusRepository;
 import com.upiicsa.ApiSIP.Repository.Document_Process.DocumentProcessRepository;
 import com.upiicsa.ApiSIP.Repository.Document_Process.StudentProcessRepository;
+import com.upiicsa.ApiSIP.Repository.StudentRepository;
 import com.upiicsa.ApiSIP.Service.HistoryService;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
+import java.util.stream.Collectors;
 
 @Service
 public class StudentProcessService {
@@ -26,13 +32,16 @@ public class StudentProcessService {
     private StudentProcessRepository processRepository;
     private DocumentProcessRepository docProcessRepository;
     private ProcessStatusRepository processStatusRepository;
+    private StudentRepository studentRepository;
     private HistoryService historyService;
 
     public StudentProcessService(StudentProcessRepository processRepository, DocumentProcessRepository docProcessRepository,
-                                 ProcessStatusRepository processStatusRepository, HistoryService historyService) {
+                                 ProcessStatusRepository processStatusRepository, StudentRepository studentRepository,
+                                 HistoryService historyService) {
         this.processRepository = processRepository;
         this.docProcessRepository = docProcessRepository;
         this.processStatusRepository = processStatusRepository;
+        this.studentRepository = studentRepository;
         this.historyService = historyService;
     }
 
@@ -128,5 +137,27 @@ public class StudentProcessService {
             progress.add(new ProcessProgressDto(stageName, date, stageId == currentStageId));
         }
         return progress;
+    }
+
+    @Transactional(readOnly = true)
+    public DashboardStatsDto getStats(String careerAcronym, String planCode) {
+        Page<Student> filteredStudents = studentRepository.findFiltered("", careerAcronym,
+                planCode, Pageable.unpaged());
+        List<Student> students = filteredStudents.getContent();
+
+        Map<String, Long> counts = students.stream()
+                .map(student -> findByStudentId(student.getId()))
+                .collect(Collectors.groupingBy(
+                        (StudentProcess process) -> process.getProcessStatus().getDescription(),
+                        Collectors.counting()
+                ));
+
+        return new DashboardStatsDto(
+                (int) filteredStudents.getTotalElements(),
+                counts.getOrDefault("Registrado", 0L).intValue(),
+                counts.getOrDefault("Doc Inicial", 0L).intValue(),
+                counts.getOrDefault("Carta Aceptacion", 0L).intValue(),
+                counts.getOrDefault("Doc Final", 0L).intValue()
+        );
     }
 }

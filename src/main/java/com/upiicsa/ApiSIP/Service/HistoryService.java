@@ -45,8 +45,6 @@ public class HistoryService {
     }
 
     private UserSIP getDefaultUser(){
-        UserSIP user = userService.getUserById(defaultUser)
-                .orElse(null);
-        return user;
+        return userService.getUserById(defaultUser);
     }
 }

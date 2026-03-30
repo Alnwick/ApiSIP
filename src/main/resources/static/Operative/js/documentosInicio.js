@@ -1,12 +1,10 @@
 const urlParams = new URLSearchParams(window.location.search);
-const enrollment = urlParams.get('enrollment'); // Obtenemos la boleta
+const enrollment = urlParams.get('enrollment');
 
 // Endpoints ajustados al Controller
-const API_REVIEW_DATA = `/operatives/student-review?enrollment=${enrollment}&processStatus=DOC_INICIAL`;
+const API_REVIEW_DATA = `/students/toReview?enrollment=${enrollment}&processStatus=DOC_INICIAL`;
 // Endpoints de acción(POST)
-const API_SAVE_DOC = `/operatives/review-document`;
-const API_FINALIZE = `/operatives/finalize-review`;
-const API_APPROVE_ACTA = `/operatives/approve-acceptance-act`;
+const API_SAVE_DOC = `/documents/review`;
 //console.log("desde documentosInicio");
 // RUTA BASE PARA VER DOCUMENTOS (IMPORTANTE: Esto corrige el error del backend)
 // El backend tiene configurado /view-documents/**, así que debemos usar esa base

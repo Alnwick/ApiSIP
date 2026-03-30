@@ -1,13 +1,18 @@
 package com.upiicsa.ApiSIP.Controller;
 
+import com.upiicsa.ApiSIP.Dto.Data.DashboardStatsDto;
 import com.upiicsa.ApiSIP.Dto.Data.ProcessProgressDto;
+import com.upiicsa.ApiSIP.Dto.Student.ResponseStudentDto;
 import com.upiicsa.ApiSIP.Dto.Student.StudentRegistrationDto;
+import com.upiicsa.ApiSIP.Dto.Student.StudentReviewDto;
 import com.upiicsa.ApiSIP.Dto.User.DataDto;
 import com.upiicsa.ApiSIP.Model.Student;
 import com.upiicsa.ApiSIP.Service.Document.StudentProcessService;
 import com.upiicsa.ApiSIP.Service.StudentService;
 import com.upiicsa.ApiSIP.Utils.AuthHelper;
 import jakarta.validation.Valid;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
@@ -21,11 +26,22 @@ import java.util.List;
 public class StudentController {
 
     private StudentService studentService;
-    private StudentProcessService studentProcessService;
+    private StudentProcessService processService;
 
-    public StudentController(StudentService studentService, StudentProcessService studentProcessService) {
+    public StudentController(StudentService studentService, StudentProcessService processService) {
         this.studentService = studentService;
-        this.studentProcessService = studentProcessService;
+        this.processService = processService;
+    }
+
+    @GetMapping("/filtered")
+    @PreAuthorize("hasAnyRole('ADMINISTRADOR', 'OPERADOR')")
+    public ResponseEntity<Page<ResponseStudentDto>> getAllStudents(Pageable pageable,
+            @RequestParam(required = false) String search, @RequestParam(defaultValue = "all") String career,
+            @RequestParam(defaultValue = "all") String plan) {
+
+        Page<Student> students = studentService.getStudentsByFilters(search, career, plan, pageable);
+        return ResponseEntity.ok(students
+                .map(student -> new ResponseStudentDto(student)));
     }
 
     @GetMapping("/data")
@@ -51,7 +67,25 @@ public class StudentController {
     @GetMapping("/process-status")
     @PreAuthorize("hasAnyRole('ALUMNO')")
     public ResponseEntity<List<ProcessProgressDto>> getProcessStatus() {
-        return ResponseEntity.ok(studentProcessService.
+        return ResponseEntity.ok(processService.
                 getProcessHistory(AuthHelper.getAuthenticatedUserId()));
+    }
+
+    @GetMapping("/toReview")
+    @PreAuthorize("hasAnyRole('ADMINISTRADOR', 'OPERADOR')")
+    public ResponseEntity<StudentReviewDto> getStudentReview(
+            @RequestParam String enrollment,
+            @RequestParam String processStatus) {
+
+        return ResponseEntity.ok(studentService.dataToReview(enrollment, processStatus));
+    }
+
+    @GetMapping("/stats")
+    @PreAuthorize("hasAnyRole('ADMINISTRADOR', 'OPERADOR')")
+    public ResponseEntity<DashboardStatsDto> getStats(
+            @RequestParam(defaultValue = "all") String careerAcronym,
+            @RequestParam(defaultValue = "all") String planCode) {
+
+        return ResponseEntity.ok(processService.getStats(careerAcronym, planCode));
     }
 }

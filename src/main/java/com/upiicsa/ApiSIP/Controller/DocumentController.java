@@ -1,7 +1,9 @@
 package com.upiicsa.ApiSIP.Controller;
 
 import com.upiicsa.ApiSIP.Dto.Document.DocumentStatusDto;
+import com.upiicsa.ApiSIP.Dto.Document.ReviewDocumentDto;
 import com.upiicsa.ApiSIP.Service.Document.DocumentService;
+import com.upiicsa.ApiSIP.Service.Document.ReviewDocumentService;
 import com.upiicsa.ApiSIP.Utils.AuthHelper;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
@@ -15,9 +17,11 @@ import java.util.List;
 public class DocumentController {
 
     private DocumentService documentService;
+    private ReviewDocumentService reviewService;
 
-    public DocumentController(DocumentService documentService) {
+    public DocumentController(DocumentService documentService,  ReviewDocumentService reviewService) {
         this.documentService = documentService;
+        this.reviewService = reviewService;
     }
 
     @GetMapping("/my-status")
@@ -35,6 +39,16 @@ public class DocumentController {
 
         documentService.saveDoc(file, type, getUserId());
         return ResponseEntity.ok().body("Uploaded successfully");
+    }
+
+    @PostMapping("/review")
+    @PreAuthorize("hasAnyRole('ADMINISTRADOR', 'OPERADOR')")
+    public ResponseEntity<Boolean> reviewedDocument(@RequestParam String enrollment,
+                                                    @RequestBody List<ReviewDocumentDto> reviewsDto) {
+        Integer userId = AuthHelper.getAuthenticatedUserId();
+        reviewService.performReview(enrollment, reviewsDto, userId);
+
+        return ResponseEntity.ok(true);
     }
 
     private Integer getUserId(){
