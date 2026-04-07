@@ -33,11 +33,18 @@ public class DocumentController {
 
     @PostMapping("/upload")
     @PreAuthorize("hasAnyRole('ALUMNO')")
-    public ResponseEntity<String> uploadDocument(
-            @RequestParam("file") MultipartFile file,
+    public ResponseEntity<String> uploadDocument(@RequestParam("file") MultipartFile file,
             @RequestParam("type") String type){
 
         documentService.saveDoc(file, type, getUserId());
+        return ResponseEntity.ok().body("Uploaded successfully");
+    }
+
+    @PostMapping("/uploadAcceptanceLetter")
+    @PreAuthorize("hasAnyRole('ADMINISTRADOR', 'OPERADOR')")
+    public ResponseEntity<String> uploadDocumentAcceptanceLetter(@RequestParam("file") MultipartFile file,
+                                  @RequestParam("enrollment") String enrollment){
+        documentService.saveAcceptanceLetter(file, enrollment, getUserId());
         return ResponseEntity.ok().body("Uploaded successfully");
     }
 
