@@ -4,7 +4,6 @@ import com.upiicsa.ApiSIP.Dto.Email.ForgotPasswordDto;
 import com.upiicsa.ApiSIP.Dto.Email.ResetPasswordDto;
 import com.upiicsa.ApiSIP.Service.Auth.PasswordResetService;
 import jakarta.validation.Valid;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -12,8 +11,11 @@ import org.springframework.web.bind.annotation.*;
 @RequestMapping("/api")
 public class PasswordResetController {
 
-    @Autowired
-    private PasswordResetService resetService;
+    private final PasswordResetService resetService;
+
+    public  PasswordResetController(PasswordResetService resetService) {
+        this.resetService = resetService;
+    }
 
     @PostMapping("/forgot-password")
     public ResponseEntity<Void> forgotPassword(@RequestBody @Valid ForgotPasswordDto request) {
