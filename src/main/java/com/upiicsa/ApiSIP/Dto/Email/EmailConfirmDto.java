@@ -8,7 +8,6 @@ public record EmailConfirmDto(
         @NotBlank
         @Email
         String email,
-
         @NotBlank
         @Size(min = 6, max = 6)
         String code

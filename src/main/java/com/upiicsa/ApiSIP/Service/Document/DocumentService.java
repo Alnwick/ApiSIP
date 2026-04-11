@@ -13,7 +13,6 @@ import com.upiicsa.ApiSIP.Model.UserSIP;
 import com.upiicsa.ApiSIP.Repository.Document_Process.DocumentRepository;
 import com.upiicsa.ApiSIP.Repository.UserRepository;
 import com.upiicsa.ApiSIP.Service.Infrastructure.FileStorageService;
-import com.upiicsa.ApiSIP.Utils.DocumentNamingUtils;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.multipart.MultipartFile;
@@ -30,18 +29,16 @@ public class DocumentService {
     private final UserRepository userRepository;
     private final DocumentUtilsService utilsService;
     private final StudentProcessService processService;
-    private final DocumentNamingUtils documentNaming;
     private final FileStorageService fileStorage;
 
     public DocumentService(DocumentRepository documentRepository,UserRepository userRepository,
                            DocumentUtilsService utilsService, StudentProcessService processService,
-                           DocumentNamingUtils documentNaming, FileStorageService fileStorage) {
+                           FileStorageService fileStorage) {
 
         this.documentRepository = documentRepository;
         this.userRepository = userRepository;
         this.utilsService = utilsService;
         this.processService = processService;
-        this.documentNaming = documentNaming;
         this.fileStorage = fileStorage;
     }
 
@@ -70,18 +67,25 @@ public class DocumentService {
 
             switch (doc.getDocumentStatus().getDescription()) {
                 case "CORRECTO": throw new BusinessException(ErrorCode.DOCUMENT_ALREADY_APPROVED);
-                case "INCORRECTO": cancelledAndCreated(doc, type, file, userId);
+                case "INCORRECTO": cancelledAndCreated(doc, type, file, process);
                     break;
                 case "PENDIENTE": updateDoc(doc, typeName, file);
                     break;
                 default: throw new BusinessException(ErrorCode.INTERNAL_ERROR);
             }
         } else {
-            createNewDocument(userId, type, file);
+            createNewDocument(process, type, file);
         }
         if(process.getProcessStatus().getId() != 2){
             processService.updateStatus(process);
         }
+    }
+
+    @Transactional
+    public void saveLetter(MultipartFile file, String enrollment, Integer userId) {
+        UserSIP user = userRepository.findById(userId).orElseThrow(
+                () -> new BusinessException(ErrorCode.RESOURCE_NOT_FOUND));
+        createNewDocument(user, enrollment, file);
     }
 
     @Transactional(readOnly = true)
@@ -130,24 +134,28 @@ public class DocumentService {
     }
 
     @Transactional
-    public void createNewDocument(Integer userId, DocumentType type, MultipartFile file){
-        UserSIP user = userRepository.findById(userId).orElse(null);
-        StudentProcess process = processService.findByStudentId(userId);
-
-        String finalName = documentNaming.generateVersionedName(process, type);
+    public void createNewDocument(StudentProcess process, DocumentType type, MultipartFile file){
         DocumentStatus docStatus = utilsService.findStatusByDescription("PENDIENTE");
 
         Document newDocument = Document.builder()
-                .studentProcess(process)
-                .user(user)
-                .uploadDate(LocalDateTime.now())
-                .URL(finalName)
-                .documentType(type)
-                .documentStatus(docStatus)
+                .studentProcess(process).user(process.getStudent())
+                .uploadDate(LocalDateTime.now()).URL(fileStorage.store(file, process, type))
+                .documentType(type).documentStatus(docStatus)
                 .build();
-
         documentRepository.save(newDocument);
-        fileStorage.store(file, finalName);
+    }
+
+    @Transactional
+    public void createNewDocument(UserSIP user, String enrollment, MultipartFile file){
+        DocumentStatus docStatus = utilsService.findStatusByDescription("CORRECTO");
+        DocumentType docType = utilsService.findTypeByDescription("CARTA_PRESENTACION");
+
+        Document newDocument = Document.builder()
+                .studentProcess(null).user(user)
+                .uploadDate(LocalDateTime.now()).URL(fileStorage.store(file, enrollment))
+                .documentType(docType).documentStatus(docStatus)
+                .build();
+        documentRepository.save(newDocument);
     }
 
     @Transactional
@@ -164,13 +172,14 @@ public class DocumentService {
         }
         currentDoc.setUploadDate(LocalDateTime.now());
         documentRepository.save(currentDoc);
-        fileStorage.store(file, currentDoc.getURL());
+        fileStorage.store(file, currentDoc);
     }
 
     @Transactional
-    public void cancelledAndCreated(Document currentDoc, DocumentType type,  MultipartFile file, Integer userId) {
+    public void cancelledAndCreated(Document currentDoc, DocumentType type,  MultipartFile file,
+                                    StudentProcess process) {
         currentDoc.setCancellationDate(LocalDateTime.now());
         documentRepository.save(currentDoc);
-        createNewDocument(userId, type, file);
+        createNewDocument(process, type, file);
     }
 }
