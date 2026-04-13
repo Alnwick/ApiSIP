@@ -40,7 +40,7 @@ async function fetchCareers() {
             selectedCareer = item.dataset.acronym; // Guardamos la carrera elegida
             selectedPlan = 'all'; // Siempre reseteamos el plan a 'all' al cambiar de carrera
 
-            await fetchSyllabus(); // Esto cargará los planes de ESA carrera (usando el endpoint de Yael)
+            await fetchSyllabus(); // Esto cargará los planes de ESA carrera
             await renderTable();   // ¡ESTO es lo que actualiza los mil registros con el filtro!
             await fetchStats();    // Para que los numeritos de arriba también se filtren
         };
@@ -130,7 +130,7 @@ async function renderTable() {
 
         container.innerHTML = students.map(s => `
             <tr onclick="window.location.href='documentosInicio.html?enrollment=${s.enrollment}'" style="cursor:pointer;">
-                <td><strong>${s.offer?.syllabus?.code || 'N/A'}</strong></td>
+                <td><strong>${s.syllabusCode || 'N/A'}</strong></td>
                 <td>${s.name} ${s.fLastName} ${s.mLastName}</td>
                 <td>${s.enrollment}</td>
                 <td><span class="visual-status">En Proceso</span></td>

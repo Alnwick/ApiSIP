@@ -27,25 +27,37 @@
 </div>
 
 
+
 <div class="container">
-    <div id="contenedor-tarjeta-operador"></div>
 
-    <div class="bloque-acciones">
-        <button class="boton-guardar" id="btn-subir-carta" disabled>
-            <i class="fas fa-cloud-upload-alt"></i> Publicar Carta para Alumno
-        </button>
-    </div>
+    <div class="review-panel">
+       <div id="info-estudiante-container"></div><script src="../Templates/TemplateJS/InfoEstudiante.js"></script>
 
-    <div class="vista-previa-seccion">
-        <h3>Vista Previa del Documento a Publicar</h3>
-        <div id="visor-pdf-operador" class="visor-gris">
-            <p>Selecciona el archivo para verificar que los datos sean correctos.</p>
+        <div id="docs-list" style="display: flex; flex-direction: column; gap: 1.2rem;"><script src="../Templates/TemplateJS/TarjetaOperador.js"></script>
+            <!-- Renderizado Dinámico -->
+        </div>
+        
+
+        <div class="bottom-actions">
+            <!--<button class="btn-footer btn-blue" id="btn-approve-acta">Aprobar Acta</button>-->
+            <button class="btn-footer btn-green" id="btn-finalize-review">Finalizar Revisión General</button>
         </div>
     </div>
+    <!-- Lado derecho -->
+    <aside class="preview-side">
+        <div class="viewer-header">
+            <span id="pdf-title">Vista Previa</span>
+        </div>
+        <div class="pdf-content" id="pdfContainer">
+            <div style="text-align:center; color:var(--text-muted)">
+                <p>Selecciona un archivo para visualizarlo aquí.</p>
+            </div>
+        </div>
+    </aside>
+
 </div>
 
 <footer></footer> <script src="../Templates/TemplateJS/Footer.js"></script>
 
 <script src="js/operadorCartas.js"></script>
-<script src="/Templates/TemplateJS/Tarjeta.js"></script>
 <script src="/Templates/TemplateJS/AlertModal.js"></script>

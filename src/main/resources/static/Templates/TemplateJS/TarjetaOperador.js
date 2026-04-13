@@ -22,7 +22,9 @@ function TarjetaOperador(doc, options = {}) {
     
     // Aquí ocurre la magia del nombre personalizado
     const nombreAMostrar = mapaNombres[doc.typeCode] || doc.typeCode;
-    const uniqueId = doc.typeCode.replace(/\s+/g, '_') + '_' + index;
+    const typeCodeSeguro = doc.typeCode || 'DOC_SIN_NOMBRE';
+    //console.log("Revisando documento:", doc);
+    const uniqueId = typeCodeSeguro.replace(/\s+/g, '_') + '_' + index;
 
     // 3. Clases Dinámicas
     let cardClass = `doc-review-card ${extraClass}`;

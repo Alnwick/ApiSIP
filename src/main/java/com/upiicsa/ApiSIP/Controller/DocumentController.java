@@ -5,7 +5,9 @@ import com.upiicsa.ApiSIP.Dto.Document.ReviewDocumentDto;
 import com.upiicsa.ApiSIP.Service.Document.DocumentService;
 import com.upiicsa.ApiSIP.Service.Document.ReviewDocumentService;
 import com.upiicsa.ApiSIP.Utils.AuthHelper;
-import lombok.extern.slf4j.Slf4j;
+import jakarta.annotation.Resource;
+import org.springframework.http.HttpHeaders;
+import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
@@ -13,7 +15,6 @@ import org.springframework.web.multipart.MultipartFile;
 
 import java.util.List;
 
-@Slf4j
 @RestController
 @RequestMapping("/documents")
 public class DocumentController {
@@ -46,19 +47,14 @@ public class DocumentController {
     @PreAuthorize("hasAnyRole('ADMINISTRADOR', 'OPERADOR')")
     public ResponseEntity<String> uploadDocumentLetter(@RequestParam("file") MultipartFile file,
                                   @RequestParam("enrollment") String enrollment){
-        Integer operativeId = getUserId();
-
         documentService.saveLetter(file, enrollment, getUserId());
-        log.info("Operador ID [{}] subio existosamente Carta de presentacion para la matrícula [{}] ",
-                enrollment, operativeId);
-
         return ResponseEntity.ok().body("Uploaded successfully");
     }
 
     @PostMapping("/downloadLetter")
     @PreAuthorize("hasAnyRole('ALUMNO')")
-    public ResponseEntity<DocumentStatusDto>  downloadDocumentLetter(){
-
+    public ResponseEntity<DocumentStatusDto> downloadDocumentLetter() {
+        // Necesitas poner el .ok() para que Spring sepa que es una respuesta 200
         return ResponseEntity.ok(documentService.getLetter(getUserId()));
     }
 
