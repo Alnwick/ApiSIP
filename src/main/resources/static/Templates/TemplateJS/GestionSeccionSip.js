@@ -14,9 +14,6 @@ async function InicializarSeccionRevision(config) {
         window.location.href = 'home.html';
         return;
     }
-
-    renderUniversalHeader('operative');
-
     try {
         // 2. Carga de Datos Única
         const data = await SeccionInfoEstudiante(enrollment, statusSeccion);
@@ -35,7 +32,6 @@ async function InicializarSeccionRevision(config) {
 
         // 5. Configurar botones de guardado (POST)
         setupActionButtonsGenerico(endpointPost);
-        renderUniversalFooter();
 
     } catch (error) {
         console.error("Error al inicializar la sección:", error);

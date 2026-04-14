@@ -11,6 +11,7 @@ const MAPA_DOCS_INICIALES = {
 };
 
 document.addEventListener('DOMContentLoaded', () => {
+    renderUniversalHeader('operative');
     InicializarSeccionRevision({
         statusSeccion: 'DOC_INICIAL',
         mapaNombres: MAPA_DOCS_INICIALES,
@@ -20,6 +21,7 @@ document.addEventListener('DOMContentLoaded', () => {
             functionVerificar: verificarAccesoACartas 
         }
     });
+    renderUniversalFooter();
 });
 function verificarAccesoACartas(documentos, idBotonContenedor) {
     const btnContenedor = document.getElementById(idBotonContenedor);
