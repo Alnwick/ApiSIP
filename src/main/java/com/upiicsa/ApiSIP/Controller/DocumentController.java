@@ -43,18 +43,30 @@ public class DocumentController {
         return ResponseEntity.ok().body("Uploaded successfully");
     }
 
+//    @PostMapping("/uploadLetter")
+//    @PreAuthorize("hasAnyRole('ADMINISTRADOR', 'OPERADOR')")
+//    public ResponseEntity<String> uploadDocumentLetter(@RequestParam("file") MultipartFile file,
+//                                  @RequestParam("enrollment") String enrollment){
+//        documentService.saveLetter(file, enrollment, getUserId());
+//        return ResponseEntity.ok().body("Uploaded successfully");
+//    }
     @PostMapping("/uploadLetter")
     @PreAuthorize("hasAnyRole('ADMINISTRADOR', 'OPERADOR')")
     public ResponseEntity<String> uploadDocumentLetter(@RequestParam("file") MultipartFile file,
-                                  @RequestParam("enrollment") String enrollment){
+                                                       @RequestParam("enrollment") String enrollment){
+
+        // MIRA AQUÍ: Agrega estas líneas para ver si llegan los datos
+        System.out.println(">>> LLEGÓ PETICIÓN DE SUBIDA");
+        System.out.println(">>> Boleta: " + enrollment);
+        System.out.println(">>> Archivo: " + file.getOriginalFilename());
+
         documentService.saveLetter(file, enrollment, getUserId());
         return ResponseEntity.ok().body("Uploaded successfully");
     }
 
-    @PostMapping("/downloadLetter")
+    @GetMapping("/downloadLetter")
     @PreAuthorize("hasAnyRole('ALUMNO')")
     public ResponseEntity<DocumentStatusDto> downloadDocumentLetter() {
-        // Necesitas poner el .ok() para que Spring sepa que es una respuesta 200
         return ResponseEntity.ok(documentService.getLetter(getUserId()));
     }
 

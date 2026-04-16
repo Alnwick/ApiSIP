@@ -99,7 +99,35 @@ public class DocumentService {
                 () -> new BusinessException(ErrorCode.RESOURCE_NOT_FOUND));
         createNewDocument(user, enrollment, file);
     }
-
+//@Transactional
+//public void saveLetter(MultipartFile file, String enrollment, Integer userId) {
+//    // 1. Usamos la boleta para buscar al usuario, es más confiable que el userId del front
+//    UserSIP user = userRepository.findById(userId).orElseThrow(
+//            () -> new BusinessException(ErrorCode.RESOURCE_NOT_FOUND));
+//
+//    // 2. Guardamos el archivo
+//    String savedPath = fileStorage.store(file, enrollment);
+//
+//    // 3. Buscamos el documento (manejando la lista de 18 que tenías)
+//    List<Document> documents = documentRepository.findAllByUserAndTypeCode(user, "CARTA_PRESENTACION");
+//
+//    Document doc;
+//    if (!documents.isEmpty()) {
+//        doc = documents.get(0);
+//    } else {
+//        doc = new Document();
+//        doc.setUser(user);
+//    }
+//
+//    // 4. Llenamos los datos para el JSON
+//    doc.setUploadDate(LocalDateTime.now());
+//    doc.setURL(savedPath); // Asegúrate que tenga @JsonProperty("fileName") en la Entidad
+//    doc.setDocumentStatus(utilsService.findStatusByDescription("CARGADO"));
+//    doc.setDocumentType(utilsService.findTypeByDescription("CARTA_PRESENTACION"));
+//
+//    documentRepository.save(doc);
+//    documentRepository.flush(); // Para que el cambio se vea YA
+//}
     @Transactional(readOnly = true)
     public List<DocumentStatusDto> getDocuments(Integer userId, String processStatus) {
         StudentProcess process = processService.findByStudentId(userId);
@@ -163,9 +191,12 @@ public class DocumentService {
         DocumentType docType = utilsService.findTypeByDescription("CARTA_PRESENTACION");
 
         Document newDocument = Document.builder()
-                .studentProcess(null).user(user)
-                .uploadDate(LocalDateTime.now()).URL(fileStorage.store(file, enrollment))
-                .documentType(docType).documentStatus(docStatus)
+                .studentProcess(null)
+                .user(user)
+                .uploadDate(LocalDateTime.now())
+                .URL(fileStorage.store(file, enrollment))
+                .documentType(docType)
+                .documentStatus(docStatus)
                 .build();
         documentRepository.save(newDocument);
     }

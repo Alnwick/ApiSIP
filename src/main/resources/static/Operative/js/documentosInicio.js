@@ -37,7 +37,7 @@ function verificarAccesoACartas(documentos, idBotonContenedor) {
         const btnReal = btnContenedor.querySelector('button');
         if (btnReal) {
             btnReal.onclick = () => {
-                window.location.href = `Operadorcartas.html?enrollment=${enrollment}`;
+                window.location.href = `operadorCartas.html?enrollment=${enrollment}`;
             };
         }
     } else {

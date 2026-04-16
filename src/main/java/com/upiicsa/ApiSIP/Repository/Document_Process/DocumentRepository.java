@@ -4,6 +4,7 @@ import com.upiicsa.ApiSIP.Model.Catalogs.DocumentType;
 import com.upiicsa.ApiSIP.Model.Catalogs.ProcessStatus;
 import com.upiicsa.ApiSIP.Model.Document_Process.Document;
 import com.upiicsa.ApiSIP.Model.Document_Process.StudentProcess;
+import com.upiicsa.ApiSIP.Model.UserSIP;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
@@ -14,6 +15,9 @@ import java.util.Optional;
 
 @Repository
 public interface DocumentRepository extends JpaRepository<Document, Integer> {
+
+    @Query("SELECT d FROM Document d WHERE d.user = :user AND d.documentType.description = :typeCode ORDER BY d.id DESC")
+    List<Document> findAllByUserAndTypeCode(@Param("user") UserSIP user, @Param("typeCode") String typeCode);
 
     Optional<Document> findByStudentProcessAndDocumentTypeAndCancellationDateIsNull
             (StudentProcess process, DocumentType type);

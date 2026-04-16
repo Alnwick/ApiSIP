@@ -1,5 +1,6 @@
 package com.upiicsa.ApiSIP.Model.Document_Process;
 
+import com.fasterxml.jackson.annotation.JsonProperty;
 import com.upiicsa.ApiSIP.Model.Catalogs.DocumentStatus;
 import com.upiicsa.ApiSIP.Model.Catalogs.DocumentType;
 import com.upiicsa.ApiSIP.Model.UserSIP;
@@ -25,6 +26,7 @@ public class Document {
     @Column(name = "FECHA_CARGA", nullable = false)
     private LocalDateTime uploadDate;
 
+    @JsonProperty("fileName")
     @Column(name = "URL", nullable = false  )
     private String URL;
 
@@ -46,4 +48,8 @@ public class Document {
     @ManyToOne
     @JoinColumn(name = "ID_PROCESO")
     private StudentProcess studentProcess;
+
+    @JsonProperty("status")
+    @Transient // Si no está en la BD, o @Column si sí está
+    private String status;
 }

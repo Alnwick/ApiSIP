@@ -15,12 +15,18 @@
 <header></header> <script src="../Templates/TemplateJS/Header.js"></script>
 
 <nav class="nav-bar" id="volver-atras"><script src="../Templates/TemplateJS/VolverAtras.js"></script></nav>
+<div class="irCartas" id="irTermino">
+    <button id="btn-ir-cartas" class="irCartas-botton">cartas</button>
+</div>
   
 <div class="container">
 
     <div class="review-panel">
        <div id="info-estudiante-container"></div><script src="../Templates/TemplateJS/InfoEstudiante.js"></script>
 
+        <div id="docs-container"> <script src="/Templates/TemplateJS/Tarjeta.js"></script>
+        <!-- Generación dinámica de tarjetas -->
+        </div>
         <div id="docs-list" style="display: flex; flex-direction: column; gap: 1.2rem;"><script src="../Templates/TemplateJS/TarjetaOperador.js"></script>
             <!-- Renderizado Dinámico -->
         </div>
@@ -30,6 +36,10 @@
             <!--<button class="btn-footer btn-blue" id="btn-approve-acta">Aprobar Acta</button>-->
             <button class="btn-footer btn-green" id="btn-finalize-review">Finalizar Revisión General</button>
         </div>
+
+        <div class="sticky-action-bar">
+        <button class="btn-submit" id="btn-global-save">Guardar Cambios</button>
+    </div>
     </div>
     <!-- Lado derecho -->
     <aside class="preview-side">

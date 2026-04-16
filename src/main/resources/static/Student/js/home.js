@@ -22,7 +22,7 @@ async function loadData() {
         if (respStatus.ok) stagesData = await respStatus.json();
         if (respDocs.ok) docsData = await respDocs.json();
 
-        console.log("Docs recibidos:", docsData); // Revisa esto en tu consola, amiga
+        console.log("Docs recibidos:", docsData); 
     } catch (e) {
         console.warn("Error cargando datos", e);
     }
@@ -87,7 +87,7 @@ function renderProgress(apiData, docsData) {
         }
 
         // --- FASE 3 Y 4 ---
-        if ((idx === 2 /*|| idx === 3*/) && todoAprobadoReal) {
+        if ((idx === 2 || idx === 3) && todoAprobadoReal) {
             done = false;
             current = true;
         }
@@ -127,7 +127,7 @@ function actualizarTarjetas(docsInicialesOK, cartasOK) {
             id: 'card-seguimiento',
             link: 'registroseguimiento.html',
             tag: 'lock-tag-seguimiento',
-            puedeAbrir: cartasOK, // Solo si las cartas están aprobadas
+            puedeAbrir: docsInicialesOK, // Solo si las cartas están aprobadas
             mensaje: "Primero deben Aceptar tus Cartas."
         }
     ];

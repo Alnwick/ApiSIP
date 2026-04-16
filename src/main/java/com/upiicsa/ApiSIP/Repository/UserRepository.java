@@ -16,6 +16,7 @@ public interface UserRepository extends JpaRepository<UserSIP, Integer> {
 
     Optional<UserSIP> findById(Integer id);
 
+
     @Query("SELECT u.userType FROM UserSIP u WHERE u.email = :email")
     Optional<UserType> findUserTypeByEmail(@Param("email") String email);
 }

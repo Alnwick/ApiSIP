@@ -1,202 +1,133 @@
 const API_GET_STATUS = '/documents/my-status'; //get
-const API_POST_UPLOAD = '/documents/upload';//post
+const API_DOWNLOAD_LETTER = '/documents/downloadLetter'; // El nuevo endpoint POST
 const DOC_PATH = '/view-documents/'; //post
 
-// Mapeo exacto según tu catálogo de backend
-const DOC_CONFIG = [
-    { id: 'CP', label: 'Carta de presentación', typeCode: 'CARTA_PRESENTACION' },
-    { id: 'CA', label: 'Carta de aceptacion', typeCode: 'CARTA_ACEPTACION' },
-    
-];
 
-document.addEventListener('DOMContentLoaded', () => {
+document.addEventListener('DOMContentLoaded', async () => {
+    // 1. Renderizamos los componentes visuales comunes
     renderUniversalHeader('students');
     volverAtras(); 
     tituloFijo(
         "Cartas de Presentación y Aceptación",
-        "Por favor, carga tus archivos en formato PDF. Peso no mayor a 1MB."
+        "Por favor, descarga tu carta de presentación y carga tu carta de aceptación en formato PDF."
     );
-    initUI();
-    loadStatus();
     renderUniversalFooter();
-    const btnGuardar = document.getElementById('btn-global-save');
-    if (btnGuardar) {
-        btnGuardar.addEventListener('click', handleGlobalUpload);
-    }
+
+    // 2. ¡Llamamos a tu función de carga de datos!
+    await cargarCartasAlumno();
 });
 
-function initUI(docsData = []) {
-    const container = document.getElementById('docs-container');
 
-    container.innerHTML = DOC_CONFIG.map(doc => {
-        const dataDoc = docsData.find(d => d.typeCode === doc.id) || {};
-        const estaAprobado = dataDoc.status === 'CORRECTO';
 
-        // Definimos la acción especial solo para la cédula
-        let accionEspecial = "";
-        if (doc.id === 'cedula' && !estaAprobado) {
-            accionEspecial = `
-                <a href="generarCedula.html" class="btn-generate-inline">
-                    <i class="fas fa-file-signature"></i> Generar Cédula
-                </a>`;
-        }
-
-        return crearTarjetaDocumento(doc, dataDoc, accionEspecial);
-    }).join('');
-
-    // Re-activar los listeners de archivos
-    DOC_CONFIG.forEach(doc => {
-        const input = document.getElementById(`file-${doc.id}`);
-        if(input) {
-            input.addEventListener('change', (e) => {
-                if (e.target.files.length > 0) {
-                    document.getElementById(`name-${doc.id}`).textContent = e.target.files[0].name;
-                }
-            });
-        }
-    });
-}
-async function loadStatus() {
+// Esta función es la que alimentará a cargarCartasAlumno
+async function obtenerEstadoAlumno() {
     try {
-        const urlCompleta = API_GET_STATUS + "?processStatus=CARTAS";
-        const resp = await fetch(urlCompleta);
-
-        if (!resp.ok) {
-            console.error("Error HTTP:", resp.status);
-            return;
-        }
-
-        const isJson = resp.headers.get("content-type")?.includes("application/json");
-        if (!isJson) {
-            console.error("El servidor no devolvió JSON. Probablemente te redirigió al login.");
-            return;
-        }
-
-        const data = await resp.json();
-        console.log("¡Por fin llegaron los datos!:", data);
-
-        data.forEach(item => {
-            const config = DOC_CONFIG.find(c => c.typeCode === item.typeCode);
-            if (config) updateCard(config.id, item);
+        const response = await fetch(API_DOWNLOAD_LETTER, {
+            method: 'GET',
+            headers: {
+                'Content-Type': 'application/json',
+                // A veces es necesario enviar un objeto vacío si el POST no lleva parámetros
+            },
+            body: JSON.stringify({}) 
         });
 
-    } catch (e) {
-        console.error("Error cargando estatus:", e);
+        if (response.status === 404) {
+            // Si sigue saliendo 404, intenta cambiar la ruta a '/ApiSIP/documents/downloadLetter' 
+            // o como se llame tu proyecto en el server
+            console.error("Ruta no encontrada (404)");
+            return null;
+        }
+
+        if (!response.ok) return null;
+
+        return await response.json(); 
+    } catch (error) {
+        console.error("Error al obtener la carta del operador:", error);
+        return null;
     }
 }
 
-function updateCard(id, data) {
-    const card = document.getElementById(`card-${id}`);
-    const badge = document.getElementById(`badge-${id}`);
-    const comment = document.getElementById(`comment-${id}`);
-    const display = document.getElementById(`name-${id}`);
+// 2. LA FUNCIÓN QUE TE MARCABA ERROR POR NO ESTAR DEFINIDA
+function setupUploadListenerAlumno(id, typeCode) {
     const input = document.getElementById(`file-${id}`);
-    const labelBtn = document.getElementById(`btn-${id}`);
-    const dateEl = document.getElementById(`date-${id}`);
+    const label = document.getElementById(`name-${id}`);
 
-    card.className = "doc-card"; // Reset
-    let statusCls = "status-none", badgeCls = "badge-none", label = "Sin Cargar";
-
-    // Mapeo de estados del backend
-    if (data.status === "CORRECTO") {
-        statusCls = "status-correct"; badgeCls = "badge-correct"; label = "Aceptado";
-        input.disabled = true;
-        labelBtn.style.opacity = "0.5";
-        labelBtn.style.pointerEvents = "none";
-    } else if (data.status === "INCORRECTO") {
-        statusCls = "status-incorrect"; badgeCls = "badge-incorrect"; label = "Rechazado";
-    } else if (data.status === "PENDIENTE") {
-        statusCls = "status-pending"; badgeCls = "badge-pending"; label = "En Revisión";
-    } else if (data.fileName) {
-        statusCls = "status-pending"; badgeCls = "badge-pending"; label = "Pendiente";
-    }
-
-    card.classList.add(statusCls);
-    badge.textContent = label;
-    badge.className = `status-badge ${badgeCls}`;
-    comment.textContent = data.comment || "Sin observaciones.";
-
-    if (data.fileName) {
-        // Lógica para la fecha
-        let dateStr = '(--/--/---- --:--)';
-        if (data.uploadDate) {
-            const dateObj = new Date(data.uploadDate);
-            dateStr = dateObj.toLocaleDateString('es-MX', {
-                day: '2-digit',
-                month: '2-digit',
-                year: 'numeric',
-                hour: '2-digit',
-                minute:'2-digit'
-            }).replace(',', '');
-        }
-        // Actualizar la fecha en el header
-        if(dateEl) dateEl.textContent = dateStr;
-
-        // Actualizar solo el nombre del archivo con su enlace
-       // display.innerHTML = `<a href="${DOC_PATH}${data.fileName}" target="_blank" class="file-link">${data.fileName}</a>`;
-        // Actualizar solo el nombre del archivo con su enlace e icono
-        display.innerHTML = `
-            <a href="${DOC_PATH}${data.fileName}" target="_blank" class="file-link view-document-btn">
-                <i class="fa-solid fa-eye"></i> Ver documento
-            </a>
-        `;
+    if (input) {
+        input.addEventListener('change', async (e) => {
+            if (e.target.files.length > 0) {
+                const file = e.target.files[0];
+                if (label) label.textContent = "Seleccionado: " + file.name;
+                
+                // Aquí llamarías a tu función de subir (upload)
+                console.log("Subiendo archivo para:", typeCode);
+                await manejarSubidaAlumno(file, typeCode);
+            }
+        });
     }
 }
 
-/**
- * Procesa la subida de múltiples archivos
- */ 
-async function handleGlobalUpload() {
-    const btn = document.getElementById('btn-global-save');
-    let filesSent = 0;
-    const textoOriginal = btn.textContent;
+// 3. Función para manejar la subida (Para la Carta de Aceptación)
+async function manejarSubidaAlumno(file, typeCode) {
+    const formData = new FormData();
+    formData.append('file', file);
+    formData.append('type', typeCode);
 
-    // 1. Obtener solo los inputs que SÍ tienen archivos
-    const inputsConArchivos = DOC_CONFIG.map(config => ({
-        config,
-        input: document.getElementById(`file-${config.id}`)
-    })).filter(item => item.input && item.input.files.length > 0);
+    try {
+        const response = await fetch('/documents/upload', {
+            method: 'POST',
+            body: formData
+        });
 
-    if (inputsConArchivos.length === 0) {
-        showModal('Sin cambios', 'No has seleccionado archivos nuevos.', 'warning');
-        return;
-    }
-
-    btn.disabled = true;
-    btn.textContent = "Subiendo documentos...";
-
-    // 2. Enviamos uno por uno (como le gusta al Back actual)
-    for (const item of inputsConArchivos) {
-        const formData = new FormData();
-        formData.append('file', item.input.files[0]);
-        formData.append('type', item.config.typeCode);
-
-        try {
-            console.log(`Subiendo ${item.config.label} a la ruta de servidor...`);
-            
-            const response = await fetch(API_POST_UPLOAD, {
-                method: 'POST',
-                body: formData
-            });
-
-            if (response.ok) {
-                filesSent++;
-            } else {
-                // Si uno falla, capturamos el error pero seguimos con los demás
-                const errorMsg = await response.text();
-                console.error(`Error en ${item.config.label}: ${errorMsg}`);
-            }
-        } catch (e) {
-            console.error(`Error de conexión en ${item.config.label}:`, e);
+        if (response.ok) {
+            alert("Archivo subido correctamente");
+            location.reload();
+        } else {
+            alert("Error al subir el archivo");
         }
+    } catch (error) {
+        console.error("Error en la subida:", error);
+    }
+}
+
+async function cargarCartasAlumno() {
+    const container = document.getElementById('docs-container');
+    if (!container) return;
+
+    // 1. Obtenemos la Carta de Presentación (la que manda el operador)
+    const cartaPresentacion = await obtenerEstadoAlumno(); 
+
+    container.innerHTML = ""; 
+
+    // 2. Si existe la carta, la mostramos con tu diseño de éxito
+    if (cartaPresentacion) {
+        const tarjetaCP = TarjetaDocumentoAlumno(cartaPresentacion, { 
+            index: 'CP',
+            docPath: DOC_PATH 
+        });
+        container.appendChild(tarjetaCP);
     }
 
-    // 3. Resultado final
-    if (filesSent > 0) {
-        showModal('¡Éxito!', `Se guardaron ${filesSent} archivo(s) en el servidor.`, 'success', () => location.reload());
-    } else {
-        showModal('Error', 'No se pudo subir ningún archivo. Revisa la consola.', 'error');
-        btn.disabled = false;
-        btn.textContent = textoOriginal;
-    }
-} 
+    // 3. Ahora cargamos la Carta de Aceptación (que el alumno debe subir)
+    // Para esta usamos el otro endpoint que ya tenías: /my-status?processStatus=CARTAS
+    await cargarCartaAceptacionPersonalizada();
+}
+
+async function cargarCartaAceptacionPersonalizada() {
+    const container = document.getElementById('docs-container');
+    
+    // Llamamos al GET /my-status que devuelve la LISTA de documentos del alumno
+    const resp = await fetch('/documents/my-status?processStatus=CARTAS');
+    const docs = await resp.json();
+
+    const dataCA = docs.find(d => d.typeCode === 'CARTA_ACEPTACION') || {};
+
+    const htmlCA = crearTarjetaDocumento(
+        { id: 'CA', label: 'Carta de Aceptación', typeCode: 'CARTA_ACEPTACION' }, 
+        dataCA, 
+        "", 
+        true
+    );
+    
+    container.insertAdjacentHTML('beforeend', htmlCA);
+    setupUploadListenerAlumno('CA', 'CARTA_ACEPTACION');
+}
