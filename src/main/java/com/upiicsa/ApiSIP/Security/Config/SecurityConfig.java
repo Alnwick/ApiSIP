@@ -42,8 +42,9 @@ public class SecurityConfig {
                         sess.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
                 .addFilterBefore(new JwtTokenValidator(jwtUtils, userRepository), UsernamePasswordAuthenticationFilter.class)
                 .authorizeHttpRequests(auth -> auth
-                        .requestMatchers("/", "/index.html", "/styles.css", "/script.js",
-                                "/Imagenes/**", "/Recursos/**", "/view-documents/**", "/Student/**", "/Templates/**")
+                        .requestMatchers("/Administrator/**", "/Imagenes/**", "/Operative/**", "/Student/**",
+                                "Templates/**", "index/html", "master.css", "script.js", "styles.css",
+                                "reset-password.html")
                         .permitAll()
                         .requestMatchers("/auth/login", "/api/forgot-password", "/api/reset-password/**",
                                 "/auth/confirm-email", "auth/resend-code", "/students/register", "/reset-password.html",

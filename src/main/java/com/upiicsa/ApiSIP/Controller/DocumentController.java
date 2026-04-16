@@ -5,9 +5,6 @@ import com.upiicsa.ApiSIP.Dto.Document.ReviewDocumentDto;
 import com.upiicsa.ApiSIP.Service.Document.DocumentService;
 import com.upiicsa.ApiSIP.Service.Document.ReviewDocumentService;
 import com.upiicsa.ApiSIP.Utils.AuthHelper;
-import jakarta.annotation.Resource;
-import org.springframework.http.HttpHeaders;
-import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
@@ -43,29 +40,17 @@ public class DocumentController {
         return ResponseEntity.ok().body("Uploaded successfully");
     }
 
-//    @PostMapping("/uploadLetter")
-//    @PreAuthorize("hasAnyRole('ADMINISTRADOR', 'OPERADOR')")
-//    public ResponseEntity<String> uploadDocumentLetter(@RequestParam("file") MultipartFile file,
-//                                  @RequestParam("enrollment") String enrollment){
-//        documentService.saveLetter(file, enrollment, getUserId());
-//        return ResponseEntity.ok().body("Uploaded successfully");
-//    }
     @PostMapping("/uploadLetter")
     @PreAuthorize("hasAnyRole('ADMINISTRADOR', 'OPERADOR')")
     public ResponseEntity<String> uploadDocumentLetter(@RequestParam("file") MultipartFile file,
                                                        @RequestParam("enrollment") String enrollment){
-
-        // MIRA AQUÍ: Agrega estas líneas para ver si llegan los datos
-        System.out.println(">>> LLEGÓ PETICIÓN DE SUBIDA");
-        System.out.println(">>> Boleta: " + enrollment);
-        System.out.println(">>> Archivo: " + file.getOriginalFilename());
 
         documentService.saveLetter(file, enrollment, getUserId());
         return ResponseEntity.ok().body("Uploaded successfully");
     }
 
     @GetMapping("/downloadLetter")
-    @PreAuthorize("hasAnyRole('ALUMNO')")
+    @PreAuthorize("hasAnyRole('ALUMNO', 'OPERATIVE')")
     public ResponseEntity<DocumentStatusDto> downloadDocumentLetter() {
         return ResponseEntity.ok(documentService.getLetter(getUserId()));
     }

@@ -68,52 +68,17 @@ public class JwtTokenValidator extends OncePerRequestFilter {
         }
         filterChain.doFilter(request, response);
     }
-    /*
+
     @Override
-    protected void doFilterInternal(@NonNull HttpServletRequest request,
-                                    @NonNull HttpServletResponse response,
-                                    @NonNull FilterChain filterChain) throws ServletException, IOException {
-
-        String jwtToken = null;
-
-        // 1. Intentar obtener el token del Header (Prioridad para Fetch/AJAX)
-        String header = request.getHeader("Authorization");
-        if (header != null && header.startsWith("Bearer ")) {
-            jwtToken = header.substring(7);
-        }
-
-        // 2. Si no viene en el Header, buscarlo en las Cookies (Para navegación HTML)
-        if (jwtToken == null && request.getCookies() != null) {
-            for (Cookie cookie : request.getCookies()) {
-                if ("jwtToken".equals(cookie.getName())) {
-                    jwtToken = cookie.getValue();
-                    break;
-                }
-            }
-        }
-
-        if (jwtToken != null) {
-            try {
-                DecodedJWT decodedJWT = jwtUtils.validateToken(jwtToken);
-                String email = jwtUtils.extractUsername(decodedJWT);
-
-                if (email != null && SecurityContextHolder.getContext().getAuthentication() == null) {
-                    UserSIP user = userRepository.findByEmail(email).orElse(null);
-
-                    if (user != null) {
-                        // Importante: user.getAuthorities() debe devolver los roles del alumno
-                        Authentication authentication = new UsernamePasswordAuthenticationToken(
-                                user, null, user.getAuthorities());
-
-                        SecurityContextHolder.getContext().setAuthentication(authentication);
-                    }
-                }
-            } catch (Exception e) {
-                // Si el token falló, limpiamos el contexto para seguridad
-                SecurityContextHolder.clearContext();
-                System.err.println("Error al validar token: " + e.getMessage());
-            }
-        }
-        filterChain.doFilter(request, response);
-    }*/
+    protected boolean shouldNotFilter(@NonNull HttpServletRequest request) throws ServletException {
+        String path = request.getServletPath();
+        return path.startsWith("/styles.css") ||
+                path.startsWith("/script.js") ||
+                path.startsWith("/index.html") ||
+                path.startsWith("/favicon.ico") ||
+                path.startsWith("/.well-known/") ||
+                path.endsWith(".png") ||
+                path.endsWith(".jpg") ||
+                path.startsWith("/public/");
+    }
 }

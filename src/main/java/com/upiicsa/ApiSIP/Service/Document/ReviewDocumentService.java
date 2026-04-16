@@ -58,7 +58,8 @@ public class ReviewDocumentService {
             documentReviewRepository.save(newReview);
 
             log.info("Operador ID [{}] reviso el documento ID [{}] (Tipo: {}) como [{}] - comentario: '{}'",
-                    user.getId(), document.getId(), document.getDocumentType().getDescription(), comment);
+                    user.getId(), document.getId(), document.getDocumentType().getDescription(),
+                    document.getDocumentStatus().getDescription(), comment);
         }
     }
 
