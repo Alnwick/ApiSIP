@@ -9,7 +9,7 @@ const MAPA_DOCS_INICIALES = {
     'CARTA_ACEPTACION': 'Carta de Aceptación',
 };
 document.addEventListener('DOMContentLoaded', () => {
-    renderUniversalHeader('operative');
+    renderUniversalHeader('users');
     volverAtras();
     initOperadorCartas();
      InicializarSeccionRevision({

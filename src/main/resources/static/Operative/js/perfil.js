@@ -1,7 +1,8 @@
 document.addEventListener('DOMContentLoaded', () => {
+    renderUniversalHeader('users');
     loadProfileData();
-    setupLogout();
     setupPasswordUpdate();
+    renderUniversalFooter();
 });
 
 async function loadProfileData() {
@@ -32,17 +33,6 @@ async function loadProfileData() {
     }
 }
 
-function setupLogout() {
-    const btnLogout = document.getElementById('logoutBtn');
-    if (!btnLogout) return;
-
-    btnLogout.addEventListener('click', async () => {
-        try {
-            const response = await fetch('/auth/logout', { method: 'POST' });
-            if (response.ok) window.location.href = '/index.html';
-        } catch (error) { console.error("Error logout", error); }
-    });
-}
 
 function setupPasswordUpdate() {
     const btnUpdate = document.getElementById('btn-update-pwd');

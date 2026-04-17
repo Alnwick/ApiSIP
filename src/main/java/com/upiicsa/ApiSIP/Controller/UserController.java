@@ -20,7 +20,7 @@ public class UserController {
     }
 
     @GetMapping("/data")
-    @PreAuthorize("hasAnyRole('OPERATIVO', 'ADMINISTRADOR')")
+    @PreAuthorize("hasAnyRole('OPERADOR', 'ADMINISTRADOR')")
     public ResponseEntity<DataDto> data(){
         Integer userId = AuthHelper.getAuthenticatedUserId();
 

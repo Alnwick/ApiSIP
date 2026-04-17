@@ -7,7 +7,7 @@ let selectedPlan = 'all';
 let selectedFilter = 'total';
 
 document.addEventListener('DOMContentLoaded', () => {
-    renderUniversalHeader('operative');
+    renderUniversalHeader('users');
     init();
     renderUniversalFooter();
 });

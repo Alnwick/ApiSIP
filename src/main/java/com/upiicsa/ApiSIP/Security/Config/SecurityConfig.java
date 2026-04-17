@@ -43,7 +43,7 @@ public class SecurityConfig {
                 .addFilterBefore(new JwtTokenValidator(jwtUtils, userRepository), UsernamePasswordAuthenticationFilter.class)
                 .authorizeHttpRequests(auth -> auth
                         .requestMatchers("/Administrator/**", "/Imagenes/**", "/Operative/**", "/Student/**",
-                                "Templates/**", "index/html", "master.css", "script.js", "styles.css",
+                                "Templates/**", "index.html", "master.css", "script.js", "styles.css",
                                 "reset-password.html")
                         .permitAll()
                         .requestMatchers("/auth/login", "/api/forgot-password", "/api/reset-password/**",

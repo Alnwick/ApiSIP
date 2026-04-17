@@ -9,7 +9,7 @@ const MAPA_DOCS_INICIALES = {
 };
 
 document.addEventListener('DOMContentLoaded', () => {
-    renderUniversalHeader('operative');
+    renderUniversalHeader('users');
     volverAtras();
     InicializarSeccionRevision({
         statusSeccion: 'DOC_INICIAL',

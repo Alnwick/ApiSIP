@@ -67,7 +67,7 @@ function setupHeaderEvents(tipoUsuario) {
     const pill = document.getElementById('userPill');
     if (pill) {
         pill.onclick = () => {
-            const path = tipoUsuario === 'students' ? 'perfil.html' : 'perfil_operador.html';
+            const path = tipoUsuario === 'students' ? 'perfil.html' : 'perfil.html';
             window.location.href = path;
         };
     }
@@ -86,7 +86,7 @@ function setupHeaderEvents(tipoUsuario) {
     }
 }
 
-async function loadHeaderProfile(tipoUsuario) {
+async function  loadHeaderProfile(tipoUsuario) {
     try {
         const endpoint = `/${tipoUsuario}/data`;
         const resp = await fetch(endpoint);

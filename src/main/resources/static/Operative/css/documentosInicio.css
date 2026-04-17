@@ -26,41 +26,6 @@ body {
 /* --- BARRA DE NAVEGACIÓN (STICKY FIX) --- */
 
 /*Ir a  cartas*/
-.irCartas{
-    display:none;
-    opacity: 0;
-    transition: opacity 0.5s ease;
-    pointer-events: none;
-}
-.irCartas.visible{
-    max-width: 1600px;
-    width: 98%;
-    display:flex;
-    flex-direction:row;
-    padding:1rem 2rem 0 0;
-    margin:.7rem auto;
-    align-items:center;
-    justify-content:center;
-    opacity: 1;
-    pointer-events: auto;
-}
-.irCartas-botton{
-    border: 1px solid var(--primary-dark);
-    border-radius:1rem;
-    padding:.5rem 1rem;
-    text-decoration:none;
-    width:100%;
-    text-align:center;
-    /*Texto*/
-    text-transform:uppercase;
-    color:var(--text-main);
-    font-weight: 900;
-}
-.irCartas-botton:hover{
-    cursor: pointer;
-    background-color:var(--primary-dark);
-    color:var(--white);
-}
 
 /* --- LAYOUT 50/50 --- */
 .container {

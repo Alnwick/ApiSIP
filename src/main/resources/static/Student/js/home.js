@@ -11,51 +11,90 @@ document.addEventListener('DOMContentLoaded', () => {
 async function loadData() {
     let stagesData = [];
     let docsData = [];
+    let docsCarts = [];
+    let docsTermino = [];
 
     try {
         const urlDocs = `${API_DOCS_STATUS}?processStatus=DOC_INICIAL`;
-        const [respStatus, respDocs] = await Promise.all([
+        const urlCarts = `${API_DOCS_STATUS}?processStatus=CARTAS`;
+        const urlTermino = `${API_DOCS_STATUS}?processStatus=DOC_FINAL`;
+        const [respStatus, respDocs, respCarts, respTermino] = await Promise.all([
             fetch(API_STATUS),
-            fetch(urlDocs)
+            fetch(urlDocs),
+            fetch(urlCarts),
+            fetch(urlTermino)
         ]);
 
         if (respStatus.ok) stagesData = await respStatus.json();
         if (respDocs.ok) docsData = await respDocs.json();
+        if (respCarts.ok) docsCarts = await respCarts.json();
+        if (respTermino.ok) docsTermino = await respTermino.json();
 
-        console.log("Docs recibidos:", docsData); 
+        console.log("Docs inicio:", docsData); 
+        console.log("Docs Cartas:", docsCarts); 
+        console.log("Docs Término:", docsTermino); 
     } catch (e) {
         console.warn("Error cargando datos", e);
     }
 
-    renderProgress(stagesData, docsData);
+    renderProgress(stagesData, docsData, docsCarts, docsTermino);
 }
 
-function renderProgress(apiData, docsData) {
+function renderProgress(apiData, docsData, docsCarts, docsTermino) {
     const stepper = document.getElementById('main-stepper');
     if (!stepper) return;
 
     const docsObligatorios = ["CEDULA_REGISTRO", "CONSTANCIA_IMSS", "CAPTURA_EMPRESA", "CAPTURA_ALUMNO", "HORARIO"];
+    const docsCartsFase2 = ["CARTA_ACEPTACION"/*",CARTA_PRESENTACION"*/ ];
+    const docsTerminoFase3 = ["HOJAS_ASISTENCIA", "INFORMES_MENSUALES", "CARTA_TERMINO"];
 
     const haSubidoAlgo = docsData && docsData.some(doc => doc.fileName !== null && doc.status !== 'SIN_CARGA');
+    const haSubidoAlgoCarts = docsCarts && docsCartsFase2.some(doc => doc.fileName !== null && doc.status !== 'SIN_CARGA');
+    const haSubidoAlgoTermino = docsTermino && docsTerminoFase3.some(doc => doc.fileName !== null && doc.status !== 'SIN_CARGA');
 
+    // ===================== Aprobado
     const todoAprobadoReal = docsObligatorios.every(type => {
         const doc = docsData.find(d => d.typeCode === type);
         return doc && doc.status === 'CORRECTO';
     });
 
+    const todoAprobadoRealCarts = docsCartsFase2.every(type => {
+        const doc = docsCarts.find(d => d.typeCode === type);
+        return doc && doc.status === 'CORRECTO';
+    });
+
+    const todoAprobadoRealTermino = docsTerminoFase3.every(type => {
+        const doc = docsTermino.find(d => d.typeCode === type);
+        return doc && doc.status === 'CORRECTO';
+    });
+
+    // ================== falta subir
     const faltaSubirArchivo = docsObligatorios.some(type => {
         const doc = docsData.find(d => d.typeCode === type);
         return !doc || doc.status === 'SIN_CARGA' || !doc.fileName;
     });
+    const faltaSubirArchivoCarts = docsCartsFase2.some(type => {
+        const doc = docsCarts.find(d => d.typeCode === type);
+        return !doc || doc.status === 'SIN_CARGA' || !doc.fileName;
+    });
+    const faltaSubirArchivoTermino = docsTerminoFase3.some(type => {
+        const doc = docsTermino.find(d => d.typeCode === type);
+        return !doc || doc.status === 'SIN_CARGA' || !doc.fileName;
+    });
 
+    // ================== En revisión
     const estaEnRevision = !faltaSubirArchivo && !todoAprobadoReal;
+    const estaEnRevisionCarts = !faltaSubirArchivoCarts && !todoAprobadoRealCarts;
+    const estaEnRevisionTermino = !faltaSubirArchivoTermino && !todoAprobadoRealTermino;
+
 
     stepper.innerHTML = PHASES.map((name, idx) => {
         const data = apiData[idx] || {};
-        let done = data.date && data.date !== "" && data.date !== "-";
+        let done = data.date && data.date !== "" && data.date !== "-"; 
         let current = data.isCurrent || false;
         let displayDate = data.date;
         let customStatus = "";
+        const fechaValida = (displayDate && displayDate !== "-") ? displayDate : new Date().toISOString();
 
         // --- LÓGICA PARA FASE 0 (Registrado) ---
         if (idx === 0) {
@@ -65,8 +104,6 @@ function renderProgress(apiData, docsData) {
             } else {
                 done = false;
                 current = true;
-                // Si la fecha de apiData es nula, usamos la fecha de hoy
-                const fechaValida = (displayDate && displayDate !== "-") ? displayDate : new Date().toISOString();
                 customStatus = `Inició: ${fmt(fechaValida)}`;
             }
         }
@@ -74,7 +111,7 @@ function renderProgress(apiData, docsData) {
         // --- LÓGICA PARA FASE 1 (Doc Inicial) ---
         if (idx === 1) {
             if (todoAprobadoReal) {
-                done = true;      // Palomita verde
+                done = true;
                 current = false;
             } else if (haSubidoAlgo) {
                 done = false;
@@ -86,11 +123,49 @@ function renderProgress(apiData, docsData) {
             }
         }
 
-        // --- FASE 3 Y 4 ---
-        if ((idx === 2 || idx === 3) && todoAprobadoReal) {
-            done = false;
-            current = true;
+        // --- FASE 2 desbloquear Cartas ---
+        if (idx === 2) {
+            if (todoAprobadoRealCarts) {
+                done = true; 
+                current = false;
+                const ultimaCarta = docsCarts.find(d => d.typeCode === "CARTA_ACEPTACION");
+                displayDate = ultimaCarta ? ultimaCarta.uploadDate : displayDate;
+            } else if (todoAprobadoReal) {
+                done = false;
+                current = true;
+                if (haSubidoAlgoCarts) {
+                    customStatus = faltaSubirArchivoCarts ? "Documentación incompleta" : "Revisando...";
+                }
+            } else {
+                done = false;
+                current = false;
+            }
         }
+        //faase 3 desbloquear doc termino
+         
+        if (idx === 3) {
+            if (todoAprobadoRealTermino) {
+                done = true; 
+                current = false;
+                const ultimoTermino = docsTermino.find(d => d.typeCode === "CARTA_TERMINO");
+                displayDate = ultimoTermino ? ultimoTermino.uploadDate : displayDate;
+            } else if (todoAprobadoRealCarts) {
+                done = false;
+                current = true;
+                if (haSubidoAlgoTermino) {
+                    customStatus = faltaSubirArchivoTermino ? "Documentación incompleta" : "Revisando...";
+                }
+            } else {
+                done = false;
+                current = false;
+            }
+        }
+
+        if(idx === 4 && todoAprobadoRealTermino){
+            done = true; 
+            current = false; 
+        }
+
 
 
         let statusClass = done ? 'completed' : (current ? 'active' : '');
@@ -111,10 +186,13 @@ function renderProgress(apiData, docsData) {
         `;
     }).join('');
 
-    actualizarTarjetas(todoAprobadoReal);
+    actualizarTarjetas(todoAprobadoReal, todoAprobadoRealCarts, todoAprobadoRealTermino);
+    console.log(todoAprobadoReal);
+    console.log(todoAprobadoRealCarts);
+    console.log(todoAprobadoRealTermino);
 }
 //funcion paraa abrir cartar y cartas progreso
-function actualizarTarjetas(docsInicialesOK, cartasOK) {
+function actualizarTarjetas(docsInicialesOK, cartasOK, terminoOK) {
     const configuracion = [
         {
             id: 'card-cartas',
@@ -127,7 +205,7 @@ function actualizarTarjetas(docsInicialesOK, cartasOK) {
             id: 'card-seguimiento',
             link: 'registroseguimiento.html',
             tag: 'lock-tag-seguimiento',
-            puedeAbrir: docsInicialesOK, // Solo si las cartas están aprobadas
+            puedeAbrir: cartasOK, // Solo si las cartas están aprobadas
             mensaje: "Primero deben Aceptar tus Cartas."
         }
     ];
