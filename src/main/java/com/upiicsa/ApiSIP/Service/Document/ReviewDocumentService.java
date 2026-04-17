@@ -24,17 +24,17 @@ public class ReviewDocumentService {
     public final UserService userService;
     public final StudentService studentService;
     public final StudentProcessService processService;
-    public final DocumentService documentService;
+    public final DocumentPersistenceService documentPersistence;
     public final DocumentUtilsService utilsService;
 
     public ReviewDocumentService(DocumentReviewRepository documentReviewRepository, UserService userService,
                     StudentService studentService, StudentProcessService processService,
-                    DocumentService documentService, DocumentUtilsService utilsService) {
+                    DocumentPersistenceService documentPersistence, DocumentUtilsService utilsService) {
         this.documentReviewRepository = documentReviewRepository;
         this.userService = userService;
         this.studentService = studentService;
         this.processService = processService;
-        this.documentService = documentService;
+        this.documentPersistence = documentPersistence;
         this.utilsService = utilsService;
     }
 
@@ -46,7 +46,7 @@ public class ReviewDocumentService {
         boolean alreadyExists = documentReviewRepository.existsById(document.getId());
 
         if (!alreadyExists) {
-            documentService.changeStatus(newStatus, document);
+            documentPersistence.changeStatus(document, newStatus);
 
             DocumentReview newReview = DocumentReview.builder()
                     .document(document)
@@ -71,13 +71,13 @@ public class ReviewDocumentService {
         log.info("Operador ID [{}] inicio revisión de documentos para la matrícula [{}]", userId, enrollment);
 
         for (ReviewDocumentDto dto : reviewsDto) {
-            Document doc = documentService.findDocByProcessAndType(process, dto.typeName());
+            Document doc = documentPersistence.findDocByProcessAndType(process, dto.typeName());
 
             if(doc != null) {
                 save(doc, user, dto.approved(), dto.comment());
             }
         }
-        processService.validateUpdateStatus(process, documentService.findByProcessAndStatus(process.getProcessStatus()));
+        processService.validateUpdateStatus(process, documentPersistence.findByProcessAndStatus(process.getProcessStatus()));
         log.info("Operador ID [{}] finalizo la revisión para la matrícula [{}]", userId, enrollment);
     }
 }

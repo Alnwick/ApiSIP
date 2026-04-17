@@ -47,6 +47,7 @@ public class FileStorageService {
         }
         return fileName;
     }
+
     public void store(MultipartFile file, Document document) {
         try {
             Files.copy(file.getInputStream(), this.root.resolve(document.getURL()),
