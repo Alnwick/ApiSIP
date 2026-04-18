@@ -6,6 +6,7 @@
     <title>Prácticas Profesionales - Panel</title>
     <link rel="stylesheet" href="../master.css">
     <link rel="stylesheet" href="css/home.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
 </head>
 <body>
 
@@ -56,6 +57,21 @@
             <!-- Se llena vía API -->
             </tbody>
         </table>
+    </div>
+
+    <!-- Paginación -->
+    <div class="pagination-container">
+        <div class="pagination-legend" id="paginationLegend">
+            Mostrando 0 a 0 de 0 alumnos
+        </div>
+        <div class="pagination-controls">
+            <button id="btnPrev" onclick="changePage(-1)" disabled>
+                <i class="fas fa-chevron-left"></i>
+            </button>
+            <button id="btnNext" onclick="changePage(1)" disabled>
+                <i class="fas fa-chevron-right"></i>
+            </button>
+        </div>
     </div>
 
 </div>

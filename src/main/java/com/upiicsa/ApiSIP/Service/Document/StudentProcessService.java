@@ -154,10 +154,10 @@ public class StudentProcessService {
 
         return new DashboardStatsDto(
                 (int) filteredStudents.getTotalElements(),
-                counts.getOrDefault("Registrado", 0L).intValue(),
-                counts.getOrDefault("Doc Inicial", 0L).intValue(),
-                counts.getOrDefault("Carta Aceptacion", 0L).intValue(),
-                counts.getOrDefault("Doc Final", 0L).intValue()
+                counts.getOrDefault("REGISTRADO", 0L).intValue(),
+                counts.getOrDefault("DOC_INICIAL", 0L).intValue(),
+                counts.getOrDefault("CARTAS", 0L).intValue(),
+                counts.getOrDefault("DOC_FINAL", 0L).intValue()
         );
     }
 }

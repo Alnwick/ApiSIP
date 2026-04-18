@@ -5,6 +5,7 @@ const API_LOGOUT = '/auth/logout';
 let selectedCareer = 'all';
 let selectedPlan = 'all';
 let selectedFilter = 'total';
+let currentPage = 0; // Control de página actual
 
 document.addEventListener('DOMContentLoaded', () => {
     renderUniversalHeader('users');
@@ -18,12 +19,14 @@ async function init() {
     await fetchSyllabus();
     await updateDashboard();
 }
-//buscador solo parte visual, logica mas abajo==============================
+
 function setupListeners() {
-    document.getElementById('searchInput').addEventListener('input', debounce(() => renderTable(), 300));
+    document.getElementById('searchInput').addEventListener('input', debounce(() => {
+        currentPage = 0; // Resetear página al buscar
+        renderTable();
+    }, 300));
 }
 
-//parte superior qu emuestra las carreras
 async function fetchCareers() {
     const careers = await apiRequest(`${API_CATALOGS}/careers?SchoolName=UPIICSA`);
     if (!careers) return;
@@ -37,12 +40,13 @@ async function fetchCareers() {
             container.querySelector('.active').classList.remove('active');
             item.classList.add('active');
 
-            selectedCareer = item.dataset.acronym; 
-            selectedPlan = 'all'; 
+            selectedCareer = item.dataset.acronym;
+            selectedPlan = 'all';
+            currentPage = 0; // Resetear página
 
             await fetchSyllabus();
-            await renderTable();   
-            await fetchStats();  
+            await renderTable();
+            await fetchStats();
         };
     });
 }
@@ -60,16 +64,17 @@ async function fetchSyllabus() {
     const syllabus = await apiRequest(url);
 
     container.innerHTML = '<div class="selectable-item active" data-code="all">Todos los planes</div>' +
-    (syllabus ? syllabus.map(s => `<div class="selectable-item" data-code="${s.code}">${s.code}</div>`).join('') : '');
+        (syllabus ? syllabus.map(s => `<div class="selectable-item" data-code="${s.code}">${s.code}</div>`).join('') : '');
 
     container.querySelectorAll('.selectable-item').forEach(item => {
         item.onclick = async () => {
             container.querySelector('.active').classList.remove('active');
             item.classList.add('active');
             selectedPlan = item.dataset.code;
+            currentPage = 0;
 
-            await renderTable(); 
-            await fetchStats(); 
+            await renderTable();
+            await fetchStats();
         };
     });
 }
@@ -81,7 +86,6 @@ async function updateDashboard() {
 
 async function fetchStats() {
     const url = `${API_STUDENTS}/stats?careerAcronym=${selectedCareer}&planCode=${selectedPlan}`;
-
     const stats = await apiRequest(url);
     const grid = document.getElementById('statsGrid');
 
@@ -103,15 +107,14 @@ async function fetchStats() {
 
 window.filterByStat = function(key) {
     selectedFilter = key;
+    currentPage = 0;
     updateDashboard();
 };
 
 async function renderTable() {
     const container = document.getElementById('studentTableBody');
     const searchTerm = document.getElementById('searchInput').value.trim();
-
-
-    let url = `${API_STUDENTS}/filtered?page=0&size=50&career=${selectedCareer}&plan=${selectedPlan}`;
+    let url = `${API_STUDENTS}/filtered?page=${currentPage}&career=${selectedCareer}&plan=${selectedPlan}`;
 
     if (searchTerm) {
         url += `&search=${encodeURIComponent(searchTerm)}`;
@@ -122,9 +125,9 @@ async function renderTable() {
     const students = data.content || [];
 
     try {
-
         if (students.length === 0) {
             container.innerHTML = '<tr><td colspan="4" style="text-align:center; padding:3rem; color:var(--text-muted)">No hay alumnos con estos filtros.</td></tr>';
+            updatePaginationUI(0, 0, 0, true, true);
             return;
         }
 
@@ -136,8 +139,38 @@ async function renderTable() {
                 <td><span class="visual-status">${s.processStatus || 'N/A'}</span></td>
             </tr>
         `).join('');
+
+        // Cálculo de leyenda basado en el objeto "page" que manda Spring
+        const p = data.page;
+        const start = (p.number * p.size) + 1;
+        const end = (p.number * p.size) + students.length;
+
+        // isFirst y isLast para las flechas
+        const isFirst = p.number === 0;
+        const isLast = p.number >= p.totalPages - 1;
+
+        updatePaginationUI(start, end, p.totalElements, isFirst, isLast);
+
     } catch (e) { console.error("Error:", e); }
 }
+
+function updatePaginationUI(start, end, total, isFirst, isLast) {
+    const legend = document.getElementById('paginationLegend');
+    if (legend) {
+        legend.innerText = `Mostrando ${start} a ${end} de ${total} alumnos`;
+    }
+
+    const btnPrev = document.getElementById('btnPrev');
+    const btnNext = document.getElementById('btnNext');
+
+    if (btnPrev) btnPrev.disabled = isFirst;
+    if (btnNext) btnNext.disabled = isLast;
+}
+
+window.changePage = function(step) {
+    currentPage += step;
+    renderTable();
+};
 
 async function apiRequest(url) {
     try {
