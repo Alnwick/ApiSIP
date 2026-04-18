@@ -1,0 +1,52 @@
+:root {
+    /* --- Identidad  1A8C14 --- */
+    --primary: #1A8C14;
+    --primary-dark: #136b10;
+    --primary-light: #e8f5e9;
+    --accent: #10b981; /* Tu --success anterior */
+    --bg: #f4f7f4;
+    --navActive: #f39c12
+    /*header boton salir*/
+    --btn-salir: #b91c1c;
+    --black: #000;
+
+    /* --- Superficies (Claves para Dark Mode) --- */
+    --bg-main: #ffffff;           /* Fondo general */
+    --bg-alternative: #fffbeb;           /* Fondo general */
+    --bg-panel: #ffffff;          /* Fondo del panel de formulario */
+    --bg-input: #f8fafc;          /* Fondo de inputs y toggles */
+    --bg-overlay: #1A8C14;        /* Color del overlay del branding */
+    --bg-modal: #ffffff;          /* Fondo de tarjetas modales */
+    
+    /* --- Textos --- */
+    --text-main: #1f2937;         /* Títulos y texto fuerte */
+    --text-muted: #6b7280;        /* Párrafos y etiquetas suaves */
+    --text-on-brand: #ffffff;     /* Texto sobre fondos oscuros/verdes */
+    --text-link: #1A8C14;         /* Color de enlaces */
+    --white: #ffffff;
+
+    /* --- Bordes y Sombras --- */
+    --border-color: #d1d5db;
+    --border-focus: rgba(26, 140, 20, 0.3);
+    --shadow-sm: 0 4px 6px rgba(0, 0, 0, 0.03);
+    --shadow-md: 0 15px 30px rgba(0, 0, 0, 0.15);
+    --shadow-brand: rgba(26, 140, 20, 0.15); /* Sombra de botones verdes */
+
+    /*STYLE.CSS*/
+    --shadow-brand-UserPill: rgba(0,0,0,0.1);
+    --shadow-brand-logo: rgba(54, 54, 54, 0.2);
+    --shadow-brand-overlay: rgba(0,0,0,0.5);
+    --shadow-brand-btnLogo: rgba(255, 255, 255, 0.2);
+    --shadow-brand-btnLogo2: rgba(255, 255, 255, 0.4);
+    --shadow-brand-LogoBox: rgba(255, 255, 255, 0.15);
+    --shadow-brand-IconBox: rgba(26, 140, 20, 0.2);
+
+    /* --- Estados --- */
+    --gray: #9ca3af;
+    --error: #ef4444;
+    --success: #10b981;
+    --info: #0369a1;
+    --infoA: #e8dc0a;
+    --toggle-off: #cbd5e1;
+    --pending: #f59e0b;
+}

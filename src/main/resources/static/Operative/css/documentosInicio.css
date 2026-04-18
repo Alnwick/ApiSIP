@@ -1,17 +1,4 @@
-:root {
-    --primary: #1A8C14;
-    --primary-dark: #136b10;
-    --primary-light: #e8f5e9;
-    --bg: #f4f7f4;
-    --text-main: #1f2937;
-    --text-muted: #6b7280;
-    --white: #ffffff;
-    --border: #d1d5db;
-    --error: #dc2626;
-    --success: #16a34a;
-    --info: #0369a1;
-}
-
+@import url('/global.css');
 * { box-sizing: border-box; margin: 0; padding: 0; }
 
 body {

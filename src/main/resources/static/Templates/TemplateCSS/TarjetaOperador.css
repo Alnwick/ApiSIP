@@ -1,29 +1,14 @@
-:root {
-    --primary: #1A8C14;
-    --primary-dark: #136b10;
-    --primary-light: #e8f5e9;
-    --bg: #f4f7f4;
-    --text-main: #1f2937;
-    --text-muted: #6b7280;
-    --white: #ffffff;
-    --border: #d1d5db;
-    --error: #dc2626;
-    --success: #16a34a;
-    --info: #0369a1;
-}
-
-
-
+@import url('/global.css');
 .doc-review-card {
     background: var(--white);
     border-radius: 1.2rem;
     padding: 1.5rem;
-    border: 1px solid var(--border);
+    border: 1px solid var(--border-color);
     transition: all 0.2s;
 }
 
-.card-revisado { border-left: 6px solid var(--success); background: #ffffff; }
-.card-sin-doc { opacity: 0.6; background: #f9fafb; border-left: 6px solid #d1d5db; }
+.card-revisado { border-left: 6px solid var(--success); background: var(--white); }
+.card-sin-doc { opacity: 0.6; background: var(--bg-input); border-left: 6px solid var(--border-color); }
 .card-cargado { border-left: 6px solid var(--info); }
 .card-error { border-left: 6px solid var(--error); }
 
@@ -57,21 +42,21 @@
     justify-content: center;
     padding: 0.7rem;
     border-radius: 0.8rem;
-    border: 1px solid var(--border);
+    border: 1px solid var(--border-color);
     cursor: pointer;
     font-size: 0.85rem;
     font-weight: 700;
 }
 
 input[type="radio"] { display: none; }
-.opt-ok:has(input:checked) { background: var(--success); color: white; border-color: var(--success); }
-.opt-err:has(input:checked) { background: var(--error); color: white; border-color: var(--error); }
+.opt-ok:has(input:checked) { background: var(--success); color: var(--white); border-color: var(--success); }
+.opt-err:has(input:checked) { background: var(--error); color: var(--white); border-color: var(--error); }
 
 .comment-area {
     width: 100%;
     padding: 0.8rem;
     border-radius: 0.8rem;
-    border: 1px solid var(--border);
+    border: 1px solid var(--border-color);
     font-size: 0.9rem;
     min-height: 80px;
     outline: none;
@@ -79,7 +64,7 @@ input[type="radio"] { display: none; }
 
 .locked-badge {
     background: var(--success);
-    color: white;
+    color: var(--white);
     padding: 4px 12px;
     border-radius: 50px;
     font-size: 0.7rem;

@@ -25,11 +25,11 @@ function showModal(title, message, type = 'info', callback = null) {
         return;
     }
 
-    // Asignar textos
+    
     titleEl.textContent = title;
     msgEl.textContent = message;
 
-    // Tus nuevos iconos estandarizados
+    
     const icons = {
         success: `
         <svg class="modal-svg icon-success" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
@@ -46,15 +46,12 @@ function showModal(title, message, type = 'info', callback = null) {
 
     // Configurar icono
     iconBox.innerHTML = icons[type] || icons.error;
-
-    // Ajustar clases para el estilo
     iconBox.className = `modal-icon-box icon-${type}`;
 
-    // Mostrar modal (soportando ambos métodos: display o class .active)
+   
     modal.style.display = 'flex';
     modal.classList.add('active');
 
-    // Manejar cierre
     btn.onclick = () => {
         modal.style.display = 'none';
         modal.classList.remove('active');

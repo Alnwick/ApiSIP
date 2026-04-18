@@ -1,14 +1,4 @@
-:root {
-    --primary: #1A8C14;
-    --primary-dark: #136b10;
-    --primary-light: #e8f5e9;
-    --bg: #f4f7f4;
-    --text-main: #1f2937;
-    --text-muted: #6b7280;
-    --white: #ffffff;
-    --border: #d1d5db;
-}
-
+@import url('../global.css');
 * { box-sizing: border-box; margin: 0; padding: 0; }
 
 body {
@@ -40,7 +30,7 @@ body {
     background: var(--white);
     padding: 2rem;
     border-radius: 1.5rem;
-    box-shadow: 0 4px 6px rgba(0,0,0,0.05);
+    box-shadow: 0 4px 6px var(--shadow-brand-overlay);
     border-top: 5px solid var(--primary);
 }
 
@@ -77,46 +67,46 @@ label { font-size: 0.75rem; font-weight: 800; color: var(--text-muted); text-tra
 input, select {
     padding: 0.75rem 1rem;
     border-radius: 0.75rem;
-    border: 1px solid var(--border);
+    border: 1px solid var(--border-color);
     font-size: 0.9rem;
     outline: none;
     transition: border-color 0.2s;
-    background: #fcfcfc;
+    background: var(--white);
     width: 100%;
 }
-input:focus, select:focus { border-color: var(--primary); background: white; box-shadow: 0 0 0 3px var(--primary-light); }
+input:focus, select:focus { border-color: var(--primary); background: var(--white); box-shadow: 0 0 0 3px var(--primary-light); }
 
 .input-error{
-    border:1px solid red;
+    border:1px solid var(--error);
 }
 .error-text{
     font-weight:bold;
-    color:red;
+    color:var(--error);
 }
 .error-text svg {
     width: 16px;
     height: 16px;
     vertical-align: middle;
     margin-right: 5px;
-    color:red;
+    color:var(--error);
 }
 
 .btn-generate {
     background: linear-gradient(135deg, var(--primary) 0%, var(--primary-dark) 100%);
-    color: white;
+    color: var(--white);
     border: none;
     padding: 1rem;
     border-radius: 1rem;
     font-weight: 800;
     font-size: 1rem;
     cursor: pointer;
-    box-shadow: 0 4px 10px rgba(26, 140, 20, 0.3);
+    box-shadow: 0 4px 10px var(--border-focus);
     transition: transform 0.2s;
     margin-top: 1rem;
     width: 100%;
 }
 .btn-generate:hover { transform: translateY(-2px); box-shadow: 0 6px 15px rgba(26, 140, 20, 0.4); }
-.btn-generate:disabled { background: #cbd5e1; cursor: not-allowed; transform: none; box-shadow: none; }
+.btn-generate:disabled { background: var(--toggle-off); cursor: not-allowed; transform: none; box-shadow: none; }
 
 /* --- LADO DERECHO: VISOR PDF --- */
 .preview-side {
@@ -130,9 +120,9 @@ input:focus, select:focus { border-color: var(--primary); background: white; box
 
 .pdf-viewer {
     flex: 1;
-    background: #e2e8f0;
+    background: var(--white);
     border-radius: 1.5rem;
-    border: 2px dashed var(--border);
+    border: 2px dashed var(--toggle-off);
     display: flex;
     align-items: center;
     justify-content: center;
@@ -150,7 +140,7 @@ input:focus, select:focus { border-color: var(--primary); background: white; box
 
 .btn-download {
     background: var(--text-main);
-    color: white;
+    color: var(--white);
     text-decoration: none;
     padding: 1rem;
     border-radius: 1rem;
@@ -159,7 +149,7 @@ input:focus, select:focus { border-color: var(--primary); background: white; box
     transition: 0.2s;
     display: none;
 }
-.btn-download:hover { background: #000; transform: translateY(-2px); }
+.btn-download:hover { background: var(--black); transform: translateY(-2px); }
 @media (max-width: 1000px) {
     .container { grid-template-columns: 1fr; }
     .preview-side { position: static; height: 600px; }

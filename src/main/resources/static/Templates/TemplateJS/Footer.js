@@ -5,8 +5,6 @@ function renderUniversalFooter() {
         console.warn("No se encontró la etiqueta <footer> para renderizar el componente.");
         return;
     }
-
-    // Obtenemos el año actual para que siempre esté al día
     const anioActual = new Date().getFullYear();
 
     footerElement.innerHTML = `

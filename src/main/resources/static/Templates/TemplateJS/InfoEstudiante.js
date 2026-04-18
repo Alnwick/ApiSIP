@@ -2,7 +2,6 @@ async function SeccionInfoEstudiante(enrollment, processStatus, containerId = 'i
     const container = document.getElementById(containerId);
     if (!container) return;
 
-    // 1. Definimos el API aquí adentro para que sea independiente
     const API_URL = `/students/toReview?enrollment=${enrollment}&processStatus=${processStatus}`;
 
     try {
@@ -11,7 +10,6 @@ async function SeccionInfoEstudiante(enrollment, processStatus, containerId = 'i
         
         const data = await resp.json();
 
-        // 2. Aquí definimos el HTML. Si quieres quitar o poner campos, es SOLO AQUÍ.
         container.innerHTML = `
             <section class="info-card">
                 <div class="student-grid">
@@ -39,7 +37,6 @@ async function SeccionInfoEstudiante(enrollment, processStatus, containerId = 'i
             </section>
         `;
 
-        // Retornamos los datos por si el archivo principal los necesita (como para los documentos)
         return data;
 
     } catch (e) {

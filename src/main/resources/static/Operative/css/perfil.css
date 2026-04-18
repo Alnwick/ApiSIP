@@ -1,15 +1,4 @@
-:root {
-    --primary: #1A8C14;
-    --primary-dark: #136b10;
-    --primary-light: #e8f5e9;
-    --bg: #f4f7f4;
-    --text-main: #1f2937;
-    --text-muted: #6b7280;
-    --white: #ffffff;
-    --border: #d1d5db;
-    --error: #b91c1c;
-}
-
+@import url("/global.css");
 * { box-sizing: border-box; margin: 0; padding: 0; }
 
 body {
@@ -24,13 +13,13 @@ body {
 .nav-bar {
     background: var(--white);
     padding: 0.75rem 3rem;
-    border-bottom: 1px solid var(--border);
+    border-bottom: 1px solid var(--border-color);
     display: flex;
     align-items: center;
     position: sticky;
     top: 73px;
     z-index: 998;
-    box-shadow: 0 2px 4px rgba(0,0,0,0.05);
+    box-shadow: 0 2px 4px var(--shadow-brand-overlay);
 }
 
 .back-link {
@@ -58,7 +47,7 @@ body {
     padding: 2.5rem 2rem;
     border-radius: 1.5rem;
     text-align: center;
-    box-shadow: 0 4px 10px rgba(0,0,0,0.05);
+    box-shadow: 0 4px 10px var(--shadow-brand-overlay);
     border-top: 5px solid var(--primary);
 }
 
@@ -87,7 +76,7 @@ body {
     background: var(--white);
     padding: 2rem;
     border-radius: 1.5rem;
-    box-shadow: 0 4px 10px rgba(0,0,0,0.05);
+    box-shadow: 0 4px 10px var(--shadow-brand-overlay);
 }
 
 .section-title {
@@ -120,25 +109,25 @@ body {
 .data-item label { font-size: 0.75rem; font-weight: 800; color: var(--text-muted); text-transform: uppercase; letter-spacing: 0.3px; }
 .data-item .val-static {
     font-size: 1rem; font-weight: 600; color: var(--text-main);
-    padding: 0.4rem 0; border-bottom: 1px solid #f3f4f6;
+    padding: 0.4rem 0; border-bottom: 1px solid var(--border-color);
     word-break: break-all;
 }
 
 .input-field {
     padding: 0.8rem 1rem;
     border-radius: 0.75rem;
-    border: 1px solid var(--border);
+    border: 1px solid var(--border-color);
     font-size: 0.95rem;
     outline: none;
     transition: all 0.2s;
     background: #fcfcfc;
 }
-.input-field:focus { border-color: var(--primary); box-shadow: 0 0 0 3px var(--primary-light); background: white; }
+.input-field:focus { border-color: var(--primary); box-shadow: 0 0 0 3px var(--primary-light); background: var(--white); }
 
 .btn-update {
     margin-top: 0.5rem;
     background: var(--text-main);
-    color: white;
+    color: var(--white);
     border: none;
     padding: 0.8rem 2.2rem;
     border-radius: 0.8rem;
@@ -147,8 +136,8 @@ body {
     transition: all 0.2s;
     align-self: flex-end;
 }
-.btn-update:hover { background: #000; transform: translateY(-2px); box-shadow: 0 4px 8px rgba(0,0,0,0.1); }
-.btn-update:disabled { background: #cbd5e1; cursor: not-allowed; transform: none; box-shadow: none; }
+.btn-update:hover { background: var(--black); transform: translateY(-2px); box-shadow: 0 4px 8px var(--shadow-brand-overlay); }
+.btn-update:disabled { background: var(--gray); cursor: not-allowed; transform: none; box-shadow: none; }
 
 /* --- MODAL --- */
 .modal-overlay {
@@ -170,16 +159,16 @@ body {
     display: flex; align-items: center; justify-content: center; margin: 0 auto 1.5rem;
 }
 .icon-success { background-color: var(--primary-light); color: var(--primary); }
-.icon-error { background-color: #fef2f2; color: var(--error); }
+.icon-error { background-color: var(--bg); color: var(--error); }
 .modal-icon-box svg { width: 35px; height: 35px; stroke-width: 2.5; }
 .modal-title { font-size: 1.25rem; font-weight: 800; color: var(--text-main); margin-bottom: 0.5rem; }
 .modal-message { color: var(--text-muted); font-size: 0.95rem; line-height: 1.5; margin-bottom: 2rem; }
 .btn-modal-action {
-    background: var(--text-main); color: white; border: none; padding: 0.8rem 2rem;
+    background: var(--text-main); color: var(--white); border: none; padding: 0.8rem 2rem;
     border-radius: 0.8rem; font-weight: 700; font-size: 0.95rem; cursor: pointer;
     width: 100%; transition: transform 0.2s, background-color 0.2s;
 }
-.btn-modal-action:hover { transform: translateY(-2px); background-color: #000; }
+.btn-modal-action:hover { transform: translateY(-2px); background-color: var(--black); }
 
 @media (max-width: 850px) {
     .container { grid-template-columns: 1fr; }

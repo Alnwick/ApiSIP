@@ -1,11 +1,9 @@
-// Definimos las etapas en orden para la lógica de desbloqueo
+
 const ETAPAS_ORDEN = ['DOC_INICIAL', 'CARTAS', 'DOC_FINAL', 'LIBERACION'];
 
 function gestionarNavegacionRevision(currentStatus, todasLasEtapas) {
-    // 1. Corregimos el nombre para que coincida con el parámetro
+    
     const { inicial, cartas, termino } = todasLasEtapas;
-
-    // Funciones auxiliares de validación
     const estaAprobado = (docs) => docs && docs.length > 0 && docs.every(d => d.status === 'CORRECTO' || d.status === 'ACEPTADO');
 
     const inicialOK = estaAprobado(inicial);
@@ -19,7 +17,7 @@ function gestionarNavegacionRevision(currentStatus, todasLasEtapas) {
         let bloqueado = false;
         let razon = "";
 
-        // REGLAS DE ORO PARA EL OPERADOR:
+    
         if (etapa === 'CARTAS' && !inicialOK) {
             bloqueado = true;
             razon = "Primero aprueba todos los Documentos Iniciales.";
@@ -40,10 +38,8 @@ function gestionarNavegacionRevision(currentStatus, todasLasEtapas) {
             'LIBERACION': 'operadorLiberacion.html'
         };
 
-        // Limpiamos estados previos para evitar conflictos visuales
         btn.classList.remove('active', 'locked');
 
-        // Aplicar estado visual y lógica de click
         if (bloqueado) {
             btn.classList.add('locked');
             btn.onclick = (e) => {
@@ -55,7 +51,6 @@ function gestionarNavegacionRevision(currentStatus, todasLasEtapas) {
             btn.onclick = () => window.location.href = `${rutas[etapa]}?enrollment=${enrollment}`;
         }
 
-        // Resaltar la pestaña actual
         if (etapa === currentStatus) btn.classList.add('active');
     });
 }

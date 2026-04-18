@@ -24,7 +24,7 @@ async function InicializarSeccionRevision(config) {
             SeccionInfoEstudiante(enrollment, 'DOC_FINAL')
         ]);
 
-        // Decidimos qué mostrar en la lista principal según el statusSeccion que recibimos
+        
         let dataActual;
         if (statusSeccion === 'DOC_INICIAL') dataActual = dataInicial;
         else if (statusSeccion === 'CARTAS') dataActual = dataCartas;
@@ -33,11 +33,10 @@ async function InicializarSeccionRevision(config) {
         if (dataActual && dataActual.documents) {
             currentDocuments = dataActual.documents;
             
-            // 1. Renderizamos los documentos de la sección actual
+            
             renderDocumentsGenerico(currentDocuments, mapaNombres, contenedorListaId);
             
-            // 2. Pasamos el objeto con TODAS las etapas a la navegación
-            // para que pueda validar la cascada (A -> B -> C)
+            //Pasamos el objeto con TODAS las etapas a la navegación
             gestionarNavegacionRevision(statusSeccion, {
                 inicial: dataInicial.documents || [],
                 cartas: dataCartas.documents || [],

@@ -1,4 +1,4 @@
-
+@import url('/global.css');
 .review-panel { display: flex; flex-direction: column; gap: 1.2rem; }
 
 
@@ -6,7 +6,7 @@
 .preview-side {
     background: var(--white);
     border-radius: 1.5rem;
-    box-shadow: 0 10px 25px rgba(0,0,0,0.08);
+    box-shadow: 0 10px 25px var(--shadow-brand-overlay);
     display: flex;
     flex-direction: column;
     position: sticky;
@@ -16,7 +16,7 @@
     overflow: hidden;
 }
 
-.viewer-header { background: #1e293b; color: white; padding: 0.9rem 1.5rem; font-size: 0.95rem; font-weight: 600; }
+.viewer-header { background: #1e293b; color: var(--white); padding: 0.9rem 1.5rem; font-size: 0.95rem; font-weight: 600; }
 .pdf-content { flex: 1; background: #cbd5e1; display: flex; align-items: center; justify-content: center; }
 .pdf-content iframe { width: 100%; height: 100%; border: none; }
 
@@ -29,7 +29,7 @@
     padding-bottom: 3rem;
 }
 .btn-footer { padding: 1.2rem; border-radius: 1rem; border: none; font-weight: 800; font-size: 0.95rem; cursor: pointer; text-transform: uppercase; }
-.btn-blue { background: var(--info); color: white; }
-.btn-green { background: var(--primary); color: white;} 
+.btn-blue { background: var(--info); color: var(--white); }
+.btn-green { background: var(--primary); color: var(--white);} 
 
 

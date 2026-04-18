@@ -1,7 +1,7 @@
-/* --- FOOTER COMPACTO --- */
+@import url('/global.css');
 footer {
     background-color: var(--primary-dark); /* El guinda/verde oscuro que usas */
-    color: white;
+    color: var(--white);
     padding: 1.5rem 0;
     margin-top: auto; /* Esto es clave para que siempre esté al fondo */
     width: 100%;

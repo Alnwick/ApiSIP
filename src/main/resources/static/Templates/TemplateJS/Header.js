@@ -1,5 +1,5 @@
 async function renderUniversalHeader(tipoUsuario = 'students') {
-    /*Logo en la pestaña del navegador*/
+    
     let favicon = document.querySelector("link[rel~='icon']");
     if (!favicon) {
         favicon = document.createElement('link');
@@ -8,15 +8,16 @@ async function renderUniversalHeader(tipoUsuario = 'students') {
     }
     favicon.href = '../Imagenes/Logo/32/SIP_bg.png';
 
-    //COmponente HEADER
     const headerElement = document.querySelector('header');
     if (!headerElement) return;
 
     headerElement.innerHTML = `
     <div class="logo-group">
-        <div class="school-logo">
-                    <img src="../Imagenes/Logo/svg/SIP_alpha.svg" alt="Logo Escuela" class="school-logo-img">
-        </div>
+        <a href="home.html">
+            <div class="school-logo">
+                        <img src="../Imagenes/Logo/svg/SIP_alpha.svg" alt="Logo Escuela" class="school-logo-img">
+            </div>
+        </a>
 
         <div class="header-brand">
             <div class="title-box">
@@ -50,7 +51,7 @@ async function renderUniversalHeader(tipoUsuario = 'students') {
 }
 
 function setupHeaderEvents(tipoUsuario) {
-    // Evento Perfil
+    
     const pill = document.getElementById('userPill');
     if (pill) {
         pill.onclick = () => {
@@ -59,7 +60,7 @@ function setupHeaderEvents(tipoUsuario) {
         };
     }
 
-    // Evento Logout
+    
     const logoutBtn = document.getElementById('logoutBtn');
     if (logoutBtn) {
         logoutBtn.onclick = async () => {
@@ -84,8 +85,6 @@ async function  loadHeaderProfile(tipoUsuario) {
 
             const nameEl = document.getElementById('user-pill-name');
             const initialEl = document.getElementById('user-pill-initial');
-
-            //const statusParaMostrar = localStorage.getItem('currentProcessStatus') || data.infoInstitutional.processStatus;
 
             if (nameEl) nameEl.textContent = `${firstName} ${lastName}`;
             if (initialEl) initialEl.textContent = firstName.charAt(0).toUpperCase();

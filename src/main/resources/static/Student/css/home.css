@@ -1,15 +1,4 @@
-:root {
-    --primary: #1A8C14;
-    --primary-dark: #136b10;
-    --primary-light: #e8f5e9;
-    --bg: #f0f2f0; 
-    --text-main: #1f2937;
-    --text-muted: #6b7280;
-    --white: #ffffff;
-    --border: #d1d5db;
-    --infoA: #e8dc0a;
-}
-
+@import url('/global.css');
 * { box-sizing: border-box; margin: 0; padding: 0; }
 
 body {
@@ -63,9 +52,9 @@ body {
     display: flex;
     align-items: center;
     gap: 1.25rem;
-    border: 1px solid var(--border);
+    border: 1px solid var(--border-color);
     transition: all 0.25s ease;
-    box-shadow: 0 2px 4px rgba(0,0,0,0.05);
+    box-shadow: 0 2px 4px var(--shadow-brand-overlay);
 }
 
 .rect-link:not(.locked):hover {
@@ -80,7 +69,7 @@ body {
     border-radius: 1rem;
     display: flex; align-items: center; justify-content: center;
     flex-shrink: 0;
-    box-shadow: 0 4px 8px rgba(26, 140, 20, 0.2);
+    box-shadow: 0 4px 8px var(--shadow-brand-IconBox);
 }
 
 .icon-box img { width: 28px; height: 28px; filter: brightness(0) invert(1); }

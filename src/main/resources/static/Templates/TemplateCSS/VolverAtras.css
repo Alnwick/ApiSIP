@@ -1,14 +1,15 @@
+@import url('/global.css');
 .nav-bar {
     background: var(--white);
     margin-bottom: 1rem;
     padding: 0.75rem 3rem;
-    border-bottom: 1px solid var(--border);
+    border-bottom: 1px solid var(--border-color);
     display: flex;
     align-items: center;
     position: sticky;
-    top: 90px;
+    top: 86px;
     z-index: 998;
-    box-shadow: 0 2px 4px rgba(0,0,0,0.05);
+    box-shadow: 0 2px 4px var(--shadow-brand-overlay);
 }
 
 .back-link {
