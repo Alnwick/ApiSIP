@@ -24,12 +24,12 @@
 .dakmode-btn:hover {
     transform: scale(1.1);
 }
-@media (max-width: 850px) {
+@media (min-width: 850px) {
     
-#theme-toggle-container {
-    position: fixed;
-    top: 800px;
-    right: 20px;
-    z-index: 9999;
-}
+    #theme-toggle-container {
+        position: fixed;
+        top: 800px;
+        right: 20px;
+        z-index: 9999;
+    }
 }
