@@ -65,7 +65,7 @@ function setupPasswordUpdate() {
 
         try {
             
-            const resp = await fetch('/student/change-password', {
+            const resp = await fetch('/api/change-password', {
                 method: 'POST', // o PUT
                 headers: { 'Content-Type': 'application/json' },
                 body: JSON.stringify({ newPassword: pwd })

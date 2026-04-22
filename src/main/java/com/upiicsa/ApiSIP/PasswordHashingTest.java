@@ -5,13 +5,13 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 
 public class PasswordHashingTest {
     public static void main(String[] args) {
-        String password = "Yatg0809";
+        String password = "Yatg080901";
 
         // Crea el codificador de contraseñas usando BCrypt
         PasswordEncoder passwordEncoder = new BCryptPasswordEncoder();
 
         // Hashea la contraseña
-        String hashedPassword = passwordEncoder.encode(password);
+        String hashedPassword = "$2a$10$BunJRrgzU1PInCJLHrx48.hTYJeAlsTrgSs05ULgecVp8SlsD3Dha";
 
         // Imprime el hash generado
         System.out.println("Contraseña original: " + password);
