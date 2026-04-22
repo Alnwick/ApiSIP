@@ -209,17 +209,14 @@ async function loadPdfPreview() {
 //Valida que los campos no esten vacios
 const CAMPOS_OPCIONALES = ['companyFax', 'companyExtension'];
 function validarCampo(inputElement) {
+    const errorId = `error-${inputElement.id}`;
+    let errorElement = document.getElementById(errorId);
 
     if (CAMPOS_OPCIONALES.includes(inputElement.id)) {
-        
-        const errorElement = document.getElementById(`error-${inputElement.id}`);
-        
         if (errorElement) errorElement.remove();
         inputElement.classList.remove('input-error');
         return true;
     }
-    const errorId = `error-${inputElement.id}`;
-    let errorElement = document.getElementById(errorId);
 
     if (!inputElement.value || inputElement.value.trim() === '') {
         if (!errorElement) {
@@ -228,15 +225,21 @@ function validarCampo(inputElement) {
             errorElement.className = 'error-text';
 
             const svgIcon = `
-        <svg style="width:16px; height:16px; vertical-align:middle; margin-right:4px;" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
-            <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 11h2v5m-2 0h4m-2.592-8.5h.01M21 12a9 9 0 1 1-18 0 9 9 0 0 1 18 0Z"/>
-        </svg>`;
+            <svg style="width:16px; height:16px; vertical-align:middle; margin-right:4px;" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
+                <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 11h2v5m-2 0h4m-2.592-8.5h.01M21 12a9 9 0 1 1-18 0 9 9 0 0 1 18 0Z"/>
+            </svg>`;
 
             errorElement.innerHTML = `${svgIcon} Este campo no puede ir vacío`;
-
             inputElement.parentNode.insertBefore(errorElement, inputElement.nextSibling);
         }
         inputElement.classList.add('input-error');
         return false;
     }
+
+    if (errorElement) {
+        errorElement.remove();
+    }
+    inputElement.classList.remove('input-error');
+
+    return true;
 }

@@ -121,9 +121,9 @@ input:focus, select:focus { border-color: var(--primary); background: var(--whit
 
 .pdf-viewer {
     flex: 1;
-    background: var(--white);
+    background: var(--toggle-off);
     border-radius: 1.5rem;
-    border: 2px dashed var(--toggle-off);
+    border: 2px solid var(--black);
     display: flex;
     align-items: center;
     justify-content: center;
