@@ -51,7 +51,7 @@ function setupPasswordUpdate() {
         btnUpdate.textContent = "Actualizando...";
 
         try {
-            const resp = await fetch('/operatives/change-password', {
+            const resp = await fetch('/api/change-password', {
                 method: 'POST',
                 headers: { 'Content-Type': 'application/json' },
                 body: JSON.stringify({ newPassword: pwd })
