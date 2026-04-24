@@ -26,13 +26,16 @@ document.addEventListener('DOMContentLoaded', () => {
 
 function initUI(docsData = []) {
     const container = document.getElementById('docs-container');
+    const infoPresentacion = docsData.find(d => d.typeCode === 'CARTA_PRESENTACION');
+    const statusPresentacion = infoPresentacion?.status?.toUpperCase() || 'SIN CARGAR';
 
     container.innerHTML = DOC_CONFIG.map(doc => {
         
         const dataDoc = docsData.find(d => d.typeCode === doc.typeCode) || {};
         
         
-        return crearTarjetaDocumento(doc, dataDoc); 
+        
+        return crearTarjetaDocumento(doc, dataDoc, "", true, statusPresentacion);
     }).join('');
 
    
@@ -77,7 +80,7 @@ function updateCard(id, data) {
     const labelBtn = document.getElementById(`btn-${id}`);
     const dateEl = document.getElementById(`date-${id}`);
 
-    card.className = "doc-card";
+    //card.className = "doc-card";
     let statusCls = "status-none", badgeCls = "badge-none", label = "Sin Cargar";
 
    

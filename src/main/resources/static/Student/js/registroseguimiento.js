@@ -95,7 +95,7 @@ function updateCard(id, data) {
     const labelBtn = document.getElementById(`btn-${id}`);
     const dateEl = document.getElementById(`date-${id}`);
 
-    card.className = "doc-card"; 
+    //card.className = "doc-card"; 
     let statusCls = "status-none", badgeCls = "badge-none", label = "Sin Cargar";
 
    

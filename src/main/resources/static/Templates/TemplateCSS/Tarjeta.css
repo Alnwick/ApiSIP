@@ -1,4 +1,36 @@
 @import url('../global.css');
+
+/* Contenedor relativo para que el bloqueo se ajuste a la tarjeta */
+.doc-card { position: relative; }
+
+/* Capa de bloqueo */
+.card-blocked {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(255, 255, 255, 0.6);
+    backdrop-filter: blur(4px); /* El efecto borroso */
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    z-index: 10;
+    border-radius: 1.25rem;
+    pointer-events: all; /* Evita que toquen lo de abajo */
+}
+
+.blocked-message {
+    background: var(--back);
+    color: var(--back);
+    padding: 0.8rem 1.2rem;
+    border-radius: 0.5rem;
+    font-weight: 700;
+    font-size: 0.9rem;
+    box-shadow: 0 4px 10px rgba(0,0,0,0.2);
+    text-align: center;
+}
+/*=============================================================0*/
 .doc-card {
         background: var(--white);
         border-radius: 1.25rem;

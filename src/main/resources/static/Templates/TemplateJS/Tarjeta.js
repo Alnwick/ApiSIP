@@ -1,10 +1,11 @@
-function crearTarjetaDocumento(doc, dataRaw = {}, extraActionHtml = "", mostrarObservaciones = true) {
+
+function crearTarjetaDocumento(doc, dataRaw = {}, extraActionHtml = "", mostrarObservaciones = true, statusCartaPresentacion = ""   ) {
     const data = Array.isArray(dataRaw) ? dataRaw[0] : dataRaw;
 
     const statusBadge = data?.status || 'SIN CARGAR';
     let statusClass = 'none';
-    
     const s = statusBadge.toUpperCase();
+
     if (s === 'CORRECTO' || s === 'ACEPTADO') {
         statusClass = 'correct';
     } else if (s === 'PENDIENTE') {
@@ -13,10 +14,16 @@ function crearTarjetaDocumento(doc, dataRaw = {}, extraActionHtml = "", mostrarO
         statusClass = 'incorrect';
     }
 
+    
+
     const fechaOriginal = data?.uploadDate || data?.date;
     const fechaFmt = (fechaOriginal && fechaOriginal !== "-") ? fechaOriginal : "--/--/---- --:--";
     
     const esCartaPresentacion = doc.typeCode === 'CARTA_PRESENTACION';
+    const esCartaAceptacion = doc.typeCode === 'CARTA_ACEPTACION';
+    const estaBloqueada = esCartaAceptacion && statusCartaPresentacion !== 'CORRECTO';
+    //const gridStyle = mostrarObservaciones ? 'siObservaciones' : 'noObservaciones';
+    
     if (esCartaPresentacion) mostrarObservaciones = false;
 
     const verDocHtml = data?.fileName ? `
@@ -29,6 +36,7 @@ function crearTarjetaDocumento(doc, dataRaw = {}, extraActionHtml = "", mostrarO
 
     if (esCartaPresentacion) {
         zonaAccionHtml = data?.fileName ? `
+        
             <div class="column-item">
                 <a href="/view-documents/${data.fileName}" download class="btn-browse" style="text-align: center; text-decoration: none;">
                     <i class="fas fa-file-download"></i> Descargar Mi Carta
@@ -57,9 +65,17 @@ function crearTarjetaDocumento(doc, dataRaw = {}, extraActionHtml = "", mostrarO
 
     const gridStyle = mostrarObservaciones ? 'siObservaciones' : 'noObservaciones';
 
-    // IMPORTANTE: Aquí se inyectan las clases status-correct y badge-correct
     return `
-        <div class="doc-card status-${statusClass}" id="card-${doc.id}">
+        <div class="doc-card status-${statusClass}" id="card-${doc.id}" style="${estaBloqueada ? 'position: relative;' : ''}">
+            
+            ${estaBloqueada ? `
+                <div class="card-blocked">
+                    <div class="blocked-message">
+                        <i class="fas fa-lock"></i> Primero deben subir la carta presentación
+                    </div>
+                </div>
+            ` : ''}
+
             <div class="doc-header">
                 <div class="title-group">
                     <span class="doc-title">${doc.label}</span>
@@ -68,7 +84,7 @@ function crearTarjetaDocumento(doc, dataRaw = {}, extraActionHtml = "", mostrarO
                 <span class="status-badge badge-${statusClass}" id="badge-${doc.id}">${statusBadge}</span>
             </div>
 
-            <div class="doc-body-flex ${gridStyle}" padding: 1.5rem;">
+            <div class="doc-body-flex ${gridStyle}" style="padding: 1.5rem; ${estaBloqueada ? 'filter: blur(2px); pointer-events: none;' : ''}">
                 <div class="upload-area" >
                     <div style="flex: 1;">${zonaAccionHtml}</div>
                     ${extraActionHtml ? `<div style="flex: 1;">${extraActionHtml}</div>` : ''}

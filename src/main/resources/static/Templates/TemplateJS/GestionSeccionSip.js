@@ -59,8 +59,8 @@ async function InicializarSeccionRevision(config) {
 function renderDocumentsGenerico(docs, mapa, containerId) {
     const container = document.getElementById(containerId);
 
-    console.log("Contenedor encontrado:", container); 
-    console.log("Documentos a renderizar:", docs);    
+   // console.log("Contenedor encontrado:", container); 
+    //console.log("Documentos a renderizar:", docs);    
     
     if (!container) return;
     container.innerHTML = '';

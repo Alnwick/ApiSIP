@@ -13,7 +13,7 @@ const DOC_CONFIG = [
 
 document.addEventListener('DOMContentLoaded', () => {
     renderUniversalHeader('students');
-    volverAtras(); 
+    volverAtras();
     tituloFijo(
         "Documentación Inicial",
         "Por favor, carga tus archivos en formato PDF. Peso no mayor a 1MB."
@@ -96,7 +96,7 @@ function updateCard(id, data) {
     const labelBtn = document.getElementById(`btn-${id}`);
     const dateEl = document.getElementById(`date-${id}`);
 
-    card.className = "doc-card";
+    //card.className = "doc-card";
     let statusCls = "status-none", badgeCls = "badge-none", label = "Sin Cargar";
 
     

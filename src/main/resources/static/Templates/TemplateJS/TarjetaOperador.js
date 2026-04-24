@@ -13,7 +13,7 @@ function TarjetaOperador(doc, options = {}) {
     const isIncorrecto = doc.status === 'INCORRECTO';
     const hasFile = doc.fileName && doc.fileName.trim() !== '';
     const isSinDoc = !hasFile || doc.status === 'SIN_CARGAR';
-    const isCargado = (doc.status === 'PENDIENTE' || isIncorrecto) && hasFile;
+    const isCargado = (doc.status === 'PENDIENTE' /*|| isIncorrecto*/) && hasFile;
     
     const esCartaPresentacion = doc.typeCode === 'CARTA_PRESENTACION';
     
